@@ -1,0 +1,452 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		423ABAEB17A32238004F289D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAEA17A32238004F289D /* Cocoa.framework */; };
+		423ABAF517A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABAF317A32238004F289D /* InfoPlist.strings */; };
+		423ABAF917A32238004F289D /* CORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORM.m */; };
+		423ABB0117A32238004F289D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABB0017A32238004F289D /* SenTestingKit.framework */; };
+		423ABB0217A32238004F289D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAEA17A32238004F289D /* Cocoa.framework */; };
+		423ABB0517A32238004F289D /* CORM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAE717A32238004F289D /* CORM.framework */; };
+		423ABB0B17A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABB0917A32238004F289D /* InfoPlist.strings */; };
+		423ABB0E17A32238004F289D /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		423ABB0317A32238004F289D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 423ABADE17A32238004F289D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 423ABAE617A32238004F289D;
+			remoteInfo = CORM;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		423ABAE717A32238004F289D /* CORM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CORM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		423ABAEA17A32238004F289D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		423ABAED17A32238004F289D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		423ABAEE17A32238004F289D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		423ABAEF17A32238004F289D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		423ABAF217A32238004F289D /* CORM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CORM-Info.plist"; sourceTree = "<group>"; };
+		423ABAF417A32238004F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		423ABAF617A32238004F289D /* CORM-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CORM-Prefix.pch"; sourceTree = "<group>"; };
+		423ABAF717A32238004F289D /* CORM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORM.h; sourceTree = "<group>"; };
+		423ABAF817A32238004F289D /* CORM.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CORM.m; sourceTree = "<group>"; };
+		423ABAFF17A32238004F289D /* CORMTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CORMTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		423ABB0017A32238004F289D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		423ABB0817A32238004F289D /* CORMTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CORMTests-Info.plist"; sourceTree = "<group>"; };
+		423ABB0A17A32238004F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		423ABB0C17A32238004F289D /* CORMTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORMTests.h; sourceTree = "<group>"; };
+		423ABB0D17A32238004F289D /* CORMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CORMTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		423ABAE317A32238004F289D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423ABAEB17A32238004F289D /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		423ABAFB17A32238004F289D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423ABB0117A32238004F289D /* SenTestingKit.framework in Frameworks */,
+				423ABB0217A32238004F289D /* Cocoa.framework in Frameworks */,
+				423ABB0517A32238004F289D /* CORM.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		423ABADD17A32238004F289D = {
+			isa = PBXGroup;
+			children = (
+				423ABAF017A32238004F289D /* CORM */,
+				423ABB0617A32238004F289D /* CORMTests */,
+				423ABAE917A32238004F289D /* Frameworks */,
+				423ABAE817A32238004F289D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		423ABAE817A32238004F289D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				423ABAE717A32238004F289D /* CORM.framework */,
+				423ABAFF17A32238004F289D /* CORMTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		423ABAE917A32238004F289D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				423ABAEA17A32238004F289D /* Cocoa.framework */,
+				423ABB0017A32238004F289D /* SenTestingKit.framework */,
+				423ABAEC17A32238004F289D /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		423ABAEC17A32238004F289D /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				423ABAED17A32238004F289D /* AppKit.framework */,
+				423ABAEE17A32238004F289D /* CoreData.framework */,
+				423ABAEF17A32238004F289D /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		423ABAF017A32238004F289D /* CORM */ = {
+			isa = PBXGroup;
+			children = (
+				423ABAF717A32238004F289D /* CORM.h */,
+				423ABAF817A32238004F289D /* CORM.m */,
+				423ABAF117A32238004F289D /* Supporting Files */,
+			);
+			path = CORM;
+			sourceTree = "<group>";
+		};
+		423ABAF117A32238004F289D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				423ABAF217A32238004F289D /* CORM-Info.plist */,
+				423ABAF317A32238004F289D /* InfoPlist.strings */,
+				423ABAF617A32238004F289D /* CORM-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		423ABB0617A32238004F289D /* CORMTests */ = {
+			isa = PBXGroup;
+			children = (
+				423ABB0C17A32238004F289D /* CORMTests.h */,
+				423ABB0D17A32238004F289D /* CORMTests.m */,
+				423ABB0717A32238004F289D /* Supporting Files */,
+			);
+			path = CORMTests;
+			sourceTree = "<group>";
+		};
+		423ABB0717A32238004F289D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				423ABB0817A32238004F289D /* CORMTests-Info.plist */,
+				423ABB0917A32238004F289D /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		423ABAE417A32238004F289D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		423ABAE617A32238004F289D /* CORM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 423ABB1117A32238004F289D /* Build configuration list for PBXNativeTarget "CORM" */;
+			buildPhases = (
+				423ABAE217A32238004F289D /* Sources */,
+				423ABAE317A32238004F289D /* Frameworks */,
+				423ABAE417A32238004F289D /* Headers */,
+				423ABAE517A32238004F289D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CORM;
+			productName = CORM;
+			productReference = 423ABAE717A32238004F289D /* CORM.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		423ABAFE17A32238004F289D /* CORMTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 423ABB1417A32238004F289D /* Build configuration list for PBXNativeTarget "CORMTests" */;
+			buildPhases = (
+				423ABAFA17A32238004F289D /* Sources */,
+				423ABAFB17A32238004F289D /* Frameworks */,
+				423ABAFC17A32238004F289D /* Resources */,
+				423ABAFD17A32238004F289D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				423ABB0417A32238004F289D /* PBXTargetDependency */,
+			);
+			name = CORMTests;
+			productName = CORMTests;
+			productReference = 423ABAFF17A32238004F289D /* CORMTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		423ABADE17A32238004F289D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Firelizzard Inventions";
+			};
+			buildConfigurationList = 423ABAE117A32238004F289D /* Build configuration list for PBXProject "CORM" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 423ABADD17A32238004F289D;
+			productRefGroup = 423ABAE817A32238004F289D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				423ABAE617A32238004F289D /* CORM */,
+				423ABAFE17A32238004F289D /* CORMTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		423ABAE517A32238004F289D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423ABAF517A32238004F289D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		423ABAFC17A32238004F289D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423ABB0B17A32238004F289D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		423ABAFD17A32238004F289D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		423ABAE217A32238004F289D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423ABAF917A32238004F289D /* CORM.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		423ABAFA17A32238004F289D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423ABB0E17A32238004F289D /* CORMTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		423ABB0417A32238004F289D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 423ABAE617A32238004F289D /* CORM */;
+			targetProxy = 423ABB0317A32238004F289D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		423ABAF317A32238004F289D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				423ABAF417A32238004F289D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		423ABB0917A32238004F289D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				423ABB0A17A32238004F289D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		423ABB0F17A32238004F289D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		423ABB1017A32238004F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		423ABB1217A32238004F289D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CORM/CORM-Prefix.pch";
+				INFOPLIST_FILE = "CORM/CORM-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		423ABB1317A32238004F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CORM/CORM-Prefix.pch";
+				INFOPLIST_FILE = "CORM/CORM-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		423ABB1517A32238004F289D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CORM/CORM-Prefix.pch";
+				INFOPLIST_FILE = "CORMTests/CORMTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		423ABB1617A32238004F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CORM/CORM-Prefix.pch";
+				INFOPLIST_FILE = "CORMTests/CORMTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		423ABAE117A32238004F289D /* Build configuration list for PBXProject "CORM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423ABB0F17A32238004F289D /* Debug */,
+				423ABB1017A32238004F289D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		423ABB1117A32238004F289D /* Build configuration list for PBXNativeTarget "CORM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423ABB1217A32238004F289D /* Debug */,
+				423ABB1317A32238004F289D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		423ABB1417A32238004F289D /* Build configuration list for PBXNativeTarget "CORMTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423ABB1517A32238004F289D /* Debug */,
+				423ABB1617A32238004F289D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 423ABADE17A32238004F289D /* Project object */;
+}
