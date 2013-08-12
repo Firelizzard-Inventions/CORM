@@ -1,0 +1,24 @@
+//
+//  CORMKey.h
+//  CORM
+//
+//  Created by Ethan Reesor on 7/26/13.
+//  Copyright (c) 2013 Firelizzard Inventions. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface CORMKey : NSArray
+
+@end
+
+@interface CORMKey (Genesis)
+
++ (id)key;
++ (id)keyWithDescriptor:(NSString *)string;
++ (id)keyWithObject:(id)obj;
++ (id)keyWithArray:(NSArray *)arr;
++ (id)keyWithObjects:(id)obj, ... NS_REQUIRES_NIL_TERMINATION;
++ (id)keyWithObjects:(const void *)objs count:(NSUInteger)count;
+
+@end
