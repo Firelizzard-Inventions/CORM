@@ -23,7 +23,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2013 Firelizzard Inventions. All rights reserved.</string>
+	<string>Copyright © 2013 Firelizzard Inventions. Some rights reserved, see license.</string>
 	<key>NSPrincipalClass</key>
 	<string></string>
 </dict>

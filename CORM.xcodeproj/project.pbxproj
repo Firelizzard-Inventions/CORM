@@ -37,6 +37,8 @@
 		42B00C2417C6BC6D000B13E7 /* ORDASQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */; };
 		42B00C2517C6BC6D000B13E7 /* TypeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 424277B617B8429B00E31F0C /* TypeExtensions.framework */; };
 		42B00C2617C6BC75000B13E7 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0617C66DFB000B13E7 /* libsqlite3.0.dylib */; };
+		42B00C3017C6C649000B13E7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C2B17C6C543000B13E7 /* README.md */; };
+		42B00C3217C6C652000B13E7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C3117C6C652000B13E7 /* LICENSE */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +120,8 @@
 		42B00C1E17C6BC4E000B13E7 /* Album.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Album.m; sourceTree = "<group>"; };
 		42B00C2017C6BC58000B13E7 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		42B00C2117C6BC58000B13E7 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
+		42B00C2B17C6C543000B13E7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		42B00C3117C6C652000B13E7 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +155,8 @@
 		423ABADD17A32238004F289D = {
 			isa = PBXGroup;
 			children = (
+				42B00C3117C6C652000B13E7 /* LICENSE */,
+				42B00C2B17C6C543000B13E7 /* README.md */,
 				423ABAF017A32238004F289D /* CORM */,
 				423ABB0617A32238004F289D /* CORMTests */,
 				42B00C0817C66E06000B13E7 /* Libraries */,
@@ -424,7 +430,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42B00C3017C6C649000B13E7 /* README.md in Resources */,
 				423ABAF517A32238004F289D /* InfoPlist.strings in Resources */,
+				42B00C3217C6C652000B13E7 /* LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
