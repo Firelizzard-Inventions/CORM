@@ -20,6 +20,7 @@
 @property (readonly) CORMFactory * factory;
 @property (readonly) CORMEntityImpl * entity;
 
++ (CORMEntityProxy *)entityProxyWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory;
 - (id)initWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory;
 
 @end

@@ -8,18 +8,21 @@
 
 #import "CORMStore.h"
 
+#import <ORDA/ORDAGovernor.h>
+#import "CORMEntity.h"
 #import "CORMFactory.h"
-#import "CORMFactory_private.h"
+#import "CORMFactory+Private.h"
 
 @implementation CORMStore {
 	NSMutableDictionary * factories;
 }
 
-- (id)initWithTHigns
+- (id)initWithGovernor:(id<ORDAGovernor>)governor
 {
 	if (!(self = [super init]))
 		return nil;
 	
+	_governor = governor.retain;
 	factories = @{}.mutableCopy;
 	
 	return self;
@@ -27,20 +30,27 @@
 
 - (void)dealloc
 {
+	[_governor release];
 	[factories release];
+	
 	[super dealloc];
 }
 
-- (CORMFactory *)factoryRegisteredForType:(Class)class
+- (CORMFactory *)factoryRegisteredForType:(Class<CORMEntity>)type
 {
-	return factories[class];
+	return factories[type];
 }
 
-- (CORMFactory *)registerFactoryForType:(Class<NSCopying>)class
+- (CORMFactory *)registerFactoryForType:(Class<CORMEntity, NSCopying>)type
 {
-	CORMFactory * factory = [CORMFactory factoryForEntity:class fromStore:self];
-	factories[class] = factory;
+	CORMFactory * factory = [CORMFactory factoryForEntity:type fromStore:self];
+	factories[type] = factory;
 	return factory;
+}
+
+- (Class<CORMEntity> *)generateClassForName:(NSString *)className
+{
+	
 }
 
 @end

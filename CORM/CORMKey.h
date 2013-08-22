@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol CORMEntity;
+
 @interface CORMKey : NSArray
+
+- (NSString *)whereClauseForEntityType:(Class<CORMEntity>)type;
 
 @end
 

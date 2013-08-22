@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class CORMStore;
+
 @interface CORM : NSObject
+
++ (CORMStore *)defaultStore;
++ (void)setDefaultStore:(CORMStore *)store;
 
 @end

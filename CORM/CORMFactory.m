@@ -7,11 +7,15 @@
 //
 
 #import "CORMFactory.h"
-#import "CORMFactory_private.h"
+#import "CORMFactory+Private.h"
 
+#import <ORDA/ORDAGovernor.h>
+#import <ORDA/ORDAStatement.h>
+#import <ORDA/ORDAStatementResult.h>
 #import "CORMStore.h"
 #import "CORMKey.h"
-#import "CORMEntityImpl.h"
+#import "CORMEntity.h"
+#import "CORMEntityProxy.h"
 
 @implementation CORMFactory {
 	NSMutableDictionary * data;
@@ -27,11 +31,6 @@
 	return [data valueForKeyPath:keyPath];
 }
 
-- (id)objectForKeyedSubscript:(id)key
-{
-	return data[[CORMKey keyWithObject:key]];
-}
-
 - (void)dealloc
 {
 	[data release];
@@ -44,13 +43,48 @@
 
 - (id<CORMEntity>)_entityForKey:(CORMKey *)key
 {
-	// get data
-	NSDictionary * dict = nil;
+	if (data[key])
+		return data[key];
 	
-	id<CORMEntity> entity = [self.type entityWithKey:key];
-	for (NSString * key in dict) {
-		NSString * prop = [self.type propertyNameForMappedName:key];
-//		[entity setv];
+	NSString * stmtstr = [NSString stringWithFormat:@"SELECT * FROM [%@] WHERE %@", [self.type mappedClassName], [key whereClauseForEntityType:self.type]];
+	id<ORDAStatement> stmt = [self.store.governor createStatement:stmtstr];
+	if (stmt.isError)
+		return nil;
+	
+	id <ORDAStatementResult> result = stmt.result;
+	if (result.isError)
+		return nil;
+	if (result.rows < 1)
+		return nil;
+	
+	NSDictionary * dict = result[0];
+	
+	NSObject<CORMEntity> * entity = [self.type entityWithKey:key];
+	for (NSString * columnName in dict)
+		[entity setValue:dict[columnName] forKey:[self.type propertyNameForMappedName:columnName]];
+	
+	for (NSString * className in [self.type mappedForeignKeyClassNames]) {
+		Class theClass = NSClassFromString(className);
+		
+		if (theClass && ![theClass conformsToProtocol:@protocol(CORMEntity)])
+			continue;
+		
+		if (!theClass && !self.store.generateClasses)
+			continue;
+		
+		if (!theClass)
+			theClass = [self.store generateClassForName:className];
+		
+		if (!theClass)
+			continue;
+		
+		NSMutableArray * props = [NSMutableArray array];
+		for (NSString * propName in [self.type propertyNamesForForeignKeyClassName:className])
+			[props addObject:[entity valueForKey:propName]];
+		
+		id proxy = [CORMEntityProxy entityProxyWithKey:[CORMKey keyWithArray:props] forFactory:[self.store factoryRegisteredForType:theClass]];
+		NSString * prop = [self.type propertyNameForForeignKeyClassName:className];
+		[entity setValue:proxy forKey:prop];
 	}
 	
 	data[key] = entity;
@@ -61,12 +95,12 @@
 
 @implementation CORMFactory (Genesis)
 
-- (id)initWithEntity:(Class)type fromStore:(CORMStore *)store
+- (id)initWithEntity:(Class<CORMEntity>)type fromStore:(CORMStore *)store
 {
 	if (!(self = [super init]))
 		return nil;
 	
-	if (![type isSubclassOfClass:[CORMEntityImpl class]])
+	if (![((Class)type) conformsToProtocol:@protocol(CORMEntity)])
 		return nil;
 	
 	CORMFactory * existing = [store factoryRegisteredForType:type];

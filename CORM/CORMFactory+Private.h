@@ -20,8 +20,7 @@
 
 @interface CORMFactory (Genesis)
 
-- (id)initWithEntity:(Class)type fromStore:(CORMStore *)store;
-
-+ (id)factoryForEntity:(Class)type fromStore:(CORMStore *)store;
++ (id)factoryForEntity:(Class<CORMEntity>)type fromStore:(CORMStore *)store;
+- (id)initWithEntity:(Class<CORMEntity>)type fromStore:(CORMStore *)store;
 
 @end

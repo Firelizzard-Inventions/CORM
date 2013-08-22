@@ -10,9 +10,17 @@
 
 #import "CORMKey.h"
 #import "CORMFactory.h"
-#import "CORMFactory_private.h"
+#import "CORMFactory+Private.h"
 
-@implementation CORMEntityProxy
+#pragma clang diagnostic ignored "-Wprotocol"
+@implementation CORMEntityProxy {
+	id<CORMEntity> _entity;
+}
+
++ (CORMEntityProxy *)entityProxyWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory
+{
+	return [[[self alloc] initWithKey:key forFactory:factory] autorelease];
+}
 
 - (id)initWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory
 {
@@ -27,18 +35,25 @@
 	
 	_key = key;
 	_factory = factory;
+	_entity = nil;
 	
 	return self;
 }
 
 - (id)entity
 {
-	static CORMEntityImpl * _entity = nil;
-	
 	if (!_entity)
 		_entity = [self.factory _entityForKey:self.key];
 	
 	return _entity;
+}
+
+- (NSString *)description
+{
+	if (!self.entity)
+		return [super description];
+	
+	return [self.entity description];
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)sel

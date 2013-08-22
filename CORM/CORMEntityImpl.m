@@ -7,42 +7,60 @@
 //
 
 #import "CORMEntityImpl.h"
+#import "CORMEntityImpl+Private.h"
 
-#import "CORMEntityImpl_private.h"
+#import "CORM.h"
 #import "CORMFactory.h"
+#import "CORMFactory+Private.h"
 #import "CORMStore.h"
+#import "CORMKey.h"
+#import "CORMEntityDict.h"
+
+#import <TypeExtensions/NSString+isEqualToStringIgnoreCase.h>
+#import <TypeExtensions/NSObject+associatedObjectForSelector.h>
 
 #import <objc/runtime.h>
 
 
 @implementation CORMEntityImpl
 
-static CORMFactory * _defaultFactory = nil;
-
-+ (CORMFactory *)registerWithStore:(CORMStore *)store
++ (void)initialize
 {
-	return [store registerFactoryForType:self];
+	[self registerWithStore:[CORM defaultStore]];
 }
 
-+ (CORMFactory *)setDefaultStore:(CORMStore *)store
+static CORMFactory * _registeredFactory = nil;
+
++ (void)registerWithStore:(CORMStore *)store
 {
-	CORMFactory * factory = [self registerWithStore:store];
-	[self setDefaultFactory:factory];
-	return factory;
+	_registeredFactory = [store registerFactoryForType:self];
 }
 
-+ (CORMFactory *)defaultFactory
++ (id<CORMEntity>)entityForKey:(id)key
 {
-	return _defaultFactory;
-}
-
-+ (void)setDefaultFactory:(CORMFactory *)newFactory
-{
-	if (_defaultFactory == newFactory)
-		return;
+	if (!_registeredFactory)
+		return nil;
 	
-	[_defaultFactory release];
-	_defaultFactory = [newFactory retain];
+	return [_registeredFactory _entityForKey:[CORMKey keyWithObject:key]];
+}
+
+- (NSString *)description
+{
+	unsigned int count;
+	objc_property_t * properties = class_copyPropertyList([self class], &count);
+	
+	NSArray * foreignKeys = [[self class] mappedForeignKeyClassNames];
+	NSMutableArray * props = [NSMutableArray arrayWithCapacity:count];
+	for (int i = 0; i < count; i++) {
+		NSString * prop = [NSString stringWithCString:property_getName(properties[i]) encoding:NSASCIIStringEncoding];
+		
+		if (![foreignKeys containsObject:prop.capitalizedString])
+			props[i] = [NSString stringWithFormat:@"[%@]='%@'", prop, [self valueForKey:prop]];
+	}
+	
+	free(properties);
+	
+	return [NSString stringWithFormat:@"<%s: %@>", class_getName([self class]), [props componentsJoinedByString:@", "]];
 }
 
 #pragma mark - Genesis
@@ -62,13 +80,14 @@ static CORMFactory * _defaultFactory = nil;
 //		[self _subclassImplementationExceptionFromMethod:_cmd isClassMethod:NO];
 	
 	if (!dict)
-		return self;
+		goto exit;
 	
 	if (!dict.count)
-		return self;
+		goto exit;
 	
 	[self setValuesForKeysWithDictionary:dict];
 	
+exit:
 	return self;
 }
 
@@ -79,46 +98,63 @@ static CORMFactory * _defaultFactory = nil;
 
 + (CORMEntityImpl *)entityWithKey:(id)key dictionary:(NSDictionary *)dict
 {
-	return [[[self alloc] initWithKey:key] autorelease];
+	return [[[self alloc] initWithKey:key dictionary:dict] autorelease];
 }
 
 #pragma mark - Mapping
 
++ (NSArray *)keyNamesForClassName:(NSString *)className
+{
+	NSMutableArray * keys = [NSMutableArray array];
+	
+	NSString * keyID = @"id";
+	NSString * keyEntityID = [NSString stringWithFormat:@"%@%@", className, keyID];
+	NSString * keyEntity_ID = [NSString stringWithFormat:@"%@_%@", className, keyID];
+	
+	for (NSString * name in [self mappedNames])
+		if ([name isEqualToString:keyID ignoreCase:YES] ||
+			[name isEqualToString:keyEntityID ignoreCase:YES] ||
+			[name isEqualToString:keyEntity_ID ignoreCase:YES])
+			[keys addObject:name];
+	
+	return keys.copy;
+}
+
++ (BOOL)propertyNamesAreCaseSensitive
+{
+	return YES;
+}
+
 + (NSString *)mappedClassName
 {
-	return [NSString stringWithCString:class_getName(self) encoding:NSASCIIStringEncoding];
+	return NSStringFromClass(self);
 }
 
 + (NSArray *)mappedKeys
 {
-	static NSArray * keys = nil;
+	NSArray * keys = [self associatedObjectForSelector:_cmd];
 	
 	if (!keys) {
-		NSString * className = [self mappedClassName].lowercaseString;
-		
-		NSString * keyID = @"id";
-		NSString * keyEntityID = [NSString stringWithFormat:@"%@%@", className, keyID];
-		NSString * keyEntity_ID = [NSString stringWithFormat:@"%@_%@", className, keyID];
-		
-		for (NSString * name in [self mappedNames]) {
-			name = name.lowercaseString;
-			
-			if ([name isEqualToString:keyID] ||
-				[name isEqualToString:keyEntityID] ||
-				[name isEqualToString:keyEntity_ID])
-				keys = @[name].retain;
-		}
+		keys = [self keyNamesForClassName:[self mappedClassName]];
+		[self setAssociatedObject:keys forSelector:_cmd withAssociationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
 	}
 	
 	if (!keys)
-		[NSException raise:kCORMEntityBadKeysException format:@"Could not find sutable ID field to be key, please override"];
+		goto throw;
+	
+	if (!keys.count)
+		goto throw;
 	
 	return keys;
+	
+throw:
+	[NSException raise:kCORMEntityBadKeysException format:@"Could not find sutable ID field to be key, please override"];
+	return nil;
 }
 
 + (NSArray *)mappedNames
 {
-	static NSArray * names = nil;
+	NSArray * names = [self associatedObjectForSelector:_cmd];
 	
 	if (!names) {
 		unsigned int count;
@@ -130,7 +166,11 @@ static CORMFactory * _defaultFactory = nil;
 		
 		free(properties);
 		
-		names = _names.copy;
+		for (NSString * className in [self mappedForeignKeyClassNames])
+			[_names removeObject:[[self class] propertyNameForForeignKeyClassName:className]];
+		
+		names = [NSArray arrayWithArray:_names];
+		[self setAssociatedObject:names forSelector:_cmd withAssociationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
 	}
 	
 	return names;
@@ -151,20 +191,39 @@ static CORMFactory * _defaultFactory = nil;
 
 + (NSString *)propertyNameForMappedName:(NSString *)mappedName
 {
-	if (![[self mappedNames] containsObject:mappedName])
-		return nil;
+	for (NSString * name in [self mappedNames])
+		if ([name isEqualToString:mappedName ignoreCase:![self propertyNamesAreCaseSensitive]])
+			return name;
 	
-	return mappedName;
+	return nil;
 }
 
 + (NSString *)classNameForForeignKeyPropertyNames:(NSArray *)propNames
 {
-	return nil;
+	NSString * name = propNames[0];
+	
+	if ([name hasSuffix:@"id"] || [name hasSuffix:@"Id"] || [name hasSuffix:@"ID"])
+		name = [name substringToIndex:name.length - 2];
+	
+	if ([name hasSuffix:@"_id"] || [name hasSuffix:@"_Id"] || [name hasSuffix:@"_ID"])
+		name = [name substringToIndex:name.length - 3];
+	
+	return name.capitalizedString;
 }
 
-+ (NSArray *)propertyNameForForeignKeyClassName:(NSString *)className
++ (NSArray *)propertyNamesForForeignKeyClassName:(NSString *)className
 {
-	return nil;
+	NSMutableArray * names = [NSMutableArray array];
+	
+	for (NSString * key in [self keyNamesForClassName:className])
+		[names addObject:[self propertyNameForMappedName:key]];
+	
+	return [NSArray arrayWithArray:names];
+}
+
++ (NSString *)propertyNameForForeignKeyClassName:(NSString *)className
+{
+	return [[className substringToIndex:1].lowercaseString stringByAppendingString:[className substringFromIndex:1]];
 }
 
 @end

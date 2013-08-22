@@ -8,6 +8,21 @@
 
 #import "CORM.h"
 
+#import "CORMStore.h"
+
 @implementation CORM
+
+static CORMStore * _defaultStore = nil;
+
++ (CORMStore *)defaultStore
+{
+	return _defaultStore;
+}
+
++ (void)setDefaultStore:(CORMStore *)store
+{
+	[_defaultStore release];
+	_defaultStore = store.retain;
+}
 
 @end

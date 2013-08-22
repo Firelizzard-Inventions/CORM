@@ -15,6 +15,7 @@
 
 + (id<CORMEntity>)entityWithKey:(id)key;
 + (id<CORMEntity>)entityWithKey:(id)key dictionary:(NSDictionary *)dict;
++ (id<CORMEntity>)entityForKey:(id)key;
 
 
 + (NSString *)mappedClassName;
@@ -27,6 +28,7 @@
 + (NSString *)propertyNameForMappedName:(NSString *)mappedName;
 
 + (NSString *)classNameForForeignKeyPropertyNames:(NSArray *)propNames;
-+ (NSArray *)propertyNameForForeignKeyClassName:(NSString *)className;
++ (NSArray *)propertyNamesForForeignKeyClassName:(NSString *)className;
++ (NSString *)propertyNameForForeignKeyClassName:(NSString *)className;
 
 @end

@@ -15,13 +15,13 @@
 		423ABB0517A32238004F289D /* CORM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAE717A32238004F289D /* CORM.framework */; };
 		423ABB0B17A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABB0917A32238004F289D /* InfoPlist.strings */; };
 		423ABB0E17A32238004F289D /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
-		423ABB1917A3235B004F289D /* CORMStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB1717A3235B004F289D /* CORMStore.h */; };
+		423ABB1917A3235B004F289D /* CORMStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB1717A3235B004F289D /* CORMStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		423ABB1A17A3235B004F289D /* CORMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB1817A3235B004F289D /* CORMStore.m */; };
-		423ABB1D17A32367004F289D /* CORMEntityImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB1B17A32367004F289D /* CORMEntityImpl.h */; };
+		423ABB1D17A32367004F289D /* CORMEntityImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB1B17A32367004F289D /* CORMEntityImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		423ABB1E17A32367004F289D /* CORMEntityImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB1C17A32367004F289D /* CORMEntityImpl.m */; };
-		423ABB2117A32582004F289D /* CORMFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB1F17A32582004F289D /* CORMFactory.h */; };
+		423ABB2117A32582004F289D /* CORMFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB1F17A32582004F289D /* CORMFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		423ABB2217A32582004F289D /* CORMFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB2017A32582004F289D /* CORMFactory.m */; };
-		423ABB6917A32AAF004F289D /* CORMKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB6717A32AAF004F289D /* CORMKey.h */; };
+		423ABB6917A32AAF004F289D /* CORMKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABB6717A32AAF004F289D /* CORMKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		423ABB6A17A32AAF004F289D /* CORMKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB6817A32AAF004F289D /* CORMKey.m */; };
 		423ABBE417A38100004F289D /* CORMEntityProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABBE217A38100004F289D /* CORMEntityProxy.h */; };
 		423ABBE517A38100004F289D /* CORMEntityProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABBE317A38100004F289D /* CORMEntityProxy.m */; };
@@ -29,6 +29,18 @@
 		423ABBEE17A3925E004F289D /* CORMEntityDict.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABBEC17A3925E004F289D /* CORMEntityDict.h */; };
 		423ABBEF17A3925E004F289D /* CORMEntityDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABBED17A3925E004F289D /* CORMEntityDict.m */; };
 		424277BD17B842EF00E31F0C /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42909B9A17B31A4800DBD505 /* ORDA.framework */; };
+		42B00B6717C663CC000B13E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00B6617C663CC000B13E7 /* Foundation.framework */; };
+		42B00B6A17C663CC000B13E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00B6917C663CC000B13E7 /* main.m */; };
+		42B00B6E17C663CC000B13E7 /* Test.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42B00B6D17C663CC000B13E7 /* Test.1 */; };
+		42B00B7417C664EB000B13E7 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00B7317C664EB000B13E7 /* Track.m */; };
+		42B00B7517C6680F000B13E7 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABAF717A32238004F289D /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42B00B7617C66815000B13E7 /* CORMEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 421552F717A3A04000E572C2 /* CORMEntity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42B00B7717C66B0E000B13E7 /* CORM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAE717A32238004F289D /* CORM.framework */; };
+		42B00B7817C66B11000B13E7 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42909B9A17B31A4800DBD505 /* ORDA.framework */; };
+		42B00B7917C66B14000B13E7 /* TypeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 424277B617B8429B00E31F0C /* TypeExtensions.framework */; };
+		42B00C0517C66DF4000B13E7 /* ORDASQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */; };
+		42B00C0917C66E21000B13E7 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0617C66DFB000B13E7 /* libsqlite3.0.dylib */; };
+		42B00C1017C68133000B13E7 /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C0F17C68133000B13E7 /* Album.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +72,41 @@
 			remoteGlobalIDString = 42909B7C17B31A4700DBD505;
 			remoteInfo = ORDATests;
 		};
+		42B00B3B17C54772000B13E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42909B9417B31A4700DBD505 /* ORDA.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 42B00AE317C337D9000B13E7;
+			remoteInfo = NotFailTest;
+		};
+		42B00C0117C66DE3000B13E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42909B9417B31A4700DBD505 /* ORDA.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 42B00BAA17C66BD6000B13E7;
+			remoteInfo = ORDASDK;
+		};
+		42B00C0317C66DE3000B13E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42909B9417B31A4700DBD505 /* ORDA.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 42B00BD217C66C72000B13E7;
+			remoteInfo = ORDASQLite;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		42B00B6317C663CC000B13E7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				42B00B6E17C663CC000B13E7 /* Test.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		421552F717A3A04000E572C2 /* CORMEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORMEntity.h; sourceTree = "<group>"; };
@@ -90,13 +136,23 @@
 		423ABB6817A32AAF004F289D /* CORMKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMKey.m; sourceTree = "<group>"; };
 		423ABBE217A38100004F289D /* CORMEntityProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntityProxy.h; sourceTree = "<group>"; };
 		423ABBE317A38100004F289D /* CORMEntityProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntityProxy.m; sourceTree = "<group>"; };
-		423ABBE717A38288004F289D /* CORMFactory_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORMFactory_private.h; sourceTree = "<group>"; };
+		423ABBE717A38288004F289D /* CORMFactory+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CORMFactory+Private.h"; sourceTree = "<group>"; };
 		423ABBEA17A38A45004F289D /* TypeExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TypeExtensions.framework; path = DerivedData/CORM/Build/Products/Debug/TypeExtensions.framework; sourceTree = "<group>"; };
 		423ABBEC17A3925E004F289D /* CORMEntityDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntityDict.h; sourceTree = "<group>"; };
 		423ABBED17A3925E004F289D /* CORMEntityDict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntityDict.m; sourceTree = "<group>"; };
-		423ABBF017A3955C004F289D /* CORMEntityImpl_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORMEntityImpl_private.h; sourceTree = "<group>"; };
+		423ABBF017A3955C004F289D /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
 		424277B017B8429B00E31F0C /* TypeExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TypeExtensions.xcodeproj; path = "../../Lens Flare/TypeExtensions/TypeExtensions.xcodeproj"; sourceTree = "<group>"; };
 		42909B9417B31A4700DBD505 /* ORDA.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ORDA.xcodeproj; path = ../ORDA/ORDA.xcodeproj; sourceTree = "<group>"; };
+		42B00B6517C663CC000B13E7 /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
+		42B00B6617C663CC000B13E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		42B00B6917C663CC000B13E7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		42B00B6C17C663CC000B13E7 /* Test-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test-Prefix.pch"; sourceTree = "<group>"; };
+		42B00B6D17C663CC000B13E7 /* Test.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Test.1; sourceTree = "<group>"; };
+		42B00B7217C664EB000B13E7 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
+		42B00B7317C664EB000B13E7 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
+		42B00C0617C66DFB000B13E7 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		42B00C0E17C68133000B13E7 /* Album.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Album.h; sourceTree = "<group>"; };
+		42B00C0F17C68133000B13E7 /* Album.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Album.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +176,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		42B00B6217C663CC000B13E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42B00C0917C66E21000B13E7 /* libsqlite3.0.dylib in Frameworks */,
+				42B00C0517C66DF4000B13E7 /* ORDASQLite.framework in Frameworks */,
+				42B00B7917C66B14000B13E7 /* TypeExtensions.framework in Frameworks */,
+				42B00B7817C66B11000B13E7 /* ORDA.framework in Frameworks */,
+				42B00B7717C66B0E000B13E7 /* CORM.framework in Frameworks */,
+				42B00B6717C663CC000B13E7 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -128,6 +197,8 @@
 			children = (
 				423ABAF017A32238004F289D /* CORM */,
 				423ABB0617A32238004F289D /* CORMTests */,
+				42B00B6817C663CC000B13E7 /* Test */,
+				42B00C0817C66E06000B13E7 /* Libraries */,
 				423ABAE917A32238004F289D /* Frameworks */,
 				423ABAE817A32238004F289D /* Products */,
 				42909B9417B31A4700DBD505 /* ORDA.xcodeproj */,
@@ -140,6 +211,7 @@
 			children = (
 				423ABAE717A32238004F289D /* CORM.framework */,
 				423ABAFF17A32238004F289D /* CORMTests.octest */,
+				42B00B6517C663CC000B13E7 /* Test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +222,7 @@
 				423ABBEA17A38A45004F289D /* TypeExtensions.framework */,
 				423ABAEA17A32238004F289D /* Cocoa.framework */,
 				423ABB0017A32238004F289D /* SenTestingKit.framework */,
+				42B00B6617C663CC000B13E7 /* Foundation.framework */,
 				423ABAEC17A32238004F289D /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -214,7 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				421552F717A3A04000E572C2 /* CORMEntity.h */,
-				423ABBF017A3955C004F289D /* CORMEntityImpl_private.h */,
+				423ABBF017A3955C004F289D /* CORMEntityImpl+Private.h */,
 				423ABB1B17A32367004F289D /* CORMEntityImpl.h */,
 				423ABB1C17A32367004F289D /* CORMEntityImpl.m */,
 				423ABBE217A38100004F289D /* CORMEntityProxy.h */,
@@ -228,7 +301,7 @@
 		423ABBE617A38266004F289D /* Factory */ = {
 			isa = PBXGroup;
 			children = (
-				423ABBE717A38288004F289D /* CORMFactory_private.h */,
+				423ABBE717A38288004F289D /* CORMFactory+Private.h */,
 				423ABB1F17A32582004F289D /* CORMFactory.h */,
 				423ABB2017A32582004F289D /* CORMFactory.m */,
 			);
@@ -247,9 +320,43 @@
 			isa = PBXGroup;
 			children = (
 				42909B9A17B31A4800DBD505 /* ORDA.framework */,
+				42B00C0217C66DE3000B13E7 /* ORDASDK.framework */,
+				42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */,
 				42909B9C17B31A4800DBD505 /* ORDATests.octest */,
+				42B00B3C17C54772000B13E7 /* NotFailTest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		42B00B6817C663CC000B13E7 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				42B00B6917C663CC000B13E7 /* main.m */,
+				42B00B6D17C663CC000B13E7 /* Test.1 */,
+				42B00B6B17C663CC000B13E7 /* Supporting Files */,
+				42B00B7217C664EB000B13E7 /* Track.h */,
+				42B00B7317C664EB000B13E7 /* Track.m */,
+				42B00C0E17C68133000B13E7 /* Album.h */,
+				42B00C0F17C68133000B13E7 /* Album.m */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
+		42B00B6B17C663CC000B13E7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				42B00B6C17C663CC000B13E7 /* Test-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		42B00C0817C66E06000B13E7 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				42B00C0617C66DFB000B13E7 /* libsqlite3.0.dylib */,
+			);
+			name = Libraries;
+			path = CORM;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,10 +366,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				423ABB1917A3235B004F289D /* CORMStore.h in Headers */,
-				423ABB1D17A32367004F289D /* CORMEntityImpl.h in Headers */,
-				423ABB2117A32582004F289D /* CORMFactory.h in Headers */,
+				42B00B7517C6680F000B13E7 /* CORM.h in Headers */,
+				42B00B7617C66815000B13E7 /* CORMEntity.h in Headers */,
 				423ABB6917A32AAF004F289D /* CORMKey.h in Headers */,
+				423ABB1917A3235B004F289D /* CORMStore.h in Headers */,
+				423ABB2117A32582004F289D /* CORMFactory.h in Headers */,
+				423ABB1D17A32367004F289D /* CORMEntityImpl.h in Headers */,
 				423ABBE417A38100004F289D /* CORMEntityProxy.h in Headers */,
 				423ABBEE17A3925E004F289D /* CORMEntityDict.h in Headers */,
 			);
@@ -308,6 +417,23 @@
 			productReference = 423ABAFF17A32238004F289D /* CORMTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
+		42B00B6417C663CC000B13E7 /* Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42B00B6F17C663CC000B13E7 /* Build configuration list for PBXNativeTarget "Test" */;
+			buildPhases = (
+				42B00B6117C663CC000B13E7 /* Sources */,
+				42B00B6217C663CC000B13E7 /* Frameworks */,
+				42B00B6317C663CC000B13E7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Test;
+			productName = Test;
+			productReference = 42B00B6517C663CC000B13E7 /* Test */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -341,6 +467,7 @@
 			targets = (
 				423ABAE617A32238004F289D /* CORM */,
 				423ABAFE17A32238004F289D /* CORMTests */,
+				42B00B6417C663CC000B13E7 /* Test */,
 			);
 		};
 /* End PBXProject section */
@@ -365,6 +492,27 @@
 			fileType = wrapper.cfbundle;
 			path = ORDATests.octest;
 			remoteRef = 42909B9B17B31A4800DBD505 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		42B00B3C17C54772000B13E7 /* NotFailTest */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = NotFailTest;
+			remoteRef = 42B00B3B17C54772000B13E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		42B00C0217C66DE3000B13E7 /* ORDASDK.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ORDASDK.framework;
+			remoteRef = 42B00C0117C66DE3000B13E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ORDASQLite.framework;
+			remoteRef = 42B00C0317C66DE3000B13E7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -424,6 +572,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				423ABB0E17A32238004F289D /* CORMTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42B00B6117C663CC000B13E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42B00B6A17C663CC000B13E7 /* main.m in Sources */,
+				42B00B7417C664EB000B13E7 /* Track.m in Sources */,
+				42B00C1017C68133000B13E7 /* Album.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,6 +736,24 @@
 			};
 			name = Release;
 		};
+		42B00B7017C663CC000B13E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Test/Test-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		42B00B7117C663CC000B13E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Test/Test-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -607,6 +783,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		42B00B6F17C663CC000B13E7 /* Build configuration list for PBXNativeTarget "Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42B00B7017C663CC000B13E7 /* Debug */,
+				42B00B7117C663CC000B13E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

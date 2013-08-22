@@ -8,15 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "CORMEntity.h"
-
+@protocol CORMEntity;
 @class CORMStore;
 
 @interface CORMFactory : NSObject
 
 @property (readonly) Class<CORMEntity> type;
 @property (readonly) CORMStore * store;
-
-- (id)objectForKeyedSubscript:(id)key;
 
 @end
