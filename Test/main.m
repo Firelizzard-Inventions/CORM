@@ -25,11 +25,15 @@ int main(int argc, const char * argv[])
 		NSString * str = [NSString stringWithFormat:@"%@:%@", [ORDASQLite scheme], [NSURL fileURLWithPath:path]];
 		NSURL * URL = [NSURL URLWithString:str];
 		id<ORDAGovernor> gov = [[ORDA sharedInstance] governorForURL:URL];
-		[CORM setDefaultStore:[[[CORMStore alloc] initWithGovernor:gov] autorelease]];
+		
+		CORMStore * store = [[[CORMStore alloc] initWithGovernor:gov] autorelease];
+		store.generateClasses = YES;
+		[CORM setDefaultStore:store];
 		
 		Track * track = [Track entityForKey:@"1"];
 		NSLog(@"%@", track);
 		NSLog(@"%@", track.album);
+		NSLog(@"%@", track.genre);
 	}
     return 0;
 }

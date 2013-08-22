@@ -16,6 +16,6 @@
 
 @interface CORMEntityDict (Genesis)
 
-+ (Class)entityDictClassWithName:(NSString *)name keys:(NSArray *)keys properties:(NSArray *)properties;
++ (Class)entityDictClassWithName:(NSString *)name andKeys:(NSArray *)keys andProperties:(NSArray *)properties andForeignKeys:(NSArray *)foreign;
 
 @end

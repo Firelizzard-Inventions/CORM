@@ -18,6 +18,7 @@
 
 #import <TypeExtensions/NSString+isEqualToStringIgnoreCase.h>
 #import <TypeExtensions/NSObject+associatedObjectForSelector.h>
+#import <TypeExtensions/NSString+firstLetterCaseString.h>
 
 #import <objc/runtime.h>
 
@@ -54,8 +55,8 @@ static CORMFactory * _registeredFactory = nil;
 	for (int i = 0; i < count; i++) {
 		NSString * prop = [NSString stringWithCString:property_getName(properties[i]) encoding:NSASCIIStringEncoding];
 		
-		if (![foreignKeys containsObject:prop.capitalizedString])
-			props[i] = [NSString stringWithFormat:@"[%@]='%@'", prop, [self valueForKey:prop]];
+		if (![foreignKeys containsObject:prop.firstLetterUppercaseString])
+			[props addObject:[NSString stringWithFormat:@"[%@]='%@'", prop, [self valueForKey:prop]]];
 	}
 	
 	free(properties);
@@ -208,7 +209,7 @@ throw:
 	if ([name hasSuffix:@"_id"] || [name hasSuffix:@"_Id"] || [name hasSuffix:@"_ID"])
 		name = [name substringToIndex:name.length - 3];
 	
-	return name.capitalizedString;
+	return name.firstLetterUppercaseString;
 }
 
 + (NSArray *)propertyNamesForForeignKeyClassName:(NSString *)className
@@ -223,7 +224,7 @@ throw:
 
 + (NSString *)propertyNameForForeignKeyClassName:(NSString *)className
 {
-	return [[className substringToIndex:1].lowercaseString stringByAppendingString:[className substringFromIndex:1]];
+	return className.firstLetterLowercaseString;
 }
 
 @end

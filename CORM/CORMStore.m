@@ -12,6 +12,7 @@
 #import "CORMEntity.h"
 #import "CORMFactory.h"
 #import "CORMFactory+Private.h"
+#import "CORMEntityDict.h"
 
 @implementation CORMStore {
 	NSMutableDictionary * factories;
@@ -48,9 +49,12 @@
 	return factory;
 }
 
-- (Class<CORMEntity> *)generateClassForName:(NSString *)className
+- (Class<CORMEntity>)generateClassForName:(NSString *)className
 {
-	
+	NSArray * keys = [self.governor primaryKeyNamesForTableName:className];
+	NSArray * columns = [self.governor columnNamesForTableName:className];
+	NSArray * foreign = [self.governor foreignKeyTableNamesForTableName:className];
+	return [CORMEntityDict entityDictClassWithName:className andKeys:keys andProperties:columns andForeignKeys:foreign];
 }
 
 @end

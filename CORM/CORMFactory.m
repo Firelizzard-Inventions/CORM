@@ -46,8 +46,7 @@
 	if (data[key])
 		return data[key];
 	
-	NSString * stmtstr = [NSString stringWithFormat:@"SELECT * FROM [%@] WHERE %@", [self.type mappedClassName], [key whereClauseForEntityType:self.type]];
-	id<ORDAStatement> stmt = [self.store.governor createStatement:stmtstr];
+	id<ORDAStatement> stmt = [self.store.governor createStatement:@"SELECT * FROM [%@] WHERE %@", [self.type mappedClassName], [key whereClauseForEntityType:self.type]];
 	if (stmt.isError)
 		return nil;
 	

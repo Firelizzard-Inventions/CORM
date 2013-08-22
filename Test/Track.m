@@ -19,7 +19,7 @@
 
 + (NSArray *)mappedForeignKeyClassNames
 {
-	return @[@"Album"];
+	return @[@"Album", @"MediaType", @"Genre"];
 }
 
 @end
