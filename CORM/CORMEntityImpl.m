@@ -30,19 +30,19 @@
 	[self registerWithStore:[CORM defaultStore]];
 }
 
-static CORMFactory * _registeredFactory = nil;
-
 + (void)registerWithStore:(CORMStore *)store
 {
-	_registeredFactory = [store registerFactoryForType:self];
+	[(NSObject *)self setAssociatedObject:[store registerFactoryForType:self] forSelector:@selector(registeredFactory) withAssociationPolicy:OBJC_ASSOCIATION_RETAIN];
+}
+
++ (CORMFactory *)registeredFactory
+{
+	return [(NSObject *)self associatedObjectForSelector:_cmd];
 }
 
 + (id<CORMEntity>)entityForKey:(id)key
 {
-	if (!_registeredFactory)
-		return nil;
-	
-	return [_registeredFactory _entityForKey:[CORMKey keyWithObject:key]];
+	return [[self registeredFactory] _entityForKey:[CORMKey keyWithObject:key]];
 }
 
 - (NSString *)description

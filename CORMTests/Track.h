@@ -16,6 +16,5 @@
 @property (retain) NSNumber * trackID, * albumID, * mediaTypeID, * genreID, * milliseconds, * bytes, * unitPrice;
 
 @property (retain) Album * album;
-@property (retain) id<CORMEntity> mediaType, genre;
 
 @end
