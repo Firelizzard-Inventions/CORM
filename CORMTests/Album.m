@@ -15,4 +15,9 @@
 	return NO;
 }
 
++ (NSArray *)mappedForeignKeyClassNames
+{
+	return @[@"Artist"];
+}
+
 @end

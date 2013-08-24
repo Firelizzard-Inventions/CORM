@@ -14,7 +14,8 @@
 
 @interface CORMFactory (Private)
 
-- (id<CORMEntity>)_entityForKey:(CORMKey *)key;
+- (id<CORMEntity>)entityForKey:(CORMKey *)key;
+- (id<CORMEntity>)entityOrProxyForKey:(CORMKey *)key;
 
 @end
 

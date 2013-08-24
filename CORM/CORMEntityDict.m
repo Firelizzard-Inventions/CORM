@@ -62,9 +62,9 @@
 	Class new = objc_allocateClassPair(self, [name cStringUsingEncoding:NSASCIIStringEncoding], 0);
 	objc_registerClassPair(new);
 	
-	[(NSObject *)new setAssociatedObject:keys forSelector:@selector(mappedKeys) withAssociationPolicy:OBJC_ASSOCIATION_RETAIN];
-	[(NSObject *)new setAssociatedObject:properties forSelector:@selector(mappedNames) withAssociationPolicy:OBJC_ASSOCIATION_RETAIN];
-	[(NSObject *)new setAssociatedObject:foreign forSelector:@selector(mappedForeignKeyClassNames) withAssociationPolicy:OBJC_ASSOCIATION_RETAIN];
+	[(NSObject *)new setAssociatedObject:keys forSelector:@selector(mappedKeys)];
+	[(NSObject *)new setAssociatedObject:properties forSelector:@selector(mappedNames)];
+	[(NSObject *)new setAssociatedObject:foreign forSelector:@selector(mappedForeignKeyClassNames)];
 	
 	return new;
 }

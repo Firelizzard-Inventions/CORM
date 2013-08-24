@@ -13,4 +13,6 @@
 @property (retain) NSNumber * albumID, * artistID;
 @property (retain) NSString * title;
 
+@property (retain) id<CORMEntity> artist;
+
 @end

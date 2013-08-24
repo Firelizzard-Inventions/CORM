@@ -265,8 +265,8 @@
 		423ABBE617A38266004F289D /* Factory */ = {
 			isa = PBXGroup;
 			children = (
-				423ABBE717A38288004F289D /* CORMFactory+Private.h */,
 				423ABB1F17A32582004F289D /* CORMFactory.h */,
+				423ABBE717A38288004F289D /* CORMFactory+Private.h */,
 				423ABB2017A32582004F289D /* CORMFactory.m */,
 			);
 			name = Factory;

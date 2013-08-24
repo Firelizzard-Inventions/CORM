@@ -20,11 +20,11 @@
 #import "Track.h"
 #import "Album.h"
 
-@implementation CORMTests {
-	CORMStore * store;
-}
+@implementation CORMTests
 
-- (void)setUp
+static CORMStore * store = nil;
+
++ (void)setUp
 {
     [super setUp];
 	
@@ -39,16 +39,11 @@
 		STFail(@"Governor error");
 	
 	store = [[CORMStore alloc] initWithGovernor:governor];
+	store.generateClasses = YES;
 	[CORM setDefaultStore:store];
-	
-	// This shouldn't be necessary
-	[CORMEntityImpl registerWithStore:store];
-	[CORMEntityDict registerWithStore:store];
-	[Track registerWithStore:store];
-	[Album registerWithStore:store];
 }
 
-- (void)tearDown
++ (void)tearDown
 {
 	[store release];
     
@@ -66,12 +61,9 @@
 
 - (void)testEntityDict
 {
-	BOOL old = store.generateClasses;
-	store.generateClasses = YES;
 	Class Genre = [store generateClassForName:@"Genre"];
 	if (!Genre)
 		STFail(@"Failed to create Genre subclass of CORMEntityDict");
-	store.generateClasses = old;
 	
 	id<CORMEntity> genre = [Genre entityForKey:@(1)];
 	if (!genre)
@@ -82,17 +74,34 @@
 
 - (void)testSomething
 {
-	Track * track1 = [Track entityForKey:@(1)];
-	Track * track2 = [Track entityForKey:@(1)];
-	Album * album = [Album entityForKey:@(1)];
+	Track * track1 = [Track entityForKey:@(2)];
+	Track * track2 = [Track entityForKey:@(2)];
+	Album * album = [Album entityForKey:@(2)];
 	if (!track1 || !track2 || !album)
 		STFail(@"Failed to create entities");
 	
 	if (track1 != track2)
 		STFail(@"Entities for same key are not identical");
 	
-	if (((CORMEntityProxy *)track1.album).entity != album)
+	Album * t1album = track1.album;
+	if ([t1album.class isSubclassOfClass:CORMEntityProxy.class])
+		t1album = (Album *)((CORMEntityProxy *)t1album).entity;
+	
+	if (t1album != album)
 		STFail(@"Entities for same key are not identical");
+}
+
+- (void)testSomeMoreStuff
+{
+	Track * track = [Track entityForKey:@(3)];
+	if (!track)
+		STFail(@"Failed to create entities");
+	
+	NSLog(@"%@", track);
+	NSLog(@"%@", track.album);
+	NSLog(@"%@", track.album.artist);
+	NSLog(@"%@", track.genre);
+	NSLog(@"%@", track.mediaType);
 }
 
 @end

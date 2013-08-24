@@ -33,17 +33,25 @@
 	if (!factory)
 		return nil;
 	
-	_key = key;
-	_factory = factory;
+	_key = key.retain;
+	_factory = factory.retain;
 	_entity = nil;
 	
 	return self;
 }
 
+- (void)dealloc
+{
+	[_key release];
+	[_factory release];
+	
+	[super dealloc];
+}
+
 - (id)entity
 {
 	if (!_entity)
-		_entity = [self.factory _entityForKey:self.key];
+		_entity = [self.factory entityForKey:self.key];
 	
 	return _entity;
 }

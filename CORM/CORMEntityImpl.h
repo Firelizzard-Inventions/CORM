@@ -17,7 +17,9 @@
 
 @interface CORMEntityImpl : NSObject <CORMEntity>
 
++ (void)registerWithDefaultStore;
 + (void)registerWithStore:(CORMStore *)store;
++ (CORMFactory *)registeredFactory;
 
 + (BOOL)propertyNamesAreCaseSensitive;
 

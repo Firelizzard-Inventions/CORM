@@ -27,22 +27,30 @@
 
 + (void)initialize
 {
+	[self registerWithDefaultStore];
+}
+
++ (void)registerWithDefaultStore
+{
 	[self registerWithStore:[CORM defaultStore]];
 }
 
 + (void)registerWithStore:(CORMStore *)store
 {
-	[(NSObject *)self setAssociatedObject:[store registerFactoryForType:self] forSelector:@selector(registeredFactory) withAssociationPolicy:OBJC_ASSOCIATION_RETAIN];
+	[(NSObject *)self setAssociatedObject:[store registerFactoryForType:self] forSelector:@selector(registeredFactory)];
 }
 
 + (CORMFactory *)registeredFactory
 {
+	if (![(NSObject *)self associatedObjectForSelector:_cmd])
+		[self registerWithDefaultStore];
+	
 	return [(NSObject *)self associatedObjectForSelector:_cmd];
 }
 
 + (id<CORMEntity>)entityForKey:(id)key
 {
-	return [[self registeredFactory] _entityForKey:[CORMKey keyWithObject:key]];
+	return [[self registeredFactory] entityForKey:[CORMKey keyWithObject:key]];
 }
 
 - (NSString *)description
@@ -137,7 +145,7 @@ exit:
 	
 	if (!keys) {
 		keys = [self keyNamesForClassName:[self mappedClassName]];
-		[self setAssociatedObject:keys forSelector:_cmd withAssociationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
+		[(NSObject *)self setAssociatedObject:keys forSelector:_cmd];
 	}
 	
 	if (!keys)
@@ -171,7 +179,7 @@ throw:
 			[_names removeObject:[[self class] propertyNameForForeignKeyClassName:className]];
 		
 		names = [NSArray arrayWithArray:_names];
-		[self setAssociatedObject:names forSelector:_cmd withAssociationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
+		[(NSObject *)self setAssociatedObject:names forSelector:_cmd];
 	}
 	
 	return names;

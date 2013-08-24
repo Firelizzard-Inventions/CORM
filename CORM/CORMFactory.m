@@ -41,7 +41,7 @@
 
 @implementation CORMFactory (Private)
 
-- (id<CORMEntity>)_entityForKey:(CORMKey *)key
+- (id<CORMEntity>)entityForKey:(CORMKey *)key
 {
 	if (data[key])
 		return data[key];
@@ -72,22 +72,28 @@
 			continue;
 		
 		if (!theClass)
-			theClass = [self.store generateClassForName:className];
-		
-		if (!theClass)
-			continue;
+			if (!(theClass = [self.store generateClassForName:className]))
+				continue;
 		
 		NSMutableArray * props = [NSMutableArray array];
 		for (NSString * propName in [self.type propertyNamesForForeignKeyClassName:className])
 			[props addObject:[entity valueForKey:propName]];
 		
-		id proxy = [CORMEntityProxy entityProxyWithKey:[CORMKey keyWithArray:props] forFactory:[self.store factoryRegisteredForType:theClass]];
+		id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
 		NSString * prop = [self.type propertyNameForForeignKeyClassName:className];
-		[entity setValue:proxy forKey:prop];
+		[entity setValue:obj forKey:prop];
 	}
 	
 	data[key] = entity;
 	return entity;
+}
+
+- (id<CORMEntity>)entityOrProxyForKey:(CORMKey *)key
+{
+	if (data[key])
+		return data[key];
+	
+	return [CORMEntityProxy entityProxyWithKey:key forFactory:self];
 }
 
 @end
