@@ -1,15 +1,16 @@
 //
-//  CORMEntity_private.h
+//  CORMEntityImpl_Private.h
 //  CORM
 //
-//  Created by Ethan Reesor on 7/27/13.
-//  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
+//  Created by Ethan Reesor on 8/25/13.
+//  Copyright (c) 2013 Firelizzard Inventions. All rights reserved.
 //
 
-@class CORMEntityImpl, CORMFactory;
+#import "CORMEntityImpl.h"
 
-@interface CORMEntityImpl (Private)
+@interface CORMEntityImpl ()
 
-@property CORMFactory * factory;
+@property (readonly) id source;
+@property (readonly) BOOL valid;
 
 @end

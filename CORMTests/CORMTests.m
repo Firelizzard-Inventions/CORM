@@ -8,6 +8,7 @@
 
 #import "CORMTests.h"
 
+#import <TypeExtensions/TypeExtensions.h>
 #import <CORM/CORM.h>
 #import <CORM/CORMStore.h>
 #import <ORDA/ORDA.h>
@@ -23,10 +24,13 @@
 @implementation CORMTests
 
 static CORMStore * store = nil;
+static NSAutoreleasePool * pool = nil;
 
 + (void)setUp
 {
     [super setUp];
+	
+	pool = [[NSAutoreleasePool alloc] init];
 	
 	[ORDASQLite register];
     
@@ -36,7 +40,7 @@ static CORMStore * store = nil;
 	
 	id<ORDAGovernor> governor = [[ORDA sharedInstance] governorForURL:URL];
 	if (governor.isError)
-		STFail(@"Governor error");
+		return;
 	
 	store = [[CORMStore alloc] initWithGovernor:governor];
 	store.generateClasses = YES;
@@ -46,17 +50,36 @@ static CORMStore * store = nil;
 + (void)tearDown
 {
 	[store release];
+	
+	[pool drain];
     
     [super tearDown];
 }
 
-- (void)testEntityForKey
+- (void)setUp
 {
-	Track * track = [Track entityForKey:@"1"];
-	if (!track)
-		STFail(@"Failed to create Track entity for key 1");
+	[super setUp];
 	
-	NSLog(@"%@", track);
+	if (![CORM defaultStore])
+		STFail(@"The default store is nil, cannot continue");
+}
+
+- (void)testBinding
+{
+	id data = @{@"GenreId" : @(1), @"Name" : @"Rock"}.mutableCopy;
+	
+	NSLog(@"\n%@", data);
+	
+	Class Genre = [store generateClassForName:@"Genre"];
+	id<CORMEntity> entity = [[Genre alloc] initByBindingTo:data];
+	
+	NSLog(@"\n%@\n%@", data, entity);
+	
+	[data release];
+	
+	NSLog(@"\n%@\n%@", data, entity);
+	
+	[entity release];
 }
 
 - (void)testEntityDict
@@ -72,7 +95,29 @@ static CORMStore * store = nil;
 	NSLog(@"%@", genre);
 }
 
-- (void)testSomething
+- (void)testEntityForKey
+{
+	Track * track = [Track entityForKey:@"1"];
+	if (!track)
+		STFail(@"Failed to create Track entity for key 1");
+	
+	NSLog(@"%@", track);
+}
+
+- (void)testForeignKeys
+{
+	Track * track = [Track entityForKey:@(3)];
+	if (!track)
+		STFail(@"Failed to create entities");
+	
+	NSLog(@"%@", track);
+	NSLog(@"%@", track.album);
+	NSLog(@"%@", track.album.artist);
+	NSLog(@"%@", track.genre);
+	NSLog(@"%@", track.mediaType);
+}
+
+- (void)testNonRedundancyAndProxies
 {
 	Track * track1 = [Track entityForKey:@(2)];
 	Track * track2 = [Track entityForKey:@(2)];
@@ -89,19 +134,6 @@ static CORMStore * store = nil;
 	
 	if (t1album != album)
 		STFail(@"Entities for same key are not identical");
-}
-
-- (void)testSomeMoreStuff
-{
-	Track * track = [Track entityForKey:@(3)];
-	if (!track)
-		STFail(@"Failed to create entities");
-	
-	NSLog(@"%@", track);
-	NSLog(@"%@", track.album);
-	NSLog(@"%@", track.album.artist);
-	NSLog(@"%@", track.genre);
-	NSLog(@"%@", track.mediaType);
 }
 
 @end

@@ -10,13 +10,10 @@
 
 @protocol CORMEntity <NSObject>
 
-- (id)initWithKey:(id)key;
-- (id)initWithKey:(id)key dictionary:(NSDictionary *)dict;
-
-+ (id<CORMEntity>)entityWithKey:(id)key;
-+ (id<CORMEntity>)entityWithKey:(id)key dictionary:(NSDictionary *)dict;
++ (id<CORMEntity>)entity;
 + (id<CORMEntity>)entityForKey:(id)key;
-
++ (id<CORMEntity>)entityByBindingTo:(id)obj;
+- (id)initByBindingTo:(id)obj;
 
 + (NSString *)mappedClassName;
 

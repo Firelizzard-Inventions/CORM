@@ -8,6 +8,8 @@
 
 #import "CORMEntityDict.h"
 
+#import "CORMEntityImpl+Private.h"
+
 #import <objc/runtime.h>
 #import <TypeExtensions/NSObject+associatedObjectForSelector.h>
 #import <TypeExtensions/NSString+firstLetterCaseString.h>
@@ -38,7 +40,13 @@
 
 - (void)setValue:(id)value forKey:(NSString *)key
 {
-	_data[key] = value;
+	if (value)
+		_data[key] = value;
+	else {
+		[self willChangeValueForKey:key];
+		[_data removeObjectForKey:key];
+		[self didChangeValueForKey:key];
+	}
 }
 
 - (NSString *)description
@@ -50,7 +58,12 @@
 			[props addObject:[NSString stringWithFormat:@"[%@]='%@'", prop, [self valueForKey:prop]]];
 	}
 	
-	return [NSString stringWithFormat:@"<%s: %@>", class_getName([self class]), [props componentsJoinedByString:@", "]];
+	return [NSString stringWithFormat:@"<%@: %@>", [self className], [props componentsJoinedByString:@", "]];
+}
+
+- (void)setNilValueForKey:(NSString *)key
+{
+	[self setValue:nil forKey:key];
 }
 
 @end
@@ -69,9 +82,9 @@
 	return new;
 }
 
-- (id)initWithKey:(id)key dictionary:(NSDictionary *)dict
+- (id)init
 {
-	if (!(self = [super initWithKey:key dictionary:dict]))
+	if (!(self = [super init]))
 		return nil;
 	
 	_data = @{}.mutableCopy;
@@ -81,6 +94,8 @@
 
 - (void)dealloc
 {
+	[self invalidate];
+	
 	[_data release];
 	
 	[super dealloc];

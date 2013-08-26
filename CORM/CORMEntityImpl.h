@@ -23,4 +23,6 @@
 
 + (BOOL)propertyNamesAreCaseSensitive;
 
+- (void)invalidate;
+
 @end

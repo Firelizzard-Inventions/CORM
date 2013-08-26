@@ -19,6 +19,8 @@
 #import <TypeExtensions/NSString+isEqualToStringIgnoreCase.h>
 #import <TypeExtensions/NSObject+associatedObjectForSelector.h>
 #import <TypeExtensions/NSString+firstLetterCaseString.h>
+#import <TypeExtensions/NSObject+zeroingWeakReferenceProxy.h>
+#import <TypeExtensions/NSObject+DeallocListener.h>
 
 #import <objc/runtime.h>
 
@@ -27,6 +29,15 @@
 
 + (void)initialize
 {
+	if (![self className])
+		return;
+	
+	if ([[self className] hasPrefix:@"NSKVONotifying_"])
+		return;
+	
+	if ([[self className] hasPrefix:@"DeallocListener_"])
+		return;
+	
 	[self registerWithDefaultStore];
 }
 
@@ -55,59 +66,161 @@
 
 - (NSString *)description
 {
-	unsigned int count;
-	objc_property_t * properties = class_copyPropertyList([self class], &count);
+	NSArray * mappedNames = [self.class mappedNames];
+	NSArray * keyNames = [self.class mappedKeys];
+	NSMutableArray * props = [NSMutableArray array];
 	
-	NSArray * foreignKeys = [[self class] mappedForeignKeyClassNames];
-	NSMutableArray * props = [NSMutableArray arrayWithCapacity:count];
-	for (int i = 0; i < count; i++) {
-		NSString * prop = [NSString stringWithCString:property_getName(properties[i]) encoding:NSASCIIStringEncoding];
-		
-		if (![foreignKeys containsObject:prop.firstLetterUppercaseString])
-			[props addObject:[NSString stringWithFormat:@"[%@]='%@'", prop, [self valueForKey:prop]]];
+	for (NSString * keyName in keyNames) {
+		NSString * prop = [self.class propertyNameForMappedName:keyName];
+		[props addObject:[NSString stringWithFormat:@"{%@}='%@'", prop, [self valueForKey:prop]]];
 	}
 	
-	free(properties);
+	for (NSString * mappedName in mappedNames)
+		if (![keyNames containsObject:mappedName]) {
+			NSString * prop = [self.class propertyNameForMappedName:mappedName];
+			[props addObject:[NSString stringWithFormat:@"[%@]='%@'", prop, [self valueForKey:prop]]];
+		}
 	
-	return [NSString stringWithFormat:@"<%s: %@>", class_getName([self class]), [props componentsJoinedByString:@", "]];
+	return [NSString stringWithFormat:@"<%@: %@>", [self className], [props componentsJoinedByString:@", "]];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	CORMEntityImpl * copy = [[[self class] alloc] init];
+	
+	for (NSString * mappedName in [[self class] mappedNames]) {
+		NSString * prop = [[self class] propertyNameForMappedName:mappedName];
+		[copy setValue:[self valueForKey:prop] forKey:prop];
+	}
+	
+	return copy;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	NSArray * propNames = context;
+	if (![propNames isKindOfClass:NSArray.class])
+		return;
+	
+	NSString * className = [self.class classNameForForeignKeyPropertyNames:propNames];
+	Class theClass = NSClassFromString(className);
+	if (theClass && ![theClass conformsToProtocol:@protocol(CORMEntity)])
+		return;
+	
+	CORMStore * store = [self.class registeredFactory].store;
+	if (!theClass && !store.generateClasses)
+		return;
+	
+	if (!theClass)
+		if (!(theClass = [store generateClassForName:className]))
+			return;
+	
+	NSMutableArray * props = [NSMutableArray array];
+	for (NSString * propName in propNames)
+		[props addObject:[self valueForKey:propName]];
+	
+	id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
+	NSString * prop = [self.class propertyNameForForeignKeyClassName:className];
+	[self setValue:obj forKey:prop];
 }
 
 #pragma mark - Genesis
 
-- (id)initWithKey:(id)key
++ (id<CORMEntity>)entity
 {
-	return [self initWithKey:key dictionary:@{}];
+	return [[[self alloc] init] autorelease];
 }
 
-- (id)initWithKey:(id)key dictionary:(NSDictionary *)dict
++ (id<CORMEntity>)entityByBindingTo:(id)obj
+{
+	return [[[self alloc] initByBindingTo:obj] autorelease];
+}
+
+- (id)init
 {
 	if (!(self = [super init]))
 		return nil;
 	
-	// type extensions, WTF?
-//	if ([self isMemberOfClass:[CORMEntity class]])
-//		[self _subclassImplementationExceptionFromMethod:_cmd isClassMethod:NO];
+	_source = nil;
+	_valid = YES;
 	
-	if (!dict)
-		goto exit;
+	[self startDeallocationNofitication];
+	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
+		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
+		for (NSString * propName in propNames)
+			[self addObserver:self forKeyPath:propName options:0 context:propNames];
+	}
 	
-	if (!dict.count)
-		goto exit;
-	
-	[self setValuesForKeysWithDictionary:dict];
-	
-exit:
 	return self;
 }
 
-+ (CORMEntityImpl *)entityWithKey:(id)key
+- (id)initByBindingTo:(id)obj
 {
-	return [[[self alloc] initWithKey:key] autorelease];
+	if (!(self = [self init]))
+		return nil;
+	
+	if (!obj)
+		return nil;
+	
+	_source = [obj retain];
+	
+	NSArray * names = [[self class] mappedNames];
+	if ([self.source respondsToSelector:@selector(allKeys)])
+		names = [self.source allKeys];
+		
+	id proxy = self.zeroingWeakReferenceProxy;
+	for (NSString * name in names) {
+		NSString * prop = [[self class] propertyNameForMappedName:name];
+		[self bind:prop toObject:self.source withKeyPath:name options:@{}];
+		[self.source bind:name toObject:proxy withKeyPath:prop options:@{}];
+	}
+	
+	return self;
 }
 
-+ (CORMEntityImpl *)entityWithKey:(id)key dictionary:(NSDictionary *)dict
+- (void)setNilValueForKey:(NSString *)key
 {
-	return [[[self alloc] initWithKey:key dictionary:dict] autorelease];
+	SEL sel = NSSelectorFromString([NSString stringWithFormat:@"set%@:", key.firstLetterUppercaseString]);
+	if (!sel)
+		[super setNilValueForKey:key];
+	if (![self respondsToSelector:sel])
+		[super setNilValueForKey:key];
+	
+	[self performSelector:sel withObject:nil];
+}
+
+- (void)invalidate
+{
+	if (!self.valid)
+		return;
+	
+	if (_source) {
+		for (NSString * mappedName in [[self class] mappedNames]) {
+			NSString * prop = [[self class] propertyNameForMappedName:mappedName];
+			[self unbind:prop];
+			[self.source unbind:prop];
+		}
+	}
+	[_source release];
+	_source = nil;
+	
+	for (NSString * mappedName in [[self class] mappedNames])
+		[self setValue:nil forKey:[[self class] propertyNameForMappedName:mappedName]];
+	
+	_valid = NO;
+}
+
+- (void)dealloc
+{
+	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
+		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
+		for (NSString * propName in propNames)
+			[self removeObserver:self forKeyPath:propName context:propNames];
+	}
+	
+	[self invalidate];
+	
+	[super dealloc];
 }
 
 #pragma mark - Mapping
@@ -136,7 +249,7 @@ exit:
 
 + (NSString *)mappedClassName
 {
-	return NSStringFromClass(self);
+	return [self className];
 }
 
 + (NSArray *)mappedKeys
@@ -171,7 +284,7 @@ throw:
 		
 		NSMutableArray * _names = [NSMutableArray arrayWithCapacity:count];
 		for (int i = 0; i < count; i++)
-			_names[i] = [NSString stringWithCString:property_getName(properties[i]) encoding:NSASCIIStringEncoding];
+			_names[i] = @(property_getName(properties[i]));
 		
 		free(properties);
 		

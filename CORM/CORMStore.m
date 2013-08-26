@@ -8,7 +8,7 @@
 
 #import "CORMStore.h"
 
-#import <ORDA/ORDAGovernor.h>
+#import <ORDA/ORDA.h>
 #import "CORMEntity.h"
 #import "CORMFactory.h"
 #import "CORMFactory+Private.h"
@@ -39,21 +39,37 @@
 
 - (CORMFactory *)factoryRegisteredForType:(Class<CORMEntity>)type
 {
-	return factories[type];
+	return factories[[type mappedClassName]];
 }
 
 - (CORMFactory *)registerFactoryForType:(Class<CORMEntity, NSCopying>)type
 {
-	CORMFactory * factory = [CORMFactory factoryForEntity:type fromStore:self];
-	factories[type] = factory;
+	CORMFactory * factory = factories[[type mappedClassName]];
+	if (factory)
+		return factory;
+	
+	factory = [CORMFactory factoryForEntity:type fromStore:self];
+	factories[[type mappedClassName]] = factory;
 	return factory;
 }
 
 - (Class<CORMEntity>)generateClassForName:(NSString *)className
 {
-	NSArray * keys = [self.governor primaryKeyNamesForTableName:className];
-	NSArray * columns = [self.governor columnNamesForTableName:className];
-	NSArray * foreign = [self.governor foreignKeyTableNamesForTableName:className];
+	Class aClass = NSClassFromString(className);
+	if (aClass) {
+		if ([aClass conformsToProtocol:@protocol(CORMEntity)])
+			return aClass;
+		else
+			return nil;
+	}
+	
+	id<ORDATable> table = [self.governor createTable:className];
+	if (table.isError)
+		return nil;
+	
+	NSArray * keys = [table primaryKeyNames];
+	NSArray * columns = [table columnNames];
+	NSArray * foreign = [table foreignKeyTableNames];
 	return [CORMEntityDict entityDictClassWithName:className andKeys:keys andProperties:columns andForeignKeys:foreign];
 }
 

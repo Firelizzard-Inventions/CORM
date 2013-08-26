@@ -8,12 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#import <ORDA/ORDA.h>
+
 @protocol CORMEntity;
 @class CORMStore;
 
 @interface CORMFactory : NSObject
 
 @property (readonly) Class<CORMEntity> type;
+@property (readonly) id<ORDATable> table;
 @property (readonly) CORMStore * store;
 
 @end

@@ -29,6 +29,7 @@
 		423ABBEE17A3925E004F289D /* CORMEntityDict.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABBEC17A3925E004F289D /* CORMEntityDict.h */; };
 		423ABBEF17A3925E004F289D /* CORMEntityDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABBED17A3925E004F289D /* CORMEntityDict.m */; };
 		424277BD17B842EF00E31F0C /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42909B9A17B31A4800DBD505 /* ORDA.framework */; };
+		42719C9917CA875B007AAB83 /* CORMEntityImpl+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 42719C9817CA875A007AAB83 /* CORMEntityImpl+Private.h */; };
 		42B00B7517C6680F000B13E7 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABAF717A32238004F289D /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42B00B7617C66815000B13E7 /* CORMEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 421552F717A3A04000E572C2 /* CORMEntity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42B00C1F17C6BC4E000B13E7 /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C1E17C6BC4E000B13E7 /* Album.m */; };
@@ -111,8 +112,8 @@
 		423ABBEA17A38A45004F289D /* TypeExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TypeExtensions.framework; path = DerivedData/CORM/Build/Products/Debug/TypeExtensions.framework; sourceTree = "<group>"; };
 		423ABBEC17A3925E004F289D /* CORMEntityDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntityDict.h; sourceTree = "<group>"; };
 		423ABBED17A3925E004F289D /* CORMEntityDict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntityDict.m; sourceTree = "<group>"; };
-		423ABBF017A3955C004F289D /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
 		424277B017B8429B00E31F0C /* TypeExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TypeExtensions.xcodeproj; path = "../../Lens Flare/TypeExtensions/TypeExtensions.xcodeproj"; sourceTree = "<group>"; };
+		42719C9817CA875A007AAB83 /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
 		42909B9417B31A4700DBD505 /* ORDA.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ORDA.xcodeproj; path = ../ORDA/ORDA.xcodeproj; sourceTree = "<group>"; };
 		42B00B6617C663CC000B13E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		42B00C0617C66DFB000B13E7 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
@@ -251,8 +252,8 @@
 			isa = PBXGroup;
 			children = (
 				421552F717A3A04000E572C2 /* CORMEntity.h */,
-				423ABBF017A3955C004F289D /* CORMEntityImpl+Private.h */,
 				423ABB1B17A32367004F289D /* CORMEntityImpl.h */,
+				42719C9817CA875A007AAB83 /* CORMEntityImpl+Private.h */,
 				423ABB1C17A32367004F289D /* CORMEntityImpl.m */,
 				423ABBE217A38100004F289D /* CORMEntityProxy.h */,
 				423ABBE317A38100004F289D /* CORMEntityProxy.m */,
@@ -314,6 +315,7 @@
 				423ABB1D17A32367004F289D /* CORMEntityImpl.h in Headers */,
 				423ABBE417A38100004F289D /* CORMEntityProxy.h in Headers */,
 				423ABBEE17A3925E004F289D /* CORMEntityDict.h in Headers */,
+				42719C9917CA875B007AAB83 /* CORMEntityImpl+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
