@@ -10,30 +10,26 @@
 
 #import "CORMKey.h"
 #import "CORMFactory.h"
-#import "CORMFactory+Private.h"
 
 #pragma clang diagnostic ignored "-Wprotocol"
 @implementation CORMEntityProxy {
 	id<CORMEntity> _entity;
 }
 
-+ (CORMEntityProxy *)entityProxyWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory
++ (CORMEntityProxy *)entityProxyWithKey:(id)key forFactory:(id<CORMFactory>)factory
 {
 	return [[[self alloc] initWithKey:key forFactory:factory] autorelease];
 }
 
-- (id)initWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory
+- (id)initWithKey:(id)key forFactory:(id<CORMFactory>)factory
 {
 //	if (!(self = [super init]))
 //		return nil;
 	
-	if (!key)
-		key = [CORMKey key];
-	
 	if (!factory)
 		return nil;
 	
-	_key = key.retain;
+	_key = [CORMKey keyWithObject:key].retain;
 	_factory = factory.retain;
 	_entity = nil;
 	

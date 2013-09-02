@@ -13,13 +13,14 @@
 #define kCORMEntityBadKeysException @"com.firelizzard.CORM.Entity.BadKeysException"
 #define kCORMEntityBadClassException @"com.firelizard.CORM.Entity.BadClassException"
 
-@class CORMFactory, CORMStore;
+@protocol CORMFactory;
+@class CORMStore;
 
 @interface CORMEntityImpl : NSObject <CORMEntity>
 
 + (void)registerWithDefaultStore;
 + (void)registerWithStore:(CORMStore *)store;
-+ (CORMFactory *)registeredFactory;
++ (id<CORMFactory>)registeredFactory;
 
 + (BOOL)propertyNamesAreCaseSensitive;
 

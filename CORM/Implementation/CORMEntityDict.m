@@ -11,7 +11,7 @@
 #import "CORMEntityImpl+Private.h"
 
 #import <objc/runtime.h>
-#import <TypeExtensions/NSObject+associatedObjectForSelector.h>
+#import <TypeExtensions/NSObject+associatedObject.h>
 #import <TypeExtensions/NSString+firstLetterCaseString.h>
 
 @implementation CORMEntityDict {

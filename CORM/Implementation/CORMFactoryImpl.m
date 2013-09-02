@@ -6,24 +6,26 @@
 //  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
 //
 
-#import "CORMFactory.h"
-#import "CORMFactory+Private.h"
+#import "CORMFactoryImpl.h"
+#import "CORMFactoryImpl+Private.h"
 
 #import <ORDA/ORDAGovernor.h>
 #import <ORDA/ORDAStatement.h>
 #import <ORDA/ORDAStatementResult.h>
+
 #import "CORMStore.h"
+#import "CORMFactory.h"
 #import "CORMKey.h"
 #import "CORMEntity.h"
 #import "CORMEntityProxy.h"
 
-@implementation CORMFactory {
+@implementation CORMFactoryImpl {
 	NSMutableDictionary * data;
 }
 
 - (id)valueForKey:(NSString *)key
 {
-	return [data valueForKey:key];
+	return data[[CORMKey keyWithObject:key]];
 }
 
 - (id)valueForKeyPath:(NSString *)keyPath
@@ -31,16 +33,14 @@
 	return [data valueForKeyPath:keyPath];
 }
 
-@end
-
-@implementation CORMFactory (Private)
-
-- (id<CORMEntity>)entityForKey:(CORMKey *)key
+- (id<CORMEntity>)entityForKey:(id)key
 {
+	key = [CORMKey keyWithObject:key];
+	
 	if (data[key])
 		return data[key];
 	
-	id<ORDATableResult> result = [self.table selectWhere:[key whereClauseForEntityType:self.type]];
+	id<ORDATableResult> result = [self.table selectWhere:@"%@", [key whereClauseForEntityType:self.type]];
 	if (result.isError)
 		return nil;
 	if (result.count < 1)
@@ -52,7 +52,7 @@
 	return entity;
 }
 
-- (id<CORMEntity>)entityOrProxyForKey:(CORMKey *)key
+- (id<CORMEntity>)entityOrProxyForKey:(id)key
 {
 	if (data[key])
 		return data[key];
@@ -62,11 +62,11 @@
 
 @end
 
-@implementation CORMFactory (Genesis)
+@implementation CORMFactoryImpl (Genesis)
 
 + (id)factoryForEntity:(Class)type fromStore:(CORMStore *)store
 {
-	return [[[CORMFactory alloc] initWithEntity:type fromStore:store] autorelease];
+	return [[[CORMFactoryImpl alloc] initWithEntity:type fromStore:store] autorelease];
 }
 
 - (id)initWithEntity:(Class<CORMEntity>)type fromStore:(CORMStore *)store
@@ -77,7 +77,7 @@
 	if (![((Class)type) conformsToProtocol:@protocol(CORMEntity)])
 		return nil;
 	
-	CORMFactory * existing = [store factoryRegisteredForType:type];
+	id<CORMFactory> existing = [store factoryRegisteredForType:type];
 	if (existing)
 		return existing;
 	

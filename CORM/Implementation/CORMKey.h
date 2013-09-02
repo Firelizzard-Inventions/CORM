@@ -18,11 +18,11 @@
 
 @interface CORMKey (Genesis)
 
-+ (id)key;
-+ (id)keyWithDescriptor:(NSString *)string;
-+ (id)keyWithObject:(id)obj;
-+ (id)keyWithArray:(NSArray *)arr;
-+ (id)keyWithObjects:(id)obj, ... NS_REQUIRES_NIL_TERMINATION;
-+ (id)keyWithObjects:(const void *)objs count:(NSUInteger)count;
++ (CORMKey *)key;
++ (CORMKey *)keyWithDescriptor:(NSString *)string;
++ (CORMKey *)keyWithObject:(id)obj;
++ (CORMKey *)keyWithArray:(NSArray *)arr;
++ (CORMKey *)keyWithObjects:(id)obj, ... NS_REQUIRES_NIL_TERMINATION;
++ (CORMKey *)keyWithObjects:(const void *)objs count:(NSUInteger)count;
 
 @end

@@ -66,12 +66,12 @@
 
 @implementation CORMKey (Genesis)
 
-+ (id)key
++ (CORMKey *)key
 {
 	return [CORMKey keyWithArray:@[]];
 }
 
-+ (id)keyWithDescriptor:(NSString *)string
++ (CORMKey *)keyWithDescriptor:(NSString *)string
 {
 	BOOL prefix = [string hasPrefix:@"{"];
 	BOOL suffix = [string hasSuffix:@"}"];
@@ -85,7 +85,7 @@
 	return [CORMKey keyWithArray:[[string substringWithRange:NSMakeRange(1, string.length - 1)] componentsSeparatedByString:@","]];
 }
 
-+ (id)keyWithObject:(id)obj
++ (CORMKey *)keyWithObject:(id)obj
 {
 	if (!obj)
 		return nil;
@@ -102,7 +102,7 @@
 	return [CORMKey keyWithArray:@[obj]];
 }
 
-+ (id)keyWithArray:(NSArray *)arr
++ (CORMKey *)keyWithArray:(NSArray *)arr
 {
 	if (!arr)
 		return nil;
@@ -116,7 +116,7 @@
 	return [[[CORMKey alloc] initWithArray:arr] autorelease];
 }
 
-+ (id)keyWithObjects:(id)obj, ...
++ (CORMKey *)keyWithObjects:(id)obj, ...
 {
 	NSMutableArray * arr = @[].mutableCopy;
 	
@@ -131,7 +131,7 @@
 	return key;
 }
 
-+ (id)keyWithObjects:(const void *)objs count:(NSUInteger)count
++ (CORMKey *)keyWithObjects:(const void *)objs count:(NSUInteger)count
 {
 	return [CORMKey keyWithArray:[NSArray arrayWithObjects:objs count:count]];
 }

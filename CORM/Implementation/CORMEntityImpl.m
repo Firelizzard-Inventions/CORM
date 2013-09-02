@@ -11,13 +11,12 @@
 
 #import "CORM.h"
 #import "CORMFactory.h"
-#import "CORMFactory+Private.h"
 #import "CORMStore.h"
 #import "CORMKey.h"
 #import "CORMEntityDict.h"
 
 #import <TypeExtensions/NSString+isEqualToStringIgnoreCase.h>
-#import <TypeExtensions/NSObject+associatedObjectForSelector.h>
+#import <TypeExtensions/NSObject+associatedObject.h>
 #import <TypeExtensions/NSString+firstLetterCaseString.h>
 #import <TypeExtensions/NSObject+zeroingWeakReferenceProxy.h>
 #import <TypeExtensions/NSObject+DeallocListener.h>
@@ -51,7 +50,7 @@
 	[(NSObject *)self setAssociatedObject:[store registerFactoryForType:self] forSelector:@selector(registeredFactory)];
 }
 
-+ (CORMFactory *)registeredFactory
++ (id<CORMFactory>)registeredFactory
 {
 	if (![(NSObject *)self associatedObjectForSelector:_cmd])
 		[self registerWithDefaultStore];

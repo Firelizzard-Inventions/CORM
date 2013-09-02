@@ -10,10 +10,12 @@
 
 #import <ORDA/ORDA.h>
 
+#import "CORMFactory.h"
+
 @protocol CORMEntity;
 @class CORMStore;
 
-@interface CORMFactory : NSObject
+@interface CORMFactoryImpl : NSObject <CORMFactory>
 
 @property (readonly) Class<CORMEntity> type;
 @property (readonly) id<ORDATable> table;

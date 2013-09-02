@@ -10,8 +10,8 @@
 
 #import <ORDA/ORDA.h>
 #import "CORMEntity.h"
-#import "CORMFactory.h"
-#import "CORMFactory+Private.h"
+#import "CORMFactoryImpl.h"
+#import "CORMFactoryImpl+Private.h"
 #import "CORMEntityDict.h"
 
 @implementation CORMStore {
@@ -37,18 +37,18 @@
 	[super dealloc];
 }
 
-- (CORMFactory *)factoryRegisteredForType:(Class<CORMEntity>)type
+- (id<CORMFactory>)factoryRegisteredForType:(Class<CORMEntity>)type
 {
 	return factories[[type mappedClassName]];
 }
 
-- (CORMFactory *)registerFactoryForType:(Class<CORMEntity, NSCopying>)type
+- (id<CORMFactory>)registerFactoryForType:(Class<CORMEntity, NSCopying>)type
 {
-	CORMFactory * factory = factories[[type mappedClassName]];
+	CORMFactoryImpl * factory = factories[[type mappedClassName]];
 	if (factory)
 		return factory;
 	
-	factory = [CORMFactory factoryForEntity:type fromStore:self];
+	factory = [CORMFactoryImpl factoryForEntity:type fromStore:self];
 	factories[[type mappedClassName]] = factory;
 	return factory;
 }

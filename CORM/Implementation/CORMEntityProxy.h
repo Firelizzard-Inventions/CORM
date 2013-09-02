@@ -12,15 +12,16 @@
 
 #import "CORMEntity.h"
 
-@class CORMKey, CORMFactory, CORMEntityImpl;
+@protocol CORMFactory;
+@class CORMKey, CORMEntityImpl;
 
 @interface CORMEntityProxy : NSProxy <CORMEntity>
 
 @property (readonly) CORMKey * key;
-@property (readonly) CORMFactory * factory;
+@property (readonly) id<CORMFactory> factory;
 @property (readonly) CORMEntityImpl * entity;
 
-+ (CORMEntityProxy *)entityProxyWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory;
-- (id)initWithKey:(CORMKey *)key forFactory:(CORMFactory *)factory;
++ (CORMEntityProxy *)entityProxyWithKey:(id)key forFactory:(id<CORMFactory>)factory;
+- (id)initWithKey:(id)key forFactory:(id<CORMFactory>)factory;
 
 @end
