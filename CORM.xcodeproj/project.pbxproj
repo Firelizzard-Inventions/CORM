@@ -12,12 +12,11 @@
 		423ABAF917A32238004F289D /* CORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORM.m */; };
 		423ABB0117A32238004F289D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABB0017A32238004F289D /* SenTestingKit.framework */; };
 		423ABB0217A32238004F289D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAEA17A32238004F289D /* Cocoa.framework */; };
-		423ABB0517A32238004F289D /* CORM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAE717A32238004F289D /* CORM.framework */; };
 		423ABB0B17A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABB0917A32238004F289D /* InfoPlist.strings */; };
 		423ABB0E17A32238004F289D /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
 		424277BD17B842EF00E31F0C /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42909B9A17B31A4800DBD505 /* ORDA.framework */; };
 		4257E7B117CAD52300ACF70C /* TypeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4257E7B017CAD52300ACF70C /* TypeExtensions.framework */; };
-		4257E7B217CAD54800ACF70C /* ORDASQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */; };
+		42877C9D183D8E3200967368 /* CORM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAE717A32238004F289D /* CORM.framework */; };
 		42B00B7517C6680F000B13E7 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABAF717A32238004F289D /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42B00C1F17C6BC4E000B13E7 /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C1E17C6BC4E000B13E7 /* Album.m */; };
 		42B00C2217C6BC58000B13E7 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C2117C6BC58000B13E7 /* Track.m */; };
@@ -51,6 +50,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 423ABAE617A32238004F289D;
 			remoteInfo = CORM;
+		};
+		42877C9B183D8DD200967368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42909B9417B31A4700DBD505 /* ORDA.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 42105FEB17CFFA4E00FC92BB;
+			remoteInfo = ORDAMySQL;
 		};
 		42909B9917B31A4800DBD505 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -125,7 +131,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4257E7B217CAD54800ACF70C /* ORDASQLite.framework in Frameworks */,
 				4257E7B117CAD52300ACF70C /* TypeExtensions.framework in Frameworks */,
 				424277BD17B842EF00E31F0C /* ORDA.framework in Frameworks */,
 				423ABAEB17A32238004F289D /* Cocoa.framework in Frameworks */,
@@ -136,12 +141,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42877C9D183D8E3200967368 /* CORM.framework in Frameworks */,
 				42B00C2617C6BC75000B13E7 /* libsqlite3.0.dylib in Frameworks */,
 				42B00C2317C6BC6D000B13E7 /* ORDA.framework in Frameworks */,
 				42B00C2417C6BC6D000B13E7 /* ORDASQLite.framework in Frameworks */,
 				423ABB0117A32238004F289D /* SenTestingKit.framework in Frameworks */,
 				423ABB0217A32238004F289D /* Cocoa.framework in Frameworks */,
-				423ABB0517A32238004F289D /* CORM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +249,7 @@
 				42909B9A17B31A4800DBD505 /* ORDA.framework */,
 				42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */,
 				42909B9C17B31A4800DBD505 /* ORDATests.octest */,
+				42877C9C183D8DD200967368 /* ORDAMySQL.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -336,7 +342,7 @@
 				423ABAFA17A32238004F289D /* Sources */,
 				423ABAFB17A32238004F289D /* Frameworks */,
 				423ABAFC17A32238004F289D /* Resources */,
-				423ABAFD17A32238004F289D /* ShellScript */,
+				423ABAFD17A32238004F289D /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -354,7 +360,7 @@
 		423ABADE17A32238004F289D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Firelizzard Inventions";
 			};
 			buildConfigurationList = 423ABAE117A32238004F289D /* Build configuration list for PBXProject "CORM" */;
@@ -382,6 +388,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		42877C9C183D8DD200967368 /* ORDAMySQL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ORDAMySQL.framework;
+			remoteRef = 42877C9B183D8DD200967368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		42909B9A17B31A4800DBD505 /* ORDA.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -427,13 +440,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		423ABAFD17A32238004F289D /* ShellScript */ = {
+		423ABAFD17A32238004F289D /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,7 +515,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -533,7 +546,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;

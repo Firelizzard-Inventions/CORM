@@ -12,7 +12,7 @@
 #import <CORM/CORM.h>
 #import <CORM/CORMStore.h>
 #import <ORDA/ORDA.h>
-#import <ORDA/ORDASQLite.h>
+#import <ORDASQLite/ORDASQLite.h>
 
 #import "CORMEntityImpl.h"
 #import "CORMEntityProxy.h"
@@ -68,16 +68,23 @@ static NSAutoreleasePool * pool = nil;
 {
 	id data = @{@"GenreId" : @(1), @"Name" : @"Rock"}.mutableCopy;
 	
-	NSLog(@"\n%@", data);
-	
 	Class Genre = [store generateClassForName:@"Genre"];
-	id<CORMEntity> entity = [[Genre alloc] initByBindingTo:data];
+	if (!Genre)
+		STFail(@"Failed to create class");
 	
-	NSLog(@"\n%@\n%@", data, entity);
+	id<CORMEntity> entity = [[Genre alloc] initByBindingTo:data];
+	if (!entity)
+		STFail(@"Failed to create entity");
+	
+	data[@"GenreId"] = @(2);
+	if (![@(2) isEqual:[(NSObject *)entity valueForKey:@"GenreId"]])
+		STFail(@"Bindings failure: altering source did not alter entity");
 	
 	[data release];
 	
-	NSLog(@"\n%@\n%@", data, entity);
+	[(NSObject *)entity setValue:@"NotRock" forKey:@"Name"];
+	if (![@"NotRock" isEqual:data[@"Name"]])
+		STFail(@"Bindings failure: altering entity did not alter source");
 	
 	[entity release];
 }
@@ -92,7 +99,8 @@ static NSAutoreleasePool * pool = nil;
 	if (!genre)
 		STFail(@"Failed to create Genre (Dict) entity for key 1");
 	
-	NSLog(@"%@", genre);
+	if (![@(1) isEqual:[(NSObject *)genre valueForKey:@"GenreId"]] || ![@"Rock" isEqual:[(NSObject *)genre valueForKey:@"Name"]])
+		STFail(@"Retreived object had bad values");
 }
 
 - (void)testEntityForKey
@@ -100,21 +108,26 @@ static NSAutoreleasePool * pool = nil;
 	Track * track = [Track entityForKey:@"1"];
 	if (!track)
 		STFail(@"Failed to create Track entity for key 1");
-	
-	NSLog(@"%@", track);
 }
 
 - (void)testForeignKeys
 {
 	Track * track = [Track entityForKey:@(3)];
+	
 	if (!track)
 		STFail(@"Failed to create entities");
 	
-	NSLog(@"%@", track);
-	NSLog(@"%@", track.album);
-	NSLog(@"%@", track.album.artist);
-	NSLog(@"%@", track.genre);
-	NSLog(@"%@", track.mediaType);
+	if (!track.album)
+		STFail(@"Failed to retreive track -> album");
+	
+	if (!track.album.artist)
+		STFail(@"Failed to retreive track -> album -> artist");
+	
+	if (!track.genre)
+		STFail(@"Failed to retreive track -> genre");
+	
+	if (!track.mediaType)
+		STFail(@"Failed to retreive track -> mediaType");
 }
 
 - (void)testNonRedundancyAndProxies
@@ -122,6 +135,7 @@ static NSAutoreleasePool * pool = nil;
 	Track * track1 = [Track entityForKey:@(2)];
 	Track * track2 = [Track entityForKey:@(2)];
 	Album * album = [Album entityForKey:@(2)];
+	
 	if (!track1 || !track2 || !album)
 		STFail(@"Failed to create entities");
 	

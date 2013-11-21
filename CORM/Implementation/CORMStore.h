@@ -10,6 +10,8 @@
 
 @protocol ORDAGovernor, CORMEntity, CORMFactory;
 
+
+
 @interface CORMStore : NSObject
 
 @property BOOL generateClasses;

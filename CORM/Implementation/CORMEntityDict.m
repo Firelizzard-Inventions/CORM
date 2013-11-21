@@ -40,13 +40,14 @@
 
 - (void)setValue:(id)value forKey:(NSString *)key
 {
+	[self willChangeValueForKey:key];
+	
 	if (value)
 		_data[key] = value;
-	else {
-		[self willChangeValueForKey:key];
+	else
 		[_data removeObjectForKey:key];
-		[self didChangeValueForKey:key];
-	}
+	
+	[self didChangeValueForKey:key];
 }
 
 - (NSString *)description

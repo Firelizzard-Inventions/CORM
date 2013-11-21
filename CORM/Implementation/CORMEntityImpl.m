@@ -20,11 +20,14 @@
 #import <TypeExtensions/NSString+firstLetterCaseString.h>
 #import <TypeExtensions/NSObject+zeroingWeakReferenceProxy.h>
 #import <TypeExtensions/NSObject+DeallocListener.h>
+#import <TypeExtensions/NSMutableArray_NonRetaining_Zeroing.h>
 
 #import <objc/runtime.h>
 
 
-@implementation CORMEntityImpl
+@implementation CORMEntityImpl {
+	NSMutableArray * _boundObjects;
+}
 
 + (void)initialize
 {
@@ -85,10 +88,10 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-	CORMEntityImpl * copy = [[[self class] alloc] init];
+	CORMEntityImpl * copy = [[self.class alloc] init];
 	
-	for (NSString * mappedName in [[self class] mappedNames]) {
-		NSString * prop = [[self class] propertyNameForMappedName:mappedName];
+	for (NSString * mappedName in [self.class mappedNames]) {
+		NSString * prop = [self.class propertyNameForMappedName:mappedName];
 		[copy setValue:[self valueForKey:prop] forKey:prop];
 	}
 	
@@ -97,30 +100,57 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	static NSLock * lock = nil;
+	
 	NSArray * propNames = context;
-	if (![propNames isKindOfClass:NSArray.class])
-		return;
-	
-	NSString * className = [self.class classNameForForeignKeyPropertyNames:propNames];
-	Class theClass = NSClassFromString(className);
-	if (theClass && ![theClass conformsToProtocol:@protocol(CORMEntity)])
-		return;
-	
-	CORMStore * store = [self.class registeredFactory].store;
-	if (!theClass && !store.generateClasses)
-		return;
-	
-	if (!theClass)
-		if (!(theClass = [store generateClassForName:className]))
+	if ([propNames isKindOfClass:NSArray.class]) {
+		NSString * className = [self.class classNameForForeignKeyPropertyNames:propNames];
+		Class theClass = NSClassFromString(className);
+		if (theClass && ![theClass conformsToProtocol:@protocol(CORMEntity)])
 			return;
+		
+		CORMStore * store = [self.class registeredFactory].store;
+		if (!theClass && !store.generateClasses)
+			return;
+		
+		if (!theClass)
+			if (!(theClass = [store generateClassForName:className]))
+				return;
+		
+		NSMutableArray * props = [NSMutableArray array];
+		for (NSString * propName in propNames)
+			[props addObject:[self valueForKey:propName]];
+		
+		id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
+		NSString * prop = [self.class propertyNameForForeignKeyClassName:className];
+		[self setValue:obj forKey:prop];
+		
+		return;
+	}
 	
-	NSMutableArray * props = [NSMutableArray array];
-	for (NSString * propName in propNames)
-		[props addObject:[self valueForKey:propName]];
+	if ([_boundObjects containsObject:object] ) {
+		if (!lock)
+			lock = [[NSLock alloc] init];
+		
+		if ([lock tryLock]) {
+			[self setValue:[self.source valueForKey:keyPath] forKey:[self.class propertyNameForMappedName:keyPath]];
+			[lock unlock];
+		}
+		
+		return;
+	}
 	
-	id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
-	NSString * prop = [self.class propertyNameForForeignKeyClassName:className];
-	[self setValue:obj forKey:prop];
+	if (object == self) {
+		if (!lock)
+			lock = [[NSLock alloc] init];
+		
+		if (self.source && [lock tryLock]) {
+			[self.source setValue:[self valueForKey:keyPath] forKey:[self.class mappedNameForPropertyName:keyPath]];
+			[lock unlock];
+		}
+		
+		return;
+	}
 }
 
 #pragma mark - Genesis
@@ -140,6 +170,7 @@
 	if (!(self = [super init]))
 		return nil;
 	
+	_boundObjects = @[].mutableCopy;
 	_source = nil;
 	_valid = YES;
 	
@@ -153,6 +184,26 @@
 	return self;
 }
 
+- (void)bindTo:(id)obj
+{
+	[_boundObjects addObject:obj];
+	
+	id mappedNames;
+	if ([obj respondsToSelector:@selector(allKeys)])
+		mappedNames = [obj allKeys];
+	else
+		mappedNames = [self.class mappedNames];
+	
+	for (NSString * mappedName in mappedNames) {
+		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
+		
+		[self setValue:[obj valueForKey:mappedName] forKey:propertyName];
+		
+		[self.source addObserver:self forKeyPath:mappedName options:0 context:nil];
+		[self addObserver:self forKeyPath:propertyName options:0 context:nil];
+	}
+}
+
 - (id)initByBindingTo:(id)obj
 {
 	if (!(self = [self init]))
@@ -163,16 +214,7 @@
 	
 	_source = [obj retain];
 	
-	NSArray * names = [[self class] mappedNames];
-	if ([self.source respondsToSelector:@selector(allKeys)])
-		names = [self.source allKeys];
-		
-	id proxy = self.zeroingWeakReferenceProxy;
-	for (NSString * name in names) {
-		NSString * prop = [[self class] propertyNameForMappedName:name];
-		[self bind:prop toObject:self.source withKeyPath:name options:@{}];
-		[self.source bind:name toObject:proxy withKeyPath:prop options:@{}];
-	}
+	[self bindTo:self.source];
 	
 	return self;
 }
@@ -180,8 +222,10 @@
 - (void)setNilValueForKey:(NSString *)key
 {
 	SEL sel = NSSelectorFromString([NSString stringWithFormat:@"set%@:", key.firstLetterUppercaseString]);
+	
 	if (!sel)
 		[super setNilValueForKey:key];
+	
 	if (![self respondsToSelector:sel])
 		[super setNilValueForKey:key];
 	
@@ -193,18 +237,19 @@
 	if (!self.valid)
 		return;
 	
-	if (_source) {
-		for (NSString * mappedName in [[self class] mappedNames]) {
-			NSString * prop = [[self class] propertyNameForMappedName:mappedName];
-			[self unbind:prop];
-			[self.source unbind:prop];
+	for (NSString * mappedName in [self.class mappedNames]) {
+		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
+		
+		for (id obj in _boundObjects) {
+			[self.source removeObserver:self forKeyPath:mappedName];
+			[self removeObserver:self forKeyPath:propertyName];
 		}
+		
+		[self setValue:nil forKey:propertyName];
 	}
-	[_source release];
-	_source = nil;
 	
-	for (NSString * mappedName in [[self class] mappedNames])
-		[self setValue:nil forKey:[[self class] propertyNameForMappedName:mappedName]];
+	[_boundObjects release];
+	_boundObjects = nil;
 	
 	_valid = NO;
 }
@@ -288,7 +333,7 @@ throw:
 		free(properties);
 		
 		for (NSString * className in [self mappedForeignKeyClassNames])
-			[_names removeObject:[[self class] propertyNameForForeignKeyClassName:className]];
+			[_names removeObject:[self.class propertyNameForForeignKeyClassName:className]];
 		
 		names = [NSArray arrayWithArray:_names];
 		[(NSObject *)self setAssociatedObject:names forSelector:_cmd];
