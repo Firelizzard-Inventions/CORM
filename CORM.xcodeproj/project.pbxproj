@@ -30,7 +30,6 @@
 		42F326B617CEBA7300963954 /* CORMEntityDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326A817CEBA7300963954 /* CORMEntityDict.m */; };
 		42F326B717CEBA7300963954 /* CORMEntityImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326A917CEBA7300963954 /* CORMEntityImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42F326B817CEBA7300963954 /* CORMEntityImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326AA17CEBA7300963954 /* CORMEntityImpl.m */; };
-		42F326B917CEBA7300963954 /* CORMEntityImpl+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326AB17CEBA7300963954 /* CORMEntityImpl+Private.h */; };
 		42F326BA17CEBA7300963954 /* CORMEntityProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326AC17CEBA7300963954 /* CORMEntityProxy.h */; };
 		42F326BB17CEBA7300963954 /* CORMEntityProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326AD17CEBA7300963954 /* CORMEntityProxy.m */; };
 		42F326BC17CEBA7300963954 /* CORMFactoryImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */; };
@@ -113,7 +112,6 @@
 		42F326A817CEBA7300963954 /* CORMEntityDict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityDict.m; path = Implementation/CORMEntityDict.m; sourceTree = "<group>"; };
 		42F326A917CEBA7300963954 /* CORMEntityImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityImpl.h; path = Implementation/CORMEntityImpl.h; sourceTree = "<group>"; };
 		42F326AA17CEBA7300963954 /* CORMEntityImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityImpl.m; path = Implementation/CORMEntityImpl.m; sourceTree = "<group>"; };
-		42F326AB17CEBA7300963954 /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CORMEntityImpl+Private.h"; path = "Implementation/CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
 		42F326AC17CEBA7300963954 /* CORMEntityProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityProxy.h; path = Implementation/CORMEntityProxy.h; sourceTree = "<group>"; };
 		42F326AD17CEBA7300963954 /* CORMEntityProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityProxy.m; path = Implementation/CORMEntityProxy.m; sourceTree = "<group>"; };
 		42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMFactoryImpl.h; path = Implementation/CORMFactoryImpl.h; sourceTree = "<group>"; };
@@ -285,7 +283,6 @@
 				42F326A717CEBA7300963954 /* CORMEntityDict.h */,
 				42F326A817CEBA7300963954 /* CORMEntityDict.m */,
 				42F326A917CEBA7300963954 /* CORMEntityImpl.h */,
-				42F326AB17CEBA7300963954 /* CORMEntityImpl+Private.h */,
 				42F326AA17CEBA7300963954 /* CORMEntityImpl.m */,
 				42F326AC17CEBA7300963954 /* CORMEntityProxy.h */,
 				42F326AD17CEBA7300963954 /* CORMEntityProxy.m */,
@@ -307,7 +304,6 @@
 				42F326A617CEBA6A00963954 /* CORMEntity.h in Headers */,
 				42F326B717CEBA7300963954 /* CORMEntityImpl.h in Headers */,
 				42F326B517CEBA7300963954 /* CORMEntityDict.h in Headers */,
-				42F326B917CEBA7300963954 /* CORMEntityImpl+Private.h in Headers */,
 				42F326BA17CEBA7300963954 /* CORMEntityProxy.h in Headers */,
 				42F326BC17CEBA7300963954 /* CORMFactoryImpl.h in Headers */,
 				42F326BE17CEBA7300963954 /* CORMFactoryImpl+Private.h in Headers */,

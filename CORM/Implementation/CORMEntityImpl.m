@@ -7,7 +7,6 @@
 //
 
 #import "CORMEntityImpl.h"
-#import "CORMEntityImpl+Private.h"
 
 #import "CORM.h"
 #import "CORMFactory.h"
@@ -24,8 +23,59 @@
 
 #import <objc/runtime.h>
 
+@interface _Proxy_BoundClass_Pair : NSObject
+
+@property (retain) id proxy, object;
+
+- (id)initWithProxy:(id<NSObject>)proxy andObject:(id<NSObject>)object;
+
+@end
+
+@implementation _Proxy_BoundClass_Pair
+
+- (id)initWithProxy:(id<NSObject>)proxy andObject:(id<NSObject>)object
+{
+	if (!(self = [super init]))
+		return nil;
+	
+	_proxy = proxy.retain;
+	_object = object.retain;
+	
+	return self;
+}
+
+- (BOOL)isEqual:(id)object
+{
+	if (!object)
+		return !self.object;
+	
+	if (object == self)
+		return YES;
+	
+	if (![object isKindOfClass:self.class])
+		return [self.object isEqual:object];
+	
+	_Proxy_BoundClass_Pair * other = (_Proxy_BoundClass_Pair *)object;
+	
+	if (!self.object && !other.object)
+		return YES;
+	
+	return [self.object isEqual:other.object];
+}
+
+- (void)dealloc
+{
+	[_proxy release];
+	[_object release];
+	
+	[super dealloc];
+}
+
+@end
+
 
 @implementation CORMEntityImpl {
+	BOOL _valid;
 	NSMutableArray * _boundObjects;
 }
 
@@ -128,27 +178,23 @@
 		return;
 	}
 	
-	if ([_boundObjects containsObject:object] ) {
-		if (!lock)
-			lock = [[NSLock alloc] init];
-		
+	if (!lock)
+		lock = [[NSLock alloc] init];
+	
+	if ([_boundObjects indexOfObjectPassingTest:(^ BOOL (id obj, NSUInteger idx, BOOL *stop) { return *stop = [obj isEqual:object]; })] != NSNotFound) {
 		if ([lock tryLock]) {
-			[self setValue:[self.source valueForKey:keyPath] forKey:[self.class propertyNameForMappedName:keyPath]];
+			[self setValue:[object valueForKey:keyPath] forKey:[self.class propertyNameForMappedName:keyPath]];
 			[lock unlock];
 		}
-		
 		return;
 	}
 	
 	if (object == self) {
-		if (!lock)
-			lock = [[NSLock alloc] init];
-		
-		if (self.source && [lock tryLock]) {
-			[self.source setValue:[self valueForKey:keyPath] forKey:[self.class mappedNameForPropertyName:keyPath]];
+		if ([lock tryLock]) {
+			for (_Proxy_BoundClass_Pair * pair in _boundObjects)
+				[pair.object setValue:[self valueForKey:keyPath] forKey:[self.class mappedNameForPropertyName:keyPath]];
 			[lock unlock];
 		}
-		
 		return;
 	}
 }
@@ -171,7 +217,6 @@
 		return nil;
 	
 	_boundObjects = @[].mutableCopy;
-	_source = nil;
 	_valid = YES;
 	
 	[self startDeallocationNofitication];
@@ -184,9 +229,10 @@
 	return self;
 }
 
-- (void)bindTo:(id)obj
+- (void)bindToObject:(id)obj
 {
-	[_boundObjects addObject:obj];
+	id proxy = self.zeroingWeakReferenceProxy;
+	[_boundObjects addObject:[[_Proxy_BoundClass_Pair alloc] initWithProxy:proxy andObject:obj]];
 	
 	id mappedNames;
 	if ([obj respondsToSelector:@selector(allKeys)])
@@ -199,7 +245,28 @@
 		
 		[self setValue:[obj valueForKey:mappedName] forKey:propertyName];
 		
-		[self.source addObserver:self forKeyPath:mappedName options:0 context:nil];
+		[obj addObserver:proxy forKeyPath:mappedName options:0 context:nil];
+		[self addObserver:self forKeyPath:propertyName options:0 context:nil];
+	}
+}
+
+- (void)bindObjectToSelf:(id)obj
+{
+	id proxy = self.zeroingWeakReferenceProxy;
+	[_boundObjects addObject:[[_Proxy_BoundClass_Pair alloc] initWithProxy:proxy andObject:obj]];
+	
+	id mappedNames;
+	if ([obj respondsToSelector:@selector(allKeys)])
+		mappedNames = [obj allKeys];
+	else
+		mappedNames = [self.class mappedNames];
+	
+	for (NSString * mappedName in mappedNames) {
+		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
+		
+		[obj setValue:[self valueForKey:propertyName] forKey:mappedName];
+		
+		[obj addObserver:proxy forKeyPath:mappedName options:0 context:nil];
 		[self addObserver:self forKeyPath:propertyName options:0 context:nil];
 	}
 }
@@ -212,9 +279,7 @@
 	if (!obj)
 		return nil;
 	
-	_source = [obj retain];
-	
-	[self bindTo:self.source];
+	[self bindToObject:obj];
 	
 	return self;
 }
@@ -234,14 +299,14 @@
 
 - (void)invalidate
 {
-	if (!self.valid)
+	if (!_valid)
 		return;
 	
 	for (NSString * mappedName in [self.class mappedNames]) {
 		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
 		
-		for (id obj in _boundObjects) {
-			[self.source removeObserver:self forKeyPath:mappedName];
+		for (_Proxy_BoundClass_Pair * pair in _boundObjects) {
+			[pair.object removeObserver:pair.proxy forKeyPath:mappedName];
 			[self removeObserver:self forKeyPath:propertyName];
 		}
 		

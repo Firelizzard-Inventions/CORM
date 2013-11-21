@@ -15,7 +15,8 @@
 + (id<CORMEntity>)entityByBindingTo:(id)obj;
 - (id)initByBindingTo:(id)obj;
 
-- (void)bindTo:(id)obj;
+- (void)bindToObject:(id)obj;
+- (void)bindObjectToSelf:(id)obj;
 
 + (NSString *)mappedClassName;
 
