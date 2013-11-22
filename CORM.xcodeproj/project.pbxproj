@@ -401,7 +401,7 @@
 		42909B9C17B31A4800DBD505 /* ORDATests.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = ORDATests.octest;
+			path = ORDASQLiteTests.octest;
 			remoteRef = 42909B9B17B31A4800DBD505 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

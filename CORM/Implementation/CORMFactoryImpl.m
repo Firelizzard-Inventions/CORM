@@ -13,6 +13,8 @@
 #import <ORDA/ORDAStatement.h>
 #import <ORDA/ORDAStatementResult.h>
 
+#import <TypeExtensions/NSMutableDictionary_NonRetaining_Zeroing.h>
+
 #import "CORMStore.h"
 #import "CORMFactory.h"
 #import "CORMKey.h"
@@ -88,7 +90,7 @@
 	if (!self.table)
 		return nil;
 	
-	data = @{}.mutableCopy;
+	data = [[NSMutableDictionary_NonRetaining_Zeroing dictionary] retain];
 	
 	return self;
 }

@@ -47,7 +47,10 @@
 	NSMutableArray * clauses = [NSMutableArray array];
 	
 	for (int i = 0; i < keyNames.count && i < self.count; i++)
-		[clauses addObject:[NSString stringWithFormat:@"[%@] = '%@'", keyNames[i], self[i]]];
+		if ([self[i] isKindOfClass:NSNull.class])
+			[clauses addObject:[NSString stringWithFormat:@"[%@] IS NULL", keyNames[i]]];
+		else
+			[clauses addObject:[NSString stringWithFormat:@"[%@] = '%@'", keyNames[i], self[i]]];
 	
 	return [clauses componentsJoinedByString:@" AND "];
 }

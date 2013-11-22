@@ -150,4 +150,26 @@ static NSAutoreleasePool * pool = nil;
 		STFail(@"Entities for same key are not identical");
 }
 
+- (void)testRowNonpersistance
+{
+	NSDictionary * rows;
+	object_getInstanceVariable([[CORM defaultStore].governor createTable:@"Track"], "_rows", (void **)&rows);
+	
+	if (rows[@(10)])
+		STFail(@"Can't run test, dictionary already contains value");
+	
+	Track * track;
+	@autoreleasepool {
+		track = [Track entityForKey:@(10)];
+		if (!track)
+			STFail(@"Failed to create Track entity for key 10");
+		
+		if (!rows[@(10)])
+			STFail(@"Result object is not in dictionary");
+	}
+	
+	if (rows[@(10)])
+		STFail(@"Row value has not been released");
+}
+
 @end

@@ -13,6 +13,7 @@
 #import "CORMStore.h"
 #import "CORMKey.h"
 #import "CORMEntityDict.h"
+#import "CORMEntityProxy.h"
 
 #import <TypeExtensions/NSString+isEqualToStringIgnoreCase.h>
 #import <TypeExtensions/NSObject+associatedObject.h>
@@ -23,23 +24,25 @@
 
 #import <objc/runtime.h>
 
-@interface _Proxy_BoundClass_Pair : NSObject
+@interface _BoundObjectData : NSObject
 
-@property (retain) id proxy, object;
+@property (readonly) id proxy, object;
+@property (readonly) NSArray * names;
 
-- (id)initWithProxy:(id<NSObject>)proxy andObject:(id<NSObject>)object;
+- (id)initWithProxy:(id<NSObject>)proxy andObject:(id<NSObject>)object names:(NSArray *)names;
 
 @end
 
-@implementation _Proxy_BoundClass_Pair
+@implementation _BoundObjectData
 
-- (id)initWithProxy:(id<NSObject>)proxy andObject:(id<NSObject>)object
+- (id)initWithProxy:(id<NSObject>)proxy andObject:(id<NSObject>)object names:(NSArray *)names
 {
 	if (!(self = [super init]))
 		return nil;
 	
 	_proxy = proxy.retain;
 	_object = object.retain;
+	_names = names.copy;
 	
 	return self;
 }
@@ -55,7 +58,7 @@
 	if (![object isKindOfClass:self.class])
 		return [self.object isEqual:object];
 	
-	_Proxy_BoundClass_Pair * other = (_Proxy_BoundClass_Pair *)object;
+	_BoundObjectData * other = (_BoundObjectData *)object;
 	
 	if (!self.object && !other.object)
 		return YES;
@@ -67,6 +70,7 @@
 {
 	[_proxy release];
 	[_object release];
+	[_names release];
 	
 	[super dealloc];
 }
@@ -81,13 +85,18 @@
 
 + (void)initialize
 {
-	if (![self className])
+	NSString * className = NSStringFromClass(self);
+	
+	if (!className)
 		return;
 	
-	if ([[self className] hasPrefix:@"NSKVONotifying_"])
+	if ([className hasPrefix:@"NSKVONotifying_"])
 		return;
 	
-	if ([[self className] hasPrefix:@"DeallocListener_"])
+	if ([className hasPrefix:@"DeallocListener_"])
+		return;
+	
+	if ([className hasPrefix:@"DeallocNotifying_"])
 		return;
 	
 	[self registerWithDefaultStore];
@@ -148,51 +157,78 @@
 	return copy;
 }
 
+- (void)observeValueForForeignClassName:(NSString *)className propertyNames:(NSArray *)propNames {
+	NSString * prop = [self.class propertyNameForForeignKeyClassName:className];
+	
+	NSMutableArray * props = [NSMutableArray array];
+	for (NSString * propName in propNames) {
+		id value = [self valueForKey:propName];
+		if (value)
+			[props addObject:value];
+		else {
+			[self setNilValueForKey:prop];
+			return;
+		}
+	}
+	
+	Class theClass = NSClassFromString(className);
+	if (theClass && ![theClass conformsToProtocol:@protocol(CORMEntity)])
+		return;
+	
+	CORMStore * store = [self.class registeredFactory].store;
+	if (!theClass && !store.generateClasses)
+		return;
+	
+	if (!theClass)
+		if (!(theClass = [store generateClassForName:className]))
+			return;
+	
+	id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
+	if ([[obj class] isSubclassOfClass:CORMEntityProxy.class])
+		obj = ((CORMEntityProxy *)obj).entity;
+	
+	[self setValue:obj forKey:prop];
+}
+
+- (void)observeValueForKeyPathAndUpdateBoundObjects:(NSString *)keyPath
+{
+	for (_BoundObjectData * pair in _boundObjects)
+		[pair.object setValue:[self valueForKey:keyPath] forKey:[self.class mappedNameForPropertyName:keyPath]];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofBoundObject:(id)object
+{
+	[self setValue:[object valueForKey:keyPath] forKey:[self.class propertyNameForMappedName:keyPath]];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	static NSLock * lock = nil;
 	
-	NSArray * propNames = context;
-	if ([propNames isKindOfClass:NSArray.class]) {
-		NSString * className = [self.class classNameForForeignKeyPropertyNames:propNames];
-		Class theClass = NSClassFromString(className);
-		if (theClass && ![theClass conformsToProtocol:@protocol(CORMEntity)])
-			return;
-		
-		CORMStore * store = [self.class registeredFactory].store;
-		if (!theClass && !store.generateClasses)
-			return;
-		
-		if (!theClass)
-			if (!(theClass = [store generateClassForName:className]))
-				return;
-		
-		NSMutableArray * props = [NSMutableArray array];
-		for (NSString * propName in propNames)
-			[props addObject:[self valueForKey:propName]];
-		
-		id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
-		NSString * prop = [self.class propertyNameForForeignKeyClassName:className];
-		[self setValue:obj forKey:prop];
-		
-		return;
-	}
-	
 	if (!lock)
 		lock = [[NSLock alloc] init];
 	
-	if ([_boundObjects indexOfObjectPassingTest:(^ BOOL (id obj, NSUInteger idx, BOOL *stop) { return *stop = [obj isEqual:object]; })] != NSNotFound) {
-		if ([lock tryLock]) {
-			[self setValue:[object valueForKey:keyPath] forKey:[self.class propertyNameForMappedName:keyPath]];
-			[lock unlock];
+	if (object == self) {
+		for (NSString * className in self.class.mappedForeignKeyClassNames) {
+			NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
+			for (NSString * propertyName in propNames)
+				if ([propertyName isEqualToStringIgnoreCase:keyPath]) {
+					[self observeValueForForeignClassName:className propertyNames:propNames];
+					return;
+				}
 		}
-		return;
+		
+		if ([lock tryLock]) {
+			[self observeValueForKeyPathAndUpdateBoundObjects:keyPath];
+			[lock unlock];
+			return;
+		}
 	}
 	
-	if (object == self) {
+	_BoundObjectData * comp = [[[_BoundObjectData alloc] initWithProxy:nil andObject:object names:nil] autorelease];
+	if ([_boundObjects containsObject:comp]) {
 		if ([lock tryLock]) {
-			for (_Proxy_BoundClass_Pair * pair in _boundObjects)
-				[pair.object setValue:[self valueForKey:keyPath] forKey:[self.class mappedNameForPropertyName:keyPath]];
+			[self observeValueForKeyPath:keyPath ofBoundObject:object];
 			[lock unlock];
 		}
 		return;
@@ -223,7 +259,7 @@
 	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
 		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
 		for (NSString * propName in propNames)
-			[self addObserver:self forKeyPath:propName options:0 context:propNames];
+			[self addObserver:self forKeyPath:propName options:0 context:nil];
 	}
 	
 	return self;
@@ -232,13 +268,14 @@
 - (void)bindToObject:(id)obj
 {
 	id proxy = self.zeroingWeakReferenceProxy;
-	[_boundObjects addObject:[[_Proxy_BoundClass_Pair alloc] initWithProxy:proxy andObject:obj]];
 	
 	id mappedNames;
 	if ([obj respondsToSelector:@selector(allKeys)])
 		mappedNames = [obj allKeys];
 	else
 		mappedNames = [self.class mappedNames];
+	
+	[_boundObjects addObject:[[_BoundObjectData alloc] initWithProxy:proxy andObject:obj names:mappedNames]];
 	
 	for (NSString * mappedName in mappedNames) {
 		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
@@ -253,13 +290,14 @@
 - (void)bindObjectToSelf:(id)obj
 {
 	id proxy = self.zeroingWeakReferenceProxy;
-	[_boundObjects addObject:[[_Proxy_BoundClass_Pair alloc] initWithProxy:proxy andObject:obj]];
 	
 	id mappedNames;
 	if ([obj respondsToSelector:@selector(allKeys)])
 		mappedNames = [obj allKeys];
 	else
 		mappedNames = [self.class mappedNames];
+	
+	[_boundObjects addObject:[[_BoundObjectData alloc] initWithProxy:proxy andObject:obj names:mappedNames]];
 	
 	for (NSString * mappedName in mappedNames) {
 		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
@@ -302,31 +340,29 @@
 	if (!_valid)
 		return;
 	
-	for (NSString * mappedName in [self.class mappedNames]) {
-		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
-		
-		for (_Proxy_BoundClass_Pair * pair in _boundObjects) {
-			[pair.object removeObserver:pair.proxy forKeyPath:mappedName];
-			[self removeObserver:self forKeyPath:propertyName];
-		}
-		
-		[self setValue:nil forKey:propertyName];
+	for (_BoundObjectData * obj in _boundObjects) {
+		for (NSString * name in obj.names)
+			[obj.object removeObserver:obj.proxy forKeyPath:name context:nil];
+		for (NSString * mappedName in [self.class mappedNames])
+			[self removeObserver:self forKeyPath:[self.class propertyNameForMappedName:mappedName] context:nil];
 	}
-	
 	[_boundObjects release];
 	_boundObjects = nil;
+	
+	for (NSString * mappedName in [self.class mappedNames])
+		[self setValue:nil forKey:[self.class propertyNameForMappedName:mappedName]];
+	
+	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
+		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
+		for (NSString * propName in propNames)
+			[self removeObserver:self forKeyPath:propName context:nil];
+	}
 	
 	_valid = NO;
 }
 
 - (void)dealloc
 {
-	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
-		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
-		for (NSString * propName in propNames)
-			[self removeObserver:self forKeyPath:propName context:propNames];
-	}
-	
 	[self invalidate];
 	
 	[super dealloc];
@@ -397,8 +433,15 @@ throw:
 		
 		free(properties);
 		
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-method-access"
+		if ([(NSObject *)self respondsToSelector:@selector(excludedPropertyNames)])
+			for (NSString * excludedName in (NSArray *)[self excludedPropertyNames])
+				[_names removeObject:excludedName];
+#pragma clang diagnostic pop
+		
 		for (NSString * className in [self mappedForeignKeyClassNames])
-			[_names removeObject:[self.class propertyNameForForeignKeyClassName:className]];
+			[_names removeObject:[self propertyNameForForeignKeyClassName:className]];
 		
 		names = [NSArray arrayWithArray:_names];
 		[(NSObject *)self setAssociatedObject:names forSelector:_cmd];
