@@ -16,14 +16,20 @@
 @protocol CORMFactory;
 @class CORMStore;
 
-@interface CORMEntityImpl : NSObject <CORMEntity>
+@interface CORMEntityImpl : NSObject
+
++ (BOOL)propertyNamesAreCaseSensitive;
+
+@end
+
+@interface CORMEntityImpl (Registration)
 
 + (void)registerWithDefaultStore;
 + (void)registerWithStore:(CORMStore *)store;
 + (id<CORMFactory>)registeredFactory;
 
-+ (BOOL)propertyNamesAreCaseSensitive;
+@end
 
-- (void)invalidate;
+@interface CORMEntityImpl (ConcreteEntity) <CORMEntity>
 
 @end

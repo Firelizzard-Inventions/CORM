@@ -6,20 +6,24 @@
 //  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
 //
 
-#import "CORMTests.h"
-
+// frameworks
+#import <XCTest/XCTest.h>
 #import <TypeExtensions/TypeExtensions.h>
 #import <CORM/CORM.h>
-#import <CORM/CORMStore.h>
 #import <ORDA/ORDA.h>
 #import <ORDASQLite/ORDASQLite.h>
 
-#import "CORMEntityImpl.h"
+// private CORM classes
 #import "CORMEntityProxy.h"
 #import "CORMEntityDict.h"
 
+// test classes
 #import "Track.h"
 #import "Album.h"
+
+@interface CORMTests : XCTestCase
+
+@end
 
 @implementation CORMTests
 
@@ -61,7 +65,7 @@ static NSAutoreleasePool * pool = nil;
 	[super setUp];
 	
 	if (![CORM defaultStore])
-		STFail(@"The default store is nil, cannot continue");
+		XCTFail(@"The default store is nil, cannot continue");
 }
 
 - (void)testBinding
@@ -70,44 +74,44 @@ static NSAutoreleasePool * pool = nil;
 	
 	Class Genre = [store generateClassForName:@"Genre"];
 	if (!Genre)
-		STFail(@"Failed to create class");
+		XCTFail(@"Failed to create class");
 	
-	id<CORMEntity> entity = [[Genre alloc] initByBindingTo:data];
+	id<CORMEntity> entity = [Genre unboundEntity];
 	if (!entity)
-		STFail(@"Failed to create entity");
+		XCTFail(@"Failed to create entity");
+	
+	[entity bindTo:data withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
 	
 	data[@"GenreId"] = @(2);
 	if (![@(2) isEqual:[(NSObject *)entity valueForKey:@"GenreId"]])
-		STFail(@"Bindings failure: altering source did not alter entity");
+		XCTFail(@"Bindings failure: altering source did not alter entity");
 	
 	[data release];
 	
 	[(NSObject *)entity setValue:@"NotRock" forKey:@"Name"];
 	if (![@"NotRock" isEqual:data[@"Name"]])
-		STFail(@"Bindings failure: altering entity did not alter source");
-	
-	[entity release];
+		XCTFail(@"Bindings failure: altering entity did not alter source");
 }
 
 - (void)testEntityDict
 {
 	Class Genre = [store generateClassForName:@"Genre"];
 	if (!Genre)
-		STFail(@"Failed to create Genre subclass of CORMEntityDict");
+		XCTFail(@"Failed to create Genre subclass of CORMEntityDict");
 	
 	id<CORMEntity> genre = [Genre entityForKey:@(1)];
 	if (!genre)
-		STFail(@"Failed to create Genre (Dict) entity for key 1");
+		XCTFail(@"Failed to create Genre (Dict) entity for key 1");
 	
 	if (![@(1) isEqual:[(NSObject *)genre valueForKey:@"GenreId"]] || ![@"Rock" isEqual:[(NSObject *)genre valueForKey:@"Name"]])
-		STFail(@"Retreived object had bad values");
+		XCTFail(@"Retreived object had bad values");
 }
 
 - (void)testEntityForKey
 {
 	Track * track = [Track entityForKey:@"1"];
 	if (!track)
-		STFail(@"Failed to create Track entity for key 1");
+		XCTFail(@"Failed to create Track entity for key 1");
 }
 
 - (void)testForeignKeys
@@ -115,19 +119,19 @@ static NSAutoreleasePool * pool = nil;
 	Track * track = [Track entityForKey:@(3)];
 	
 	if (!track)
-		STFail(@"Failed to create entities");
+		XCTFail(@"Failed to create entities");
 	
 	if (!track.album)
-		STFail(@"Failed to retreive track -> album");
+		XCTFail(@"Failed to retreive track -> album");
 	
 	if (!track.album.artist)
-		STFail(@"Failed to retreive track -> album -> artist");
+		XCTFail(@"Failed to retreive track -> album -> artist");
 	
 	if (!track.genre)
-		STFail(@"Failed to retreive track -> genre");
+		XCTFail(@"Failed to retreive track -> genre");
 	
 	if (!track.mediaType)
-		STFail(@"Failed to retreive track -> mediaType");
+		XCTFail(@"Failed to retreive track -> mediaType");
 }
 
 - (void)testNonRedundancyAndProxies
@@ -137,17 +141,17 @@ static NSAutoreleasePool * pool = nil;
 	Album * album = [Album entityForKey:@(2)];
 	
 	if (!track1 || !track2 || !album)
-		STFail(@"Failed to create entities");
+		XCTFail(@"Failed to create entities");
 	
 	if (track1 != track2)
-		STFail(@"Entities for same key are not identical");
+		XCTFail(@"Entities for same key are not identical");
 	
 	Album * t1album = track1.album;
 	if ([t1album.class isSubclassOfClass:CORMEntityProxy.class])
 		t1album = (Album *)((CORMEntityProxy *)t1album).entity;
 	
 	if (t1album != album)
-		STFail(@"Entities for same key are not identical");
+		XCTFail(@"Entities for same key are not identical");
 }
 
 - (void)testRowNonpersistance
@@ -156,20 +160,20 @@ static NSAutoreleasePool * pool = nil;
 	object_getInstanceVariable([[CORM defaultStore].governor createTable:@"Track"], "_rows", (void **)&rows);
 	
 	if (rows[@(10)])
-		STFail(@"Can't run test, dictionary already contains value");
+		XCTFail(@"Can't run test, dictionary already contains value");
 	
 	Track * track;
 	@autoreleasepool {
 		track = [Track entityForKey:@(10)];
 		if (!track)
-			STFail(@"Failed to create Track entity for key 10");
+			XCTFail(@"Failed to create Track entity for key 10");
 		
 		if (!rows[@(10)])
-			STFail(@"Result object is not in dictionary");
+			XCTFail(@"Result object is not in dictionary");
 	}
 	
 	if (rows[@(10)])
-		STFail(@"Row value has not been released");
+		XCTFail(@"Row value has not been released");
 }
 
 @end

@@ -5,3 +5,13 @@
 #ifdef __OBJC__
 	#import <Cocoa/Cocoa.h>
 #endif
+
+//_Pragma("clang diagnostic push") \
+
+#define _PRAGMA(arg) _Pragma(#arg)
+
+#define SUPPRESS(name) \
+	_PRAGMA(clang diagnostic push) \
+	_PRAGMA(clang diagnostic ignored #name)
+
+#define UNSUPPRESS() _PRAGMA(clang diagnostic pop)

@@ -9,20 +9,18 @@
 /* Begin PBXBuildFile section */
 		423ABAEB17A32238004F289D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAEA17A32238004F289D /* Cocoa.framework */; };
 		423ABAF517A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABAF317A32238004F289D /* InfoPlist.strings */; };
-		423ABAF917A32238004F289D /* CORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORM.m */; };
-		423ABB0117A32238004F289D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABB0017A32238004F289D /* SenTestingKit.framework */; };
-		423ABB0217A32238004F289D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAEA17A32238004F289D /* Cocoa.framework */; };
-		423ABB0B17A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABB0917A32238004F289D /* InfoPlist.strings */; };
-		423ABB0E17A32238004F289D /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
+		423ABAF917A32238004F289D /* CORMDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORMDefaults.m */; };
 		424277BD17B842EF00E31F0C /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42909B9A17B31A4800DBD505 /* ORDA.framework */; };
 		4257E7B117CAD52300ACF70C /* TypeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4257E7B017CAD52300ACF70C /* TypeExtensions.framework */; };
-		42877C9D183D8E3200967368 /* CORM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAE717A32238004F289D /* CORM.framework */; };
-		42B00B7517C6680F000B13E7 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABAF717A32238004F289D /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42B00C1F17C6BC4E000B13E7 /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C1E17C6BC4E000B13E7 /* Album.m */; };
-		42B00C2217C6BC58000B13E7 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C2117C6BC58000B13E7 /* Track.m */; };
-		42B00C2317C6BC6D000B13E7 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42909B9A17B31A4800DBD505 /* ORDA.framework */; };
-		42B00C2417C6BC6D000B13E7 /* ORDASQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */; };
-		42B00C2617C6BC75000B13E7 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0617C66DFB000B13E7 /* libsqlite3.0.dylib */; };
+		428D034F184836AC00303ED4 /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
+		42AF74011842A8F10006FFF2 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AF74001842A8950006FFF2 /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EC295A1840471E00AA5BDA /* XCTest.framework */; };
+		42AF74161842AA880006FFF2 /* CORM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAE717A32238004F289D /* CORM.framework */; };
+		42AF74171842AA8C0006FFF2 /* ORDASQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */; };
+		42AF74181842AA960006FFF2 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42909B9A17B31A4800DBD505 /* ORDA.framework */; };
+		42AF741A1842AAA10006FFF2 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C2117C6BC58000B13E7 /* Track.m */; };
+		42AF741B1842AAA40006FFF2 /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B00C1E17C6BC4E000B13E7 /* Album.m */; };
+		42B00B7517C6680F000B13E7 /* CORMDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 423ABAF717A32238004F289D /* CORMDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42B00C3017C6C649000B13E7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C2B17C6C543000B13E7 /* README.md */; };
 		42B00C3217C6C652000B13E7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C3117C6C652000B13E7 /* LICENSE */; };
 		42F326A617CEBA6A00963954 /* CORMEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326A517CEBA6A00963954 /* CORMEntity.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -43,13 +41,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		423ABB0317A32238004F289D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 423ABADE17A32238004F289D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 423ABAE617A32238004F289D;
-			remoteInfo = CORM;
-		};
 		42877C9B183D8DD200967368 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42909B9417B31A4700DBD505 /* ORDA.xcodeproj */;
@@ -71,6 +62,13 @@
 			remoteGlobalIDString = 42909B7C17B31A4700DBD505;
 			remoteInfo = ORDATests;
 		};
+		42AF74111842A96A0006FFF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 423ABADE17A32238004F289D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 423ABAE617A32238004F289D;
+			remoteInfo = CORM;
+		};
 		42B00C0317C66DE3000B13E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42909B9417B31A4700DBD505 /* ORDA.xcodeproj */;
@@ -89,16 +87,16 @@
 		423ABAF217A32238004F289D /* CORM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CORM-Info.plist"; sourceTree = "<group>"; };
 		423ABAF417A32238004F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		423ABAF617A32238004F289D /* CORM-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CORM-Prefix.pch"; sourceTree = "<group>"; };
-		423ABAF717A32238004F289D /* CORM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORM.h; sourceTree = "<group>"; };
-		423ABAF817A32238004F289D /* CORM.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CORM.m; sourceTree = "<group>"; };
-		423ABAFF17A32238004F289D /* CORMTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CORMTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		423ABB0017A32238004F289D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		423ABAF717A32238004F289D /* CORMDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORMDefaults.h; sourceTree = "<group>"; };
+		423ABAF817A32238004F289D /* CORMDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CORMDefaults.m; sourceTree = "<group>"; };
 		423ABB0817A32238004F289D /* CORMTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CORMTests-Info.plist"; sourceTree = "<group>"; };
 		423ABB0A17A32238004F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		423ABB0C17A32238004F289D /* CORMTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORMTests.h; sourceTree = "<group>"; };
 		423ABB0D17A32238004F289D /* CORMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CORMTests.m; sourceTree = "<group>"; };
 		4257E7B017CAD52300ACF70C /* TypeExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TypeExtensions.framework; path = DerivedData/CORM/Build/Products/Debug/TypeExtensions.framework; sourceTree = "<group>"; };
+		428D033918440E6300303ED4 /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CORMEntityImpl+Private.h"; path = "Implementation/CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
 		42909B9417B31A4700DBD505 /* ORDA.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ORDA.xcodeproj; path = Include/ORDA/ORDA.xcodeproj; sourceTree = "<group>"; };
+		42AF74001842A8950006FFF2 /* CORM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORM.h; sourceTree = "<group>"; };
+		42AF74061842A9690006FFF2 /* CORMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CORMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B00B6617C663CC000B13E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		42B00C0617C66DFB000B13E7 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		42B00C1D17C6BC4E000B13E7 /* Album.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Album.h; sourceTree = "<group>"; };
@@ -107,6 +105,7 @@
 		42B00C2117C6BC58000B13E7 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		42B00C2B17C6C543000B13E7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		42B00C3117C6C652000B13E7 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		42EC295A1840471E00AA5BDA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		42F326A517CEBA6A00963954 /* CORMEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntity.h; path = Specification/CORMEntity.h; sourceTree = "<group>"; };
 		42F326A717CEBA7300963954 /* CORMEntityDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityDict.h; path = Implementation/CORMEntityDict.h; sourceTree = "<group>"; };
 		42F326A817CEBA7300963954 /* CORMEntityDict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityDict.m; path = Implementation/CORMEntityDict.m; sourceTree = "<group>"; };
@@ -135,16 +134,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		423ABAFB17A32238004F289D /* Frameworks */ = {
+		42AF74031842A9690006FFF2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42877C9D183D8E3200967368 /* CORM.framework in Frameworks */,
-				42B00C2617C6BC75000B13E7 /* libsqlite3.0.dylib in Frameworks */,
-				42B00C2317C6BC6D000B13E7 /* ORDA.framework in Frameworks */,
-				42B00C2417C6BC6D000B13E7 /* ORDASQLite.framework in Frameworks */,
-				423ABB0117A32238004F289D /* SenTestingKit.framework in Frameworks */,
-				423ABB0217A32238004F289D /* Cocoa.framework in Frameworks */,
+				42AF74181842AA960006FFF2 /* ORDA.framework in Frameworks */,
+				42AF74171842AA8C0006FFF2 /* ORDASQLite.framework in Frameworks */,
+				42AF74161842AA880006FFF2 /* CORM.framework in Frameworks */,
+				42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				423ABAE717A32238004F289D /* CORM.framework */,
-				423ABAFF17A32238004F289D /* CORMTests.octest */,
+				42AF74061842A9690006FFF2 /* CORMTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -177,9 +174,9 @@
 		423ABAE917A32238004F289D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				42EC295A1840471E00AA5BDA /* XCTest.framework */,
 				4257E7B017CAD52300ACF70C /* TypeExtensions.framework */,
 				423ABAEA17A32238004F289D /* Cocoa.framework */,
-				423ABB0017A32238004F289D /* SenTestingKit.framework */,
 				42B00B6617C663CC000B13E7 /* Foundation.framework */,
 				423ABAEC17A32238004F289D /* Other Frameworks */,
 			);
@@ -199,8 +196,9 @@
 		423ABAF017A32238004F289D /* CORM */ = {
 			isa = PBXGroup;
 			children = (
-				423ABAF717A32238004F289D /* CORM.h */,
-				423ABAF817A32238004F289D /* CORM.m */,
+				42AF74001842A8950006FFF2 /* CORM.h */,
+				423ABAF717A32238004F289D /* CORMDefaults.h */,
+				423ABAF817A32238004F289D /* CORMDefaults.m */,
 				42F326A317CEB9F000963954 /* Specification */,
 				42F326A417CEB9FB00963954 /* Implementation */,
 				423ABAF117A32238004F289D /* Supporting Files */,
@@ -225,7 +223,6 @@
 				42B00C2117C6BC58000B13E7 /* Track.m */,
 				42B00C1D17C6BC4E000B13E7 /* Album.h */,
 				42B00C1E17C6BC4E000B13E7 /* Album.m */,
-				423ABB0C17A32238004F289D /* CORMTests.h */,
 				423ABB0D17A32238004F289D /* CORMTests.m */,
 				423ABB0717A32238004F289D /* Supporting Files */,
 			);
@@ -246,7 +243,7 @@
 			children = (
 				42909B9A17B31A4800DBD505 /* ORDA.framework */,
 				42B00C0417C66DE3000B13E7 /* ORDASQLite.framework */,
-				42909B9C17B31A4800DBD505 /* ORDATests.octest */,
+				42909B9C17B31A4800DBD505 /* ORDASQLiteTests.xctest */,
 				42877C9C183D8DD200967368 /* ORDAMySQL.framework */,
 			);
 			name = Products;
@@ -283,6 +280,7 @@
 				42F326A717CEBA7300963954 /* CORMEntityDict.h */,
 				42F326A817CEBA7300963954 /* CORMEntityDict.m */,
 				42F326A917CEBA7300963954 /* CORMEntityImpl.h */,
+				428D033918440E6300303ED4 /* CORMEntityImpl+Private.h */,
 				42F326AA17CEBA7300963954 /* CORMEntityImpl.m */,
 				42F326AC17CEBA7300963954 /* CORMEntityProxy.h */,
 				42F326AD17CEBA7300963954 /* CORMEntityProxy.m */,
@@ -297,7 +295,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42B00B7517C6680F000B13E7 /* CORM.h in Headers */,
+				42AF74011842A8F10006FFF2 /* CORM.h in Headers */,
+				42B00B7517C6680F000B13E7 /* CORMDefaults.h in Headers */,
 				42F326C117CEBA7300963954 /* CORMStore.h in Headers */,
 				42F326C417CEBB7200963954 /* CORMFactory.h in Headers */,
 				42F326BF17CEBA7300963954 /* CORMKey.h in Headers */,
@@ -331,24 +330,23 @@
 			productReference = 423ABAE717A32238004F289D /* CORM.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		423ABAFE17A32238004F289D /* CORMTests */ = {
+		42AF74051842A9690006FFF2 /* CORMTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 423ABB1417A32238004F289D /* Build configuration list for PBXNativeTarget "CORMTests" */;
+			buildConfigurationList = 42AF74131842A96A0006FFF2 /* Build configuration list for PBXNativeTarget "CORMTests" */;
 			buildPhases = (
-				423ABAFA17A32238004F289D /* Sources */,
-				423ABAFB17A32238004F289D /* Frameworks */,
-				423ABAFC17A32238004F289D /* Resources */,
-				423ABAFD17A32238004F289D /* Run Script */,
+				42AF74021842A9690006FFF2 /* Sources */,
+				42AF74031842A9690006FFF2 /* Frameworks */,
+				42AF74041842A9690006FFF2 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				423ABB0417A32238004F289D /* PBXTargetDependency */,
+				42AF74121842A96A0006FFF2 /* PBXTargetDependency */,
 			);
 			name = CORMTests;
 			productName = CORMTests;
-			productReference = 423ABAFF17A32238004F289D /* CORMTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 42AF74061842A9690006FFF2 /* CORMTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -358,6 +356,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Firelizzard Inventions";
+				TargetAttributes = {
+					42AF74051842A9690006FFF2 = {
+						TestTargetID = 423ABAE617A32238004F289D;
+					};
+				};
 			};
 			buildConfigurationList = 423ABAE117A32238004F289D /* Build configuration list for PBXProject "CORM" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -378,7 +381,7 @@
 			projectRoot = "";
 			targets = (
 				423ABAE617A32238004F289D /* CORM */,
-				423ABAFE17A32238004F289D /* CORMTests */,
+				42AF74051842A9690006FFF2 /* CORMTests */,
 			);
 		};
 /* End PBXProject section */
@@ -398,10 +401,10 @@
 			remoteRef = 42909B9917B31A4800DBD505 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		42909B9C17B31A4800DBD505 /* ORDATests.octest */ = {
+		42909B9C17B31A4800DBD505 /* ORDASQLiteTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = ORDASQLiteTests.octest;
+			path = ORDASQLiteTests.xctest;
 			remoteRef = 42909B9B17B31A4800DBD505 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -425,39 +428,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		423ABAFC17A32238004F289D /* Resources */ = {
+		42AF74041842A9690006FFF2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				423ABB0B17A32238004F289D /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		423ABAFD17A32238004F289D /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		423ABAE217A32238004F289D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				423ABAF917A32238004F289D /* CORM.m in Sources */,
+				423ABAF917A32238004F289D /* CORMDefaults.m in Sources */,
 				42F326B617CEBA7300963954 /* CORMEntityDict.m in Sources */,
 				42F326B817CEBA7300963954 /* CORMEntityImpl.m in Sources */,
 				42F326BB17CEBA7300963954 /* CORMEntityProxy.m in Sources */,
@@ -467,23 +452,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		423ABAFA17A32238004F289D /* Sources */ = {
+		42AF74021842A9690006FFF2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				423ABB0E17A32238004F289D /* CORMTests.m in Sources */,
-				42B00C1F17C6BC4E000B13E7 /* Album.m in Sources */,
-				42B00C2217C6BC58000B13E7 /* Track.m in Sources */,
+				428D034F184836AC00303ED4 /* CORMTests.m in Sources */,
+				42AF741B1842AAA40006FFF2 /* Album.m in Sources */,
+				42AF741A1842AAA10006FFF2 /* Track.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		423ABB0417A32238004F289D /* PBXTargetDependency */ = {
+		42AF74121842A96A0006FFF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 423ABAE617A32238004F289D /* CORM */;
-			targetProxy = 423ABB0317A32238004F289D /* PBXContainerItemProxy */;
+			targetProxy = 42AF74111842A96A0006FFF2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -510,7 +495,7 @@
 		423ABB0F17A32238004F289D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -541,7 +526,7 @@
 		423ABB1017A32238004F289D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -600,29 +585,52 @@
 			};
 			name = Release;
 		};
-		423ABB1517A32238004F289D /* Debug */ = {
+		42AF74141842A96A0006FFF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CORM/CORM-Prefix.pch";
+				GCC_PREFIX_HEADER = "CORMTests/CORMTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "CORMTests/CORMTests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		423ABB1617A32238004F289D /* Release */ = {
+		42AF74151842A96A0006FFF2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CORM/CORM-Prefix.pch";
+				GCC_PREFIX_HEADER = "CORMTests/CORMTests-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "CORMTests/CORMTests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -647,11 +655,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		423ABB1417A32238004F289D /* Build configuration list for PBXNativeTarget "CORMTests" */ = {
+		42AF74131842A96A0006FFF2 /* Build configuration list for PBXNativeTarget "CORMTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				423ABB1517A32238004F289D /* Debug */,
-				423ABB1617A32238004F289D /* Release */,
+				42AF74141842A96A0006FFF2 /* Debug */,
+				42AF74151842A96A0006FFF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -8,15 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+	kCORMEntityBindingOptionSetReceiverFromObject = 0x01,
+	kCORMEntityBindingOptionSetObjectFromReceiver = 0x02
+} CORMEntityBindingOption;
+
+@class CORMKey;
+
 @protocol CORMEntity <NSObject>
 
-+ (id<CORMEntity>)entity;
++ (id<CORMEntity>)unboundEntity;
 + (id<CORMEntity>)entityForKey:(id)key;
-+ (id<CORMEntity>)entityByBindingTo:(id)obj;
-- (id)initByBindingTo:(id)obj;
++ (id<CORMEntity>)createEntityWithData:(id)data;
++ (NSArray *)findEntitiesForData:(id)data;
++ (NSArray *)findEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
-- (void)bindToObject:(id)obj;
-- (void)bindObjectToSelf:(id)obj;
+- (CORMKey *)key;
+- (void)bindTo:(id)object withOptions:(CORMEntityBindingOption)options;
+
+- (void)delete;
++ (void)deleteEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
 + (NSString *)mappedClassName;
 
@@ -30,5 +41,13 @@
 + (NSString *)classNameForForeignKeyPropertyNames:(NSArray *)propNames;
 + (NSArray *)propertyNamesForForeignKeyClassName:(NSString *)className;
 + (NSString *)propertyNameForForeignKeyClassName:(NSString *)className;
+
++ (BOOL)stringIsMappedKey:(NSString *)string;
++ (BOOL)stringIsMappedName:(NSString *)string;
++ (BOOL)stringIsMappedForeignKeyClassName:(NSString *)string;
+
++ (BOOL)stringIsKeyProperty:(NSString *)string;
++ (BOOL)stringIsMappedProperty:(NSString *)string;
++ (BOOL)stringIsForeignKeyProperty:(NSString *)string;
 
 @end

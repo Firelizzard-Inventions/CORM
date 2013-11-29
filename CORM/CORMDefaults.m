@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
 //
 
-#import "CORM.h"
+#import "CORMDefaults.h"
 
 #import "CORMStore.h"
 

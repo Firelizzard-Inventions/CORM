@@ -2,17 +2,12 @@
 //  CORM.h
 //  CORM
 //
-//  Created by Ethan Reesor on 7/26/13.
-//  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
+//  Created by Ethan Reesor on 11/24/13.
+//  Copyright (c) 2013 Firelizzard Inventions. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@class CORMStore;
-
-@interface CORM : NSObject
-
-+ (CORMStore *)defaultStore;
-+ (void)setDefaultStore:(CORMStore *)store;
-
-@end
+#import "CORMDefaults.h"
+#import "CORMEntity.h"
+#import "CORMFactory.h"
+#import "CORMKey.h"
+#import "CORMStore.h"

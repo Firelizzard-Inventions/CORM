@@ -22,44 +22,17 @@
 #import "CORMEntityProxy.h"
 
 @implementation CORMFactoryImpl {
-	NSMutableDictionary * data;
+	NSMutableDictionary * _data;
 }
 
 - (id)valueForKey:(NSString *)key
 {
-	return data[[CORMKey keyWithObject:key]];
+	return _data[[CORMKey keyWithObject:key]];
 }
 
 - (id)valueForKeyPath:(NSString *)keyPath
 {
-	return [data valueForKeyPath:keyPath];
-}
-
-- (id<CORMEntity>)entityForKey:(id)key
-{
-	key = [CORMKey keyWithObject:key];
-	
-	if (data[key])
-		return data[key];
-	
-	id<ORDATableResult> result = [self.table selectWhere:@"%@", [key whereClauseForEntityType:self.type]];
-	if (result.isError)
-		return nil;
-	if (result.count < 1)
-		return nil;
-	
-	NSObject<CORMEntity> * entity = [self.type entityByBindingTo:result[0]];
-	
-	data[key] = entity;
-	return entity;
-}
-
-- (id<CORMEntity>)entityOrProxyForKey:(id)key
-{
-	if (data[key])
-		return data[key];
-	
-	return [CORMEntityProxy entityProxyWithKey:key forFactory:self];
+	return [_data valueForKeyPath:keyPath];
 }
 
 @end
@@ -90,18 +63,130 @@
 	if (!self.table)
 		return nil;
 	
-	data = [[NSMutableDictionary_NonRetaining_Zeroing dictionary] retain];
+	_data = [[NSMutableDictionary_NonRetaining_Zeroing dictionary] retain];
 	
 	return self;
 }
 
 - (void)dealloc
 {
-	[data release];
+	[_data release];
 	[_table release];
 	[_store release];
 	
 	[super dealloc];
+}
+
+@end
+
+@implementation CORMFactoryImpl (ConcreteFactory)
+
+#pragma mark Retreive
+
+- (id<CORMEntity>)entityForKey:(id)key
+{
+	key = [CORMKey keyWithObject:key];
+	
+	if (_data[key])
+		return _data[key];
+	
+	id<ORDATableResult> result = [self.table selectWhere:@"%@", [key whereClauseForEntityType:self.type]];
+	if (result.isError)
+		return nil;
+	if (result.count < 1)
+		return nil;
+	
+	NSObject<CORMEntity> * entity = [self.type unboundEntity];
+	[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
+	
+	_data[key] = entity;
+	return entity;
+}
+
+- (id<CORMEntity>)entityOrProxyForKey:(id)key
+{
+	if (_data[key])
+		return _data[key];
+	
+	return [CORMEntityProxy entityProxyWithKey:key forFactory:self];
+}
+
+#pragma mark Search
+
+- (NSArray *)findEntitiesForData:(id)data
+{
+	NSMutableArray * clauses = [NSMutableArray array];
+	
+	if ([data respondsToSelector:@selector(allKeys)]) {
+		for (NSString * name in [_data allKeys])
+			[clauses addObject:[NSString stringWithFormat:@"[%@] = '%@'", [self.type mappedNameForPropertyName:name], [_data valueForKey:name]]];
+	} else {
+		for (NSString * name in [self.type mappedNames])
+			[clauses addObject:[NSString stringWithFormat:@"[%@] = '%@'", name, [_data valueForKey:[self.type propertyNameForMappedName:name]]]];
+	}
+	
+	BOOL ignoreCase = NO;
+	SUPPRESS(-Wobjc-method-access)
+	if ([self.type respondsToSelector:@selector(propertyNamesAreCaseSensitive)])
+		ignoreCase = ![self.type propertyNamesAreCaseSensitive];
+	UNSUPPRESS()
+	
+	return [self findEntitiesWhere:[clauses componentsJoinedByString:@" AND "]];
+}
+
+- (NSArray *)findEntitiesWhere:(NSString *)clause
+{
+	id<ORDATableResult> results = [self.table selectWhere:@"%@", clause];
+	if (results.isError)
+		return nil;
+	if (results.count < 1)
+		return nil;
+	
+	NSMutableArray * entities = [NSMutableArray array];
+	
+	for (id result in results) {
+		id<CORMEntity> entity = [self.type unboundEntity];
+		[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
+		_data[entity.key] = entity;
+		[entities addObject:entity];
+	}
+	
+	return [NSArray arrayWithArray:entities];
+}
+
+#pragma mark Create
+
+- (id<CORMEntity>)createEntityWithData:(id)data
+{
+	BOOL ignoreCase = NO;
+	SUPPRESS(-Wobjc-method-access)
+	if ([self.type respondsToSelector:@selector(propertyNamesAreCaseSensitive)])
+		ignoreCase = ![self.type propertyNamesAreCaseSensitive];
+	UNSUPPRESS()
+	
+	id<ORDATableResult> result = [self.table insertValues:data ignoreCase:ignoreCase];
+	if (result.isError)
+		return nil;
+	if (result.count < 1)
+		return nil;
+	
+	id<CORMEntity> entity = [self.type unboundEntity];
+	[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
+	
+	_data[entity.key] = entity;
+	return entity;
+}
+
+#pragma mark Delete
+
+- (void)deleteEntityForKey:(CORMKey *)key
+{
+	[self deleteEntitiesWhere:[key whereClauseForEntityType:self.type]];
+}
+
+- (void)deleteEntitiesWhere:(NSString *)clause
+{
+	[self.table deleteWhere:@"%@", clause];
 }
 
 @end

@@ -15,10 +15,14 @@
 @protocol CORMEntity;
 @class CORMStore;
 
-@interface CORMFactoryImpl : NSObject <CORMFactory>
+@interface CORMFactoryImpl : NSObject
 
 @property (readonly) Class<CORMEntity> type;
 @property (readonly) id<ORDATable> table;
 @property (readonly) CORMStore * store;
+
+@end
+
+@interface CORMFactoryImpl (ConcreteFactory) <CORMFactory>
 
 @end

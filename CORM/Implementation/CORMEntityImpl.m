@@ -7,6 +7,7 @@
 //
 
 #import "CORMEntityImpl.h"
+#import "CORMEntityImpl+Private.h"
 
 #import "CORM.h"
 #import "CORMFactory.h"
@@ -15,23 +16,10 @@
 #import "CORMEntityDict.h"
 #import "CORMEntityProxy.h"
 
-#import <TypeExtensions/NSString+isEqualToStringIgnoreCase.h>
-#import <TypeExtensions/NSObject+associatedObject.h>
-#import <TypeExtensions/NSString+firstLetterCaseString.h>
-#import <TypeExtensions/NSObject+zeroingWeakReferenceProxy.h>
-#import <TypeExtensions/NSObject+DeallocListener.h>
-#import <TypeExtensions/NSMutableArray_NonRetaining_Zeroing.h>
+#import <TypeExtensions/TypeExtensions.h>
+#import <TypeExtensions/String.h>
 
 #import <objc/runtime.h>
-
-@interface _BoundObjectData : NSObject
-
-@property (readonly) id proxy, object;
-@property (readonly) NSArray * names;
-
-- (id)initWithProxy:(id<NSObject>)proxy andObject:(id<NSObject>)object names:(NSArray *)names;
-
-@end
 
 @implementation _BoundObjectData
 
@@ -77,8 +65,10 @@
 
 @end
 
+#pragma mark -
 
 @implementation CORMEntityImpl {
+	CORMKey * _key;
 	BOOL _valid;
 	NSMutableArray * _boundObjects;
 }
@@ -102,27 +92,45 @@
 	[self registerWithDefaultStore];
 }
 
-+ (void)registerWithDefaultStore
++ (BOOL)propertyNamesAreCaseSensitive
 {
-	[self registerWithStore:[CORM defaultStore]];
+	return YES;
 }
 
-+ (void)registerWithStore:(CORMStore *)store
++ (NSArray *)keyNamesForClassName:(NSString *)className
 {
-	[(NSObject *)self setAssociatedObject:[store registerFactoryForType:self] forSelector:@selector(registeredFactory)];
-}
-
-+ (id<CORMFactory>)registeredFactory
-{
-	if (![(NSObject *)self associatedObjectForSelector:_cmd])
-		[self registerWithDefaultStore];
+	NSMutableArray * keys = [NSMutableArray array];
 	
-	return [(NSObject *)self associatedObjectForSelector:_cmd];
+	NSString * keyID = @"id";
+	NSString * keyEntityID = [NSString stringWithFormat:@"%@%@", className, keyID];
+	NSString * keyEntity_ID = [NSString stringWithFormat:@"%@_%@", className, keyID];
+	
+	for (NSString * name in self.mappedNames)
+		if ([name isEqualToString:keyID ignoreCase:YES] ||
+			[name isEqualToString:keyEntityID ignoreCase:YES] ||
+			[name isEqualToString:keyEntity_ID ignoreCase:YES])
+			[keys addObject:name];
+	
+	return [NSArray arrayWithArray:keys];
 }
 
-+ (id<CORMEntity>)entityForKey:(id)key
+- (id)init
 {
-	return [[self registeredFactory] entityForKey:[CORMKey keyWithObject:key]];
+	if (!(self = [super init]))
+		return nil;
+	
+	_key = nil;
+	_boundObjects = @[].mutableCopy;
+	_valid = YES;
+	
+	[self startDeallocationNofitication];
+	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
+		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
+		for (NSString * propName in propNames)
+			[self addObserver:self forKeyPath:propName options:0 context:nil];
+	}
+	
+	return self;
 }
 
 - (NSString *)description
@@ -157,7 +165,90 @@
 	return copy;
 }
 
-- (void)observeValueForForeignClassName:(NSString *)className propertyNames:(NSArray *)propNames {
+- (void)setNilValueForKey:(NSString *)key
+{
+	SEL sel = NSSelectorFromString([NSString stringWithFormat:@"set%@:", key.firstLetterUppercaseString]);
+	
+	if (!sel)
+		[super setNilValueForKey:key];
+	
+	if (![self respondsToSelector:sel])
+		[super setNilValueForKey:key];
+	
+	[self performSelector:sel withObject:nil];
+}
+
+- (void)invalidate
+{
+	if (!_valid)
+		return;
+	
+	for (_BoundObjectData * obj in _boundObjects) {
+		for (NSString * name in obj.names)
+			[obj.object removeObserver:obj.proxy forKeyPath:name context:nil];
+		for (NSString * mappedName in [self.class mappedNames])
+			[self removeObserver:self forKeyPath:[self.class propertyNameForMappedName:mappedName] context:nil];
+	}
+	[_boundObjects release];
+	_boundObjects = nil;
+	
+	for (NSString * mappedName in [self.class mappedNames])
+		[self setValue:nil forKey:[self.class propertyNameForMappedName:mappedName]];
+	
+	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
+		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
+		for (NSString * propName in propNames)
+			[self removeObserver:self forKeyPath:propName context:nil];
+	}
+	
+	_valid = NO;
+}
+
+- (void)dealloc
+{
+	[self invalidate];
+	
+	[super dealloc];
+}
+
+@end
+
+#pragma mark -
+
+@implementation CORMEntityImpl (Registration)
+
++ (void)registerWithDefaultStore
+{
+	[self registerWithStore:[CORM defaultStore]];
+}
+
++ (void)registerWithStore:(CORMStore *)store
+{
+	[(NSObject *)self setAssociatedObject:[store registerFactoryForType:self] forSelector:@selector(registeredFactory)];
+}
+
++ (id<CORMFactory>)registeredFactory
+{
+	if (![(NSObject *)self associatedObjectForSelector:_cmd])
+		[self registerWithDefaultStore];
+	
+	return [(NSObject *)self associatedObjectForSelector:_cmd];
+}
+
+@end
+
+#pragma mark -
+
+@implementation CORMEntityImpl (Observation)
+
+- (void)observeValueForKeyName:(NSString *)keyName
+{
+	[_key release];
+	_key = nil;
+}
+
+- (void)observeValueForForeignClassName:(NSString *)className propertyNames:(NSArray *)propNames
+{
 	NSString * prop = [self.class propertyNameForForeignKeyClassName:className];
 	
 	NSMutableArray * props = [NSMutableArray array];
@@ -209,6 +300,10 @@
 		lock = [[NSLock alloc] init];
 	
 	if (object == self) {
+		for (NSString * mappedKey in self.class.mappedKeys)
+			if ([[self.class propertyNameForMappedName:mappedKey] isEqualToString:keyPath])
+				[self observeValueForKeyName:keyPath];
+		
 		for (NSString * className in self.class.mappedForeignKeyClassNames) {
 			NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
 			for (NSString * propertyName in propNames)
@@ -223,174 +318,127 @@
 			[lock unlock];
 			return;
 		}
-	}
-	
-	_BoundObjectData * comp = [[[_BoundObjectData alloc] initWithProxy:nil andObject:object names:nil] autorelease];
-	if ([_boundObjects containsObject:comp]) {
-		if ([lock tryLock]) {
-			[self observeValueForKeyPath:keyPath ofBoundObject:object];
-			[lock unlock];
+	} else {
+		_BoundObjectData * comp = [[[_BoundObjectData alloc] initWithProxy:nil andObject:object names:nil] autorelease];
+		if ([_boundObjects containsObject:comp]) {
+			if ([lock tryLock]) {
+				[self observeValueForKeyPath:keyPath ofBoundObject:object];
+				[lock unlock];
+			}
+			return;
 		}
-		return;
 	}
 }
 
-#pragma mark - Genesis
+@end
 
-+ (id<CORMEntity>)entity
+#pragma mark -
+
+@implementation CORMEntityImpl (ConcreteEntity)
+
+- (CORMKey *)key
+{
+	if (_key)
+		goto _return;
+	
+	NSMutableArray * elems = [NSMutableArray array];
+	
+	for (NSString * mappedKey in [self.class mappedKeys])
+		[elems addObject:[self valueForKey:[self.class propertyNameForMappedName:mappedKey]]];
+	
+	_key = [[CORMKey alloc] initWithArray:elems];
+	
+_return:
+	return _key;
+}
+
+#pragma mark Removal
+
+- (void)delete
+{
+	[self.class.registeredFactory deleteEntityForKey:self.key];
+}
+
++ (void)deleteEntitiesWhere:(NSString *)format, ...
+{
+	NSString * clause;
+	if (!format)
+		clause = @"1";
+	else {
+		va_list args;
+		va_start(args, format);
+		clause = [[[NSString alloc] initWithFormat:format arguments:args] autorelease];
+		va_end(args);
+	}
+	
+	[self.registeredFactory deleteEntitiesWhere:clause];
+}
+
+#pragma mark Genesis
+
++ (id<CORMEntity>)unboundEntity
 {
 	return [[[self alloc] init] autorelease];
 }
 
-+ (id<CORMEntity>)entityByBindingTo:(id)obj
++ (id<CORMEntity>)entityForKey:(id)key
 {
-	return [[[self alloc] initByBindingTo:obj] autorelease];
+	return [self.registeredFactory entityForKey:[CORMKey keyWithObject:key]];
 }
 
-- (id)init
++ (id<CORMEntity>)createEntityWithData:(id)data
 {
-	if (!(self = [super init]))
-		return nil;
-	
-	_boundObjects = @[].mutableCopy;
-	_valid = YES;
-	
-	[self startDeallocationNofitication];
-	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
-		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
-		for (NSString * propName in propNames)
-			[self addObserver:self forKeyPath:propName options:0 context:nil];
+	return [self.registeredFactory createEntityWithData:data];
+}
+
++ (NSArray *)findEntitiesForData:(id)data
+{
+	return [self.registeredFactory findEntitiesForData:data];
+}
+
++ (NSArray *)findEntitiesWhere:(NSString *)format, ...
+{
+	NSString * clause;
+	if (!format)
+		clause = @"1";
+	else {
+		va_list args;
+		va_start(args, format);
+		clause = [[[NSString alloc] initWithFormat:format arguments:args] autorelease];
+		va_end(args);
 	}
 	
-	return self;
+	return [self.registeredFactory findEntitiesWhere:clause];
 }
 
-- (void)bindToObject:(id)obj
+#pragma mark Binding
+
+- (void)bindTo:(id)object withOptions:(CORMEntityBindingOption)options
 {
 	id proxy = self.zeroingWeakReferenceProxy;
 	
 	id mappedNames;
-	if ([obj respondsToSelector:@selector(allKeys)])
-		mappedNames = [obj allKeys];
+	if ([object respondsToSelector:@selector(allKeys)])
+		mappedNames = [object allKeys];
 	else
 		mappedNames = [self.class mappedNames];
 	
-	[_boundObjects addObject:[[_BoundObjectData alloc] initWithProxy:proxy andObject:obj names:mappedNames]];
+	[_boundObjects addObject:[[_BoundObjectData alloc] initWithProxy:proxy andObject:object names:mappedNames]];
 	
 	for (NSString * mappedName in mappedNames) {
 		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
 		
-		[self setValue:[obj valueForKey:mappedName] forKey:propertyName];
+		if (options & kCORMEntityBindingOptionSetReceiverFromObject)
+			[self setValue:[object valueForKey:mappedName] forKey:propertyName];
+		else if (options & kCORMEntityBindingOptionSetObjectFromReceiver)
+			[object setValue:[self valueForKey:propertyName] forKey:mappedName];
 		
-		[obj addObserver:proxy forKeyPath:mappedName options:0 context:nil];
+		[object addObserver:proxy forKeyPath:mappedName options:0 context:nil];
 		[self addObserver:self forKeyPath:propertyName options:0 context:nil];
 	}
 }
 
-- (void)bindObjectToSelf:(id)obj
-{
-	id proxy = self.zeroingWeakReferenceProxy;
-	
-	id mappedNames;
-	if ([obj respondsToSelector:@selector(allKeys)])
-		mappedNames = [obj allKeys];
-	else
-		mappedNames = [self.class mappedNames];
-	
-	[_boundObjects addObject:[[_BoundObjectData alloc] initWithProxy:proxy andObject:obj names:mappedNames]];
-	
-	for (NSString * mappedName in mappedNames) {
-		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
-		
-		[obj setValue:[self valueForKey:propertyName] forKey:mappedName];
-		
-		[obj addObserver:proxy forKeyPath:mappedName options:0 context:nil];
-		[self addObserver:self forKeyPath:propertyName options:0 context:nil];
-	}
-}
-
-- (id)initByBindingTo:(id)obj
-{
-	if (!(self = [self init]))
-		return nil;
-	
-	if (!obj)
-		return nil;
-	
-	[self bindToObject:obj];
-	
-	return self;
-}
-
-- (void)setNilValueForKey:(NSString *)key
-{
-	SEL sel = NSSelectorFromString([NSString stringWithFormat:@"set%@:", key.firstLetterUppercaseString]);
-	
-	if (!sel)
-		[super setNilValueForKey:key];
-	
-	if (![self respondsToSelector:sel])
-		[super setNilValueForKey:key];
-	
-	[self performSelector:sel withObject:nil];
-}
-
-- (void)invalidate
-{
-	if (!_valid)
-		return;
-	
-	for (_BoundObjectData * obj in _boundObjects) {
-		for (NSString * name in obj.names)
-			[obj.object removeObserver:obj.proxy forKeyPath:name context:nil];
-		for (NSString * mappedName in [self.class mappedNames])
-			[self removeObserver:self forKeyPath:[self.class propertyNameForMappedName:mappedName] context:nil];
-	}
-	[_boundObjects release];
-	_boundObjects = nil;
-	
-	for (NSString * mappedName in [self.class mappedNames])
-		[self setValue:nil forKey:[self.class propertyNameForMappedName:mappedName]];
-	
-	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
-		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
-		for (NSString * propName in propNames)
-			[self removeObserver:self forKeyPath:propName context:nil];
-	}
-	
-	_valid = NO;
-}
-
-- (void)dealloc
-{
-	[self invalidate];
-	
-	[super dealloc];
-}
-
-#pragma mark - Mapping
-
-+ (NSArray *)keyNamesForClassName:(NSString *)className
-{
-	NSMutableArray * keys = [NSMutableArray array];
-	
-	NSString * keyID = @"id";
-	NSString * keyEntityID = [NSString stringWithFormat:@"%@%@", className, keyID];
-	NSString * keyEntity_ID = [NSString stringWithFormat:@"%@_%@", className, keyID];
-	
-	for (NSString * name in [self mappedNames])
-		if ([name isEqualToString:keyID ignoreCase:YES] ||
-			[name isEqualToString:keyEntityID ignoreCase:YES] ||
-			[name isEqualToString:keyEntity_ID ignoreCase:YES])
-			[keys addObject:name];
-	
-	return keys.copy;
-}
-
-+ (BOOL)propertyNamesAreCaseSensitive
-{
-	return YES;
-}
+#pragma mark Mapping
 
 + (NSString *)mappedClassName
 {
@@ -402,7 +450,7 @@
 	NSArray * keys = [self associatedObjectForSelector:_cmd];
 	
 	if (!keys) {
-		keys = [self keyNamesForClassName:[self mappedClassName]];
+		keys = [self keyNamesForClassName:self.mappedClassName].retain;
 		[(NSObject *)self setAssociatedObject:keys forSelector:_cmd];
 	}
 	
@@ -433,14 +481,13 @@ throw:
 		
 		free(properties);
 		
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
+		SUPPRESS(-Wobjc-method-access)
 		if ([(NSObject *)self respondsToSelector:@selector(excludedPropertyNames)])
 			for (NSString * excludedName in (NSArray *)[self excludedPropertyNames])
 				[_names removeObject:excludedName];
-#pragma clang diagnostic pop
+		UNSUPPRESS()
 		
-		for (NSString * className in [self mappedForeignKeyClassNames])
+		for (NSString * className in self.mappedForeignKeyClassNames)
 			[_names removeObject:[self propertyNameForForeignKeyClassName:className]];
 		
 		names = [NSArray arrayWithArray:_names];
@@ -457,7 +504,7 @@ throw:
 
 + (NSString *)mappedNameForPropertyName:(NSString *)propName
 {
-	if (![[self mappedNames] containsObject:propName])
+	if (![self.mappedNames containsObject:propName])
 		return nil;
 	
 	return propName;
@@ -465,8 +512,11 @@ throw:
 
 + (NSString *)propertyNameForMappedName:(NSString *)mappedName
 {
-	for (NSString * name in [self mappedNames])
-		if ([name isEqualToString:mappedName ignoreCase:![self propertyNamesAreCaseSensitive]])
+	if (self.propertyNamesAreCaseSensitive)
+		return [self stringIsMappedName:mappedName] ? mappedName : nil;
+	
+	for (NSString * name in self.mappedNames)
+		if ([name isEqualToStringIgnoreCase:mappedName])
 			return name;
 	
 	return nil;
@@ -498,6 +548,125 @@ throw:
 + (NSString *)propertyNameForForeignKeyClassName:(NSString *)className
 {
 	return className.firstLetterLowercaseString;
+}
+
+#pragma mark Tests
+
++ (BOOL)stringIsMappedKey:(NSString *)string
+{
+	if (self.propertyNamesAreCaseSensitive)
+		return [self.mappedKeys containsObject:string];
+	
+	static NSArray * lowerCaseKeys = nil;
+	
+	if (!lowerCaseKeys) {
+		NSMutableArray * lckeys = [NSMutableArray array];
+		
+		for (NSString * mappedName in self.mappedKeys)
+			[lckeys addObject:mappedName.lowercaseString];
+		
+		lowerCaseKeys = [[NSArray alloc] initWithArray:lckeys];
+	}
+	
+	return [lowerCaseKeys containsObject:string.lowercaseString];
+}
+
++ (BOOL)stringIsMappedName:(NSString *)string
+{
+	if (self.propertyNamesAreCaseSensitive)
+		return [self.mappedNames containsObject:string];
+	
+	static NSArray * lowerCaseNames = nil;
+	
+	if (!lowerCaseNames) {
+		NSMutableArray * lcnames = [NSMutableArray array];
+		
+		for (NSString * mappedName in self.mappedNames)
+			[lcnames addObject:mappedName.lowercaseString];
+		
+		lowerCaseNames = [[NSArray alloc] initWithArray:lcnames];
+	}
+	
+	return [lowerCaseNames containsObject:string.lowercaseString];
+}
+
++ (BOOL)stringIsMappedForeignKeyClassName:(NSString *)string
+{
+	return [self.mappedForeignKeyClassNames containsObject:string];
+}
+
++ (BOOL)stringIsKeyProperty:(NSString *)string
+{
+	static NSArray * keyProperties = nil;
+	
+	if (!keyProperties) {
+		NSMutableArray * kprops = [NSMutableArray array];
+		
+		for (NSString * mappedName in self.mappedNames) {
+			NSString * kprop = [self propertyNameForMappedName:mappedName];
+			
+			if (!self.propertyNamesAreCaseSensitive)
+				kprop = kprop.lowercaseString;
+			
+			[kprops addObject:kprop];
+		}
+		
+		keyProperties = [[NSArray alloc] initWithArray:kprops];
+	}
+	
+	if (!self.propertyNamesAreCaseSensitive)
+		string = string.lowercaseString;
+	
+	return [keyProperties containsObject:string];
+}
+
++ (BOOL)stringIsMappedProperty:(NSString *)string
+{
+	static NSArray * properties = nil;
+	
+	if (!properties) {
+		NSMutableArray * props = [NSMutableArray array];
+		
+		for (NSString * mappedName in self.mappedNames) {
+			NSString * prop = [self propertyNameForMappedName:mappedName];
+			
+			if (!self.propertyNamesAreCaseSensitive)
+				prop = prop.lowercaseString;
+			
+			[props addObject:prop];
+		}
+		
+		properties = [[NSArray alloc] initWithArray:props];
+	}
+	
+	if (!self.propertyNamesAreCaseSensitive)
+		string = string.lowercaseString;
+	
+	return [properties containsObject:string];
+}
+
++ (BOOL)stringIsForeignKeyProperty:(NSString *)string
+{
+	static NSArray * foreignKeyProperties = nil;
+	
+	if (!foreignKeyProperties) {
+		NSMutableArray * fkprops = [NSMutableArray array];
+		
+		for (NSString * fkclass in self.mappedForeignKeyClassNames)
+			for (NSString * fkprop in [self propertyNamesForForeignKeyClassName:fkclass]) {
+				if (!self.propertyNamesAreCaseSensitive)
+					fkprop = fkprop.lowercaseString;
+				
+				[fkprops addObject:fkprop];
+			}
+		
+		foreignKeyProperties = [[NSArray alloc] initWithArray:fkprops];
+	}
+	
+	if (!self.propertyNamesAreCaseSensitive)
+		string = string.lowercaseString;
+	
+	return [foreignKeyProperties containsObject:string];
 }
 
 @end
