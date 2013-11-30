@@ -276,8 +276,8 @@
 			return;
 	
 	id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
-	if ([[obj class] isSubclassOfClass:CORMEntityProxy.class])
-		obj = ((CORMEntityProxy *)obj).entity;
+//	if ([[obj class] isSubclassOfClass:CORMEntityProxy.class])
+//		obj = ((CORMEntityProxy *)obj).entity;
 	
 	[self setValue:obj forKey:prop];
 }
@@ -329,8 +329,6 @@
 			return;
 		}
 	}
-	
-	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 @end
