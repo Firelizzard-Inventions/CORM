@@ -11,7 +11,7 @@
 #import <TypeExtensions/TypeExtensions.h>
 #import <CORM/CORM.h>
 #import <ORDA/ORDA.h>
-#import <ORDASQLite/ORDASQLite.h>
+#import <CocoaSQLite/CocoaSQLite.h>
 
 // private CORM classes
 #import "CORMEntityProxy.h"
