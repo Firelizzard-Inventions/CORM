@@ -1,3 +1,6 @@
 language: objective-c
+
 xcode_project: CORM.xcodeproj
 xcode_scheme: CORM
+
+install: make prebuild
