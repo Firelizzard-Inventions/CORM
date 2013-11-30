@@ -8,10 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		422B20961849B8C2008F8BF5 /* CocoaSQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E0D0CB1849B8A0007EDB27 /* CocoaSQLite.framework */; };
-		422B20A51849B921008F8BF5 /* TypeExtensions.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 422B20A41849B921008F8BF5 /* TypeExtensions.xcodeproj */; };
 		422B20A81849B947008F8BF5 /* TypeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 422B20A61849B941008F8BF5 /* TypeExtensions.framework */; };
 		422B20A91849B95B008F8BF5 /* CocoaSQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E0D0CB1849B8A0007EDB27 /* CocoaSQLite.framework */; };
-		422B20B41849B995008F8BF5 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 422B20B11849B98D008F8BF5 /* ORDA.framework */; };
 		423ABAEB17A32238004F289D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAEA17A32238004F289D /* Cocoa.framework */; };
 		423ABAF517A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABAF317A32238004F289D /* InfoPlist.strings */; };
 		423ABAF917A32238004F289D /* CORMDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORMDefaults.m */; };
@@ -43,20 +41,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		422B20B01849B98D008F8BF5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 422B20AA1849B98D008F8BF5 /* ORDA.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 42909B6417B31A4700DBD505;
-			remoteInfo = ORDA;
-		};
-		422B20B21849B98D008F8BF5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 422B20AA1849B98D008F8BF5 /* ORDA.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 42D1902C1849A42E002EC23A;
-			remoteInfo = ORDATests;
-		};
 		42AF74111842A96A0006FFF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 423ABADE17A32238004F289D /* Project object */;
@@ -81,9 +65,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		422B20A41849B921008F8BF5 /* TypeExtensions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = file; name = TypeExtensions.xcodeproj; path = Include/CocoaSQLite/../TypeExtensions/TypeExtensions.xcodeproj; sourceTree = "<group>"; };
 		422B20A61849B941008F8BF5 /* TypeExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TypeExtensions.framework; path = DerivedData/Build/Products/Debug/TypeExtensions.framework; sourceTree = "<group>"; };
-		422B20AA1849B98D008F8BF5 /* ORDA.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ORDA.xcodeproj; path = Include/ORDA/ORDA.xcodeproj; sourceTree = "<group>"; };
 		423ABAE717A32238004F289D /* CORM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CORM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		423ABAEA17A32238004F289D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		423ABAED17A32238004F289D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -142,7 +124,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				42AF74161842AA880006FFF2 /* CORM.framework in Frameworks */,
-				422B20B41849B995008F8BF5 /* ORDA.framework in Frameworks */,
 				422B20A91849B95B008F8BF5 /* CocoaSQLite.framework in Frameworks */,
 				42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */,
 			);
@@ -151,15 +132,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		422B20AB1849B98D008F8BF5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				422B20B11849B98D008F8BF5 /* ORDA.framework */,
-				422B20B31849B98D008F8BF5 /* ORDATests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		423ABADD17A32238004F289D = {
 			isa = PBXGroup;
 			children = (
@@ -253,8 +225,6 @@
 				42B00C3117C6C652000B13E7 /* LICENSE */,
 				42B00C2B17C6C543000B13E7 /* README.md */,
 				42E0D0C21849B8A0007EDB27 /* CocoaSQLite.xcodeproj */,
-				422B20AA1849B98D008F8BF5 /* ORDA.xcodeproj */,
-				422B20A41849B921008F8BF5 /* TypeExtensions.xcodeproj */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -387,10 +357,6 @@
 					ProductGroup = 42E0D0C31849B8A0007EDB27 /* Products */;
 					ProjectRef = 42E0D0C21849B8A0007EDB27 /* CocoaSQLite.xcodeproj */;
 				},
-				{
-					ProductGroup = 422B20AB1849B98D008F8BF5 /* Products */;
-					ProjectRef = 422B20AA1849B98D008F8BF5 /* ORDA.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -401,20 +367,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		422B20B11849B98D008F8BF5 /* ORDA.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ORDA.framework;
-			remoteRef = 422B20B01849B98D008F8BF5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		422B20B31849B98D008F8BF5 /* ORDATests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ORDATests.xctest;
-			remoteRef = 422B20B21849B98D008F8BF5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		42E0D0CB1849B8A0007EDB27 /* CocoaSQLite.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -440,7 +392,6 @@
 				423ABAF517A32238004F289D /* InfoPlist.strings in Resources */,
 				42D190451849A489002EC23A /* .travis.yml in Resources */,
 				42B00C3217C6C652000B13E7 /* LICENSE in Resources */,
-				422B20A51849B921008F8BF5 /* TypeExtensions.xcodeproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

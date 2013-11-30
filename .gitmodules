@@ -1,9 +1,4 @@
+
 [submodule "Include/CocoaSQLite"]
 	path = Include/CocoaSQLite
 	url = https://github.com/Firelizzard-Inventions/CocoaSQLite.git
-[submodule "Include/TypeExtensions"]
-	path = Include/TypeExtensions
-	url = https://github.com/Firelizzard-Inventions/TypeExtensions.git
-[submodule "Include/ORDA"]
-	path = Include/ORDA
-	url = https://github.com/Firelizzard-Inventions/ORDA.git
