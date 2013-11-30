@@ -14,7 +14,6 @@
 		423ABAF517A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABAF317A32238004F289D /* InfoPlist.strings */; };
 		423ABAF917A32238004F289D /* CORMDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORMDefaults.m */; };
 		426CA2DD1849C24400212CF3 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426CA2DC1849C24400212CF3 /* ORDA.framework */; };
-		426CA3031849EFA100212CF3 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 426CA3021849EFA100212CF3 /* Makefile */; };
 		428D034F184836AC00303ED4 /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
 		42AF74011842A8F10006FFF2 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AF74001842A8950006FFF2 /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EC295A1840471E00AA5BDA /* XCTest.framework */; };
@@ -422,7 +421,6 @@
 				42F326BB17CEBA7300963954 /* CORMEntityProxy.m in Sources */,
 				42F326BD17CEBA7300963954 /* CORMFactoryImpl.m in Sources */,
 				42F326C017CEBA7300963954 /* CORMKey.m in Sources */,
-				426CA3031849EFA100212CF3 /* Makefile in Sources */,
 				42F326C217CEBA7300963954 /* CORMStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

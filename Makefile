@@ -1,4 +1,5 @@
 prebuild:
+	cd $(CURDIR); \
 	git submodule init; \
 	git submodule update; \
 	for PROJ in Include/*; do \
