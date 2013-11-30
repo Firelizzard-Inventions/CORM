@@ -13,6 +13,7 @@
 		423ABAEB17A32238004F289D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423ABAEA17A32238004F289D /* Cocoa.framework */; };
 		423ABAF517A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABAF317A32238004F289D /* InfoPlist.strings */; };
 		423ABAF917A32238004F289D /* CORMDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORMDefaults.m */; };
+		426CA2DD1849C24400212CF3 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426CA2DC1849C24400212CF3 /* ORDA.framework */; };
 		428D034F184836AC00303ED4 /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
 		42AF74011842A8F10006FFF2 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AF74001842A8950006FFF2 /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EC295A1840471E00AA5BDA /* XCTest.framework */; };
@@ -79,6 +80,7 @@
 		423ABB0817A32238004F289D /* CORMTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CORMTests-Info.plist"; sourceTree = "<group>"; };
 		423ABB0A17A32238004F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		423ABB0D17A32238004F289D /* CORMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CORMTests.m; sourceTree = "<group>"; };
+		426CA2DC1849C24400212CF3 /* ORDA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORDA.framework; path = DerivedData/Build/Products/Debug/ORDA.framework; sourceTree = "<group>"; };
 		428D033918440E6300303ED4 /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CORMEntityImpl+Private.h"; path = "Implementation/CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
 		42AF74001842A8950006FFF2 /* CORM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORM.h; sourceTree = "<group>"; };
 		42AF74061842A9690006FFF2 /* CORMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CORMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +128,7 @@
 				42AF74161842AA880006FFF2 /* CORM.framework in Frameworks */,
 				422B20A91849B95B008F8BF5 /* CocoaSQLite.framework in Frameworks */,
 				42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */,
+				426CA2DD1849C24400212CF3 /* ORDA.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +158,7 @@
 		423ABAE917A32238004F289D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				426CA2DC1849C24400212CF3 /* ORDA.framework */,
 				422B20A61849B941008F8BF5 /* TypeExtensions.framework */,
 				42EC295A1840471E00AA5BDA /* XCTest.framework */,
 				423ABAEA17A32238004F289D /* Cocoa.framework */,
