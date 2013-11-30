@@ -66,6 +66,7 @@
 @end
 
 #pragma mark -
+#pragma mark -
 
 @implementation CORMEntityImpl {
 	CORMKey * _key;
@@ -338,6 +339,13 @@
 
 @implementation CORMEntityImpl (ConcreteEntity)
 
++ (void)synthesize
+{
+	
+}
+
+#pragma mark Properties
+
 - (CORMKey *)key
 {
 	if (_key)
@@ -352,28 +360,6 @@
 	
 _return:
 	return _key;
-}
-
-#pragma mark Removal
-
-- (void)delete
-{
-	[self.class.registeredFactory deleteEntityForKey:self.key];
-}
-
-+ (void)deleteEntitiesWhere:(NSString *)format, ...
-{
-	NSString * clause;
-	if (!format)
-		clause = @"1";
-	else {
-		va_list args;
-		va_start(args, format);
-		clause = [[[NSString alloc] initWithFormat:format arguments:args] autorelease];
-		va_end(args);
-	}
-	
-	[self.registeredFactory deleteEntitiesWhere:clause];
 }
 
 #pragma mark Genesis
@@ -411,6 +397,28 @@ _return:
 	}
 	
 	return [self.registeredFactory findEntitiesWhere:clause];
+}
+
+#pragma mark Removal
+
+- (void)delete
+{
+	[self.class.registeredFactory deleteEntityForKey:self.key];
+}
+
++ (void)deleteEntitiesWhere:(NSString *)format, ...
+{
+	NSString * clause;
+	if (!format)
+		clause = @"1";
+	else {
+		va_list args;
+		va_start(args, format);
+		clause = [[[NSString alloc] initWithFormat:format arguments:args] autorelease];
+		va_end(args);
+	}
+	
+	[self.registeredFactory deleteEntitiesWhere:clause];
 }
 
 #pragma mark Binding
@@ -552,6 +560,37 @@ throw:
 	return className.firstLetterLowercaseString;
 }
 
+#pragma mark Collections
+
++ (NSArray *)referencingClassNames
+{
+	return @[];
+}
+
++ (NSString *)referencingClassNameForCollectionName:(NSString *)collectionName
+{
+	NSString * name = collectionName;
+	
+	if ([name hasSuffix:@"ies"])
+		name = [[name substringToIndex:name.length - 3] stringByAppendingString:@"y"];
+	else if ([name hasSuffix:@"s"])
+		name = [name substringToIndex:name.length - 1];
+	
+	return name.firstLetterUppercaseString;
+}
+
++ (NSString *)collectionNameForReferencingClassName:(NSString *)className
+{
+	NSString * name = className;
+	
+	if ([name hasSuffix:@"y"])
+		name = [[name substringToIndex:name.length - 1] stringByAppendingString:@"ies"];
+	else
+		name = [name stringByAppendingString:@"s"];
+	
+	return name.firstLetterLowercaseString;
+}
+
 #pragma mark Tests
 
 + (BOOL)stringIsMappedKey:(NSString *)string
@@ -595,6 +634,11 @@ throw:
 + (BOOL)stringIsMappedForeignKeyClassName:(NSString *)string
 {
 	return [self.mappedForeignKeyClassNames containsObject:string];
+}
+
++ (BOOL)stringIsReferencingClassName:(NSString *)string
+{
+	return [self.referencingClassNames containsObject:string];
 }
 
 + (BOOL)stringIsKeyProperty:(NSString *)string
@@ -669,6 +713,31 @@ throw:
 		string = string.lowercaseString;
 	
 	return [foreignKeyProperties containsObject:string];
+}
+
++ (BOOL)stringIsCollectionProperty:(NSString *)string
+{
+	static NSArray * collectionProperties = nil;
+	
+	if (!collectionProperties) {
+		NSMutableArray * cprops = [NSMutableArray array];
+		
+		for (NSString * rclass in self.referencingClassNames) {
+			NSString * cprop = [self collectionNameForReferencingClassName:rclass];
+			
+			if (!self.propertyNamesAreCaseSensitive)
+				cprop = cprop.lowercaseString;
+			
+			[cprops addObject:cprop];
+		}
+		
+		collectionProperties = [[NSArray alloc] initWithArray:cprops];
+	}
+	
+	if (!self.propertyNamesAreCaseSensitive)
+		string = string.lowercaseString;
+	
+	return [collectionProperties containsObject:string];
 }
 
 @end

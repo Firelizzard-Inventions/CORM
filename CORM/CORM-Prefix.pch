@@ -6,8 +6,6 @@
 	#import <Cocoa/Cocoa.h>
 #endif
 
-//_Pragma("clang diagnostic push") \
-
 #define _PRAGMA(arg) _Pragma(#arg)
 
 #define SUPPRESS(name) \

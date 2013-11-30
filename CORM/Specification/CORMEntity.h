@@ -29,6 +29,8 @@ typedef enum {
 - (void)delete;
 + (void)deleteEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
++ (void)synthesize;
+
 + (NSString *)mappedClassName;
 
 + (NSArray *)mappedKeys;
@@ -42,12 +44,18 @@ typedef enum {
 + (NSArray *)propertyNamesForForeignKeyClassName:(NSString *)className;
 + (NSString *)propertyNameForForeignKeyClassName:(NSString *)className;
 
++ (NSArray *)referencingClassNames;
++ (NSString *)referencingClassNameForCollectionName:(NSString *)collectionName;
++ (NSString *)collectionNameForReferencingClassName:(NSString *)className;
+
 + (BOOL)stringIsMappedKey:(NSString *)string;
 + (BOOL)stringIsMappedName:(NSString *)string;
 + (BOOL)stringIsMappedForeignKeyClassName:(NSString *)string;
++ (BOOL)stringIsReferencingClassName:(NSString *)string;
 
 + (BOOL)stringIsKeyProperty:(NSString *)string;
 + (BOOL)stringIsMappedProperty:(NSString *)string;
 + (BOOL)stringIsForeignKeyProperty:(NSString *)string;
++ (BOOL)stringIsCollectionProperty:(NSString *)string;
 
 @end

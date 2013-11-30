@@ -36,10 +36,10 @@ static NSAutoreleasePool * pool = nil;
 	
 	pool = [[NSAutoreleasePool alloc] init];
 	
-	[ORDASQLite register];
+	[CocoaSQLite register];
     
 	NSString * path = [[NSBundle bundleForClass:[ORDA class]] pathForResource:@"Chinook_Sqlite" ofType:@"sqlite"];
-	NSString * str = [NSString stringWithFormat:@"%@:%@", [ORDASQLite scheme], [NSURL fileURLWithPath:path]];
+	NSString * str = [NSString stringWithFormat:@"%@:%@", [CocoaSQLite scheme], [NSURL fileURLWithPath:path]];
 	NSURL * URL = [NSURL URLWithString:str];
 	
 	id<ORDAGovernor> governor = [[ORDA sharedInstance] governorForURL:URL];
