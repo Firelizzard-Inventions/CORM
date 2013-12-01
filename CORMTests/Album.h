@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
 //
 
-#import <CORM/CORMEntityImpl.h>
+#import <CORM/CORMEntityAuto.h>
 
-@interface Album : CORMEntityImpl
+@interface Album : CORMEntityAuto
 
 @property (retain) NSNumber * albumID, * artistID;
 @property (retain) NSString * title;
 
-@property (retain) id<CORMEntity> artist;
+@property (retain) CORMEntity * artist;
 
 @property (readonly) NSArray * tracks;
 

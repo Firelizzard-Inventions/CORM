@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ORDAGovernor, CORMEntity, CORMFactory;
-
-
+@protocol ORDAGovernor;
+@class CORMFactory;
 
 @interface CORMStore : NSObject
 
@@ -19,8 +18,7 @@
 
 - (id)initWithGovernor:(id<ORDAGovernor>)governor;
 
-- (id<CORMFactory>)factoryRegisteredForType:(Class<CORMEntity>)type;
-- (id<CORMFactory>)registerFactoryForType:(Class<CORMEntity>)type;
-- (Class<CORMEntity>)generateClassForName:(NSString *)className;
+- (CORMFactory *)factoryRegisteredForType:(Class)type;
+- (CORMFactory *)registerFactoryForType:(Class)type;
 
 @end

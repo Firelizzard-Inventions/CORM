@@ -15,9 +15,26 @@
 		423ABAF917A32238004F289D /* CORMDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORMDefaults.m */; };
 		426CA2DD1849C24400212CF3 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426CA2DC1849C24400212CF3 /* ORDA.framework */; };
 		426CA32D184A1FDB00212CF3 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426CA2DC1849C24400212CF3 /* ORDA.framework */; };
-		426CA332184A21C000212CF3 /* CORMEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA32F184A21C000212CF3 /* CORMEntity.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		426CA333184A21C000212CF3 /* CORMFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA330184A21C000212CF3 /* CORMFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		426CA334184A21C000212CF3 /* CORMKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA331184A21C000212CF3 /* CORMKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA338184B4E6F00212CF3 /* CORMKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA336184B4E6F00212CF3 /* CORMKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA339184B4E6F00212CF3 /* CORMKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA337184B4E6F00212CF3 /* CORMKey.m */; };
+		426CA33C184B4E9900212CF3 /* CORMKeyArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA33A184B4E9900212CF3 /* CORMKeyArray.h */; };
+		426CA33D184B4E9900212CF3 /* CORMKeyArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA33B184B4E9900212CF3 /* CORMKeyArray.m */; };
+		426CA340184B4ED300212CF3 /* CORMKeyDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA33E184B4ED300212CF3 /* CORMKeyDictionary.h */; };
+		426CA341184B4ED300212CF3 /* CORMKeyDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA33F184B4ED300212CF3 /* CORMKeyDictionary.m */; };
+		426CA345184B4EFF00212CF3 /* CORMEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA343184B4EFF00212CF3 /* CORMEntity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA346184B4EFF00212CF3 /* CORMEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA344184B4EFF00212CF3 /* CORMEntity.m */; };
+		426CA349184B4F1C00212CF3 /* CORMEntityAuto.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA347184B4F1C00212CF3 /* CORMEntityAuto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA34A184B4F1C00212CF3 /* CORMEntityAuto.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA348184B4F1C00212CF3 /* CORMEntityAuto.m */; };
+		426CA34D184B4F2F00212CF3 /* CORMEntityProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA34B184B4F2F00212CF3 /* CORMEntityProxy.h */; };
+		426CA34E184B4F2F00212CF3 /* CORMEntityProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA34C184B4F2F00212CF3 /* CORMEntityProxy.m */; };
+		426CA351184B4F8D00212CF3 /* CORMEntitySynth.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA34F184B4F8D00212CF3 /* CORMEntitySynth.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA352184B4F8D00212CF3 /* CORMEntitySynth.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA350184B4F8D00212CF3 /* CORMEntitySynth.m */; };
+		426CA357184B52E400212CF3 /* CORMEntityBase+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA353184B52E400212CF3 /* CORMEntityBase+Binding.m */; };
+		426CA358184B52E400212CF3 /* CORMEntity+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA354184B52E400212CF3 /* CORMEntity+Mapping.m */; };
+		426CA359184B52E400212CF3 /* CORMEntity+Relational.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA355184B52E400212CF3 /* CORMEntity+Relational.m */; };
+		426CA35C184B534B00212CF3 /* CORMEntity+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA35B184B534B00212CF3 /* CORMEntity+Private.h */; };
+		426CA35F184B5B9E00212CF3 /* CORMEntityBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA35D184B5B9E00212CF3 /* CORMEntityBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA360184B5B9E00212CF3 /* CORMEntityBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 426CA35E184B5B9E00212CF3 /* CORMEntityBase.m */; };
 		428D034F184836AC00303ED4 /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
 		42AF74011842A8F10006FFF2 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AF74001842A8950006FFF2 /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EC295A1840471E00AA5BDA /* XCTest.framework */; };
@@ -28,17 +45,19 @@
 		42B00C3017C6C649000B13E7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C2B17C6C543000B13E7 /* README.md */; };
 		42B00C3217C6C652000B13E7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C3117C6C652000B13E7 /* LICENSE */; };
 		42D190451849A489002EC23A /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 42D190441849A489002EC23A /* .travis.yml */; };
-		42F326B517CEBA7300963954 /* CORMEntityDict.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326A717CEBA7300963954 /* CORMEntityDict.h */; };
-		42F326B617CEBA7300963954 /* CORMEntityDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326A817CEBA7300963954 /* CORMEntityDict.m */; };
-		42F326B717CEBA7300963954 /* CORMEntityImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326A917CEBA7300963954 /* CORMEntityImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42F326B817CEBA7300963954 /* CORMEntityImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326AA17CEBA7300963954 /* CORMEntityImpl.m */; };
-		42F326BA17CEBA7300963954 /* CORMEntityProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326AC17CEBA7300963954 /* CORMEntityProxy.h */; };
-		42F326BB17CEBA7300963954 /* CORMEntityProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326AD17CEBA7300963954 /* CORMEntityProxy.m */; };
-		42F326BC17CEBA7300963954 /* CORMFactoryImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */; };
-		42F326BD17CEBA7300963954 /* CORMFactoryImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326AF17CEBA7300963954 /* CORMFactoryImpl.m */; };
-		42F326BE17CEBA7300963954 /* CORMFactoryImpl+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B017CEBA7300963954 /* CORMFactoryImpl+Private.h */; };
-		42F326BF17CEBA7300963954 /* CORMKeyImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B117CEBA7300963954 /* CORMKeyImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42F326C017CEBA7300963954 /* CORMKeyImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326B217CEBA7300963954 /* CORMKeyImpl.m */; };
+		42D6787B184B606800F5AF06 /* CORMEntityBase+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D6787A184B606800F5AF06 /* CORMEntityBase+Mapping.m */; };
+		42D6787F184B62C800F5AF06 /* CORMEntity+Registration.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D6787E184B62C800F5AF06 /* CORMEntity+Registration.m */; };
+		42D67881184B632A00F5AF06 /* CORMEntity+Observation.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D67880184B632A00F5AF06 /* CORMEntity+Observation.m */; };
+		42D67885184B688F00F5AF06 /* CORMEntityBase+Observation.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D67883184B688F00F5AF06 /* CORMEntityBase+Observation.m */; };
+		42D67887184B6A7500F5AF06 /* CORMEntityBase+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D67886184B6A7500F5AF06 /* CORMEntityBase+Private.h */; };
+		42D6788A184B716A00F5AF06 /* CORMKeyRowid.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D67888184B716A00F5AF06 /* CORMKeyRowid.h */; };
+		42D6788B184B716A00F5AF06 /* CORMKeyRowid.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D67889184B716A00F5AF06 /* CORMKeyRowid.m */; };
+		42D6788E184B78B700F5AF06 /* CORMKeyDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D6788C184B78B700F5AF06 /* CORMKeyDescriptor.h */; };
+		42D6788F184B78B700F5AF06 /* CORMKeyDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D6788D184B78B700F5AF06 /* CORMKeyDescriptor.m */; };
+		42D67891184B792500F5AF06 /* CORMKey+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D67890184B792500F5AF06 /* CORMKey+Private.h */; };
+		42F326BC17CEBA7300963954 /* CORMFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326AE17CEBA7300963954 /* CORMFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42F326BD17CEBA7300963954 /* CORMFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326AF17CEBA7300963954 /* CORMFactory.m */; };
+		42F326BE17CEBA7300963954 /* CORMFactory+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B017CEBA7300963954 /* CORMFactory+Private.h */; };
 		42F326C117CEBA7300963954 /* CORMStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B317CEBA7300963954 /* CORMStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42F326C217CEBA7300963954 /* CORMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326B417CEBA7300963954 /* CORMStore.m */; };
 /* End PBXBuildFile section */
@@ -85,10 +104,26 @@
 		426CA2DC1849C24400212CF3 /* ORDA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORDA.framework; path = DerivedData/Build/Products/Debug/ORDA.framework; sourceTree = "<group>"; };
 		426CA3021849EFA100212CF3 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		426CA32C184A1EC500212CF3 /* CORMDefaults+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CORMDefaults+Private.h"; sourceTree = "<group>"; };
-		426CA32F184A21C000212CF3 /* CORMEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntity.h; sourceTree = "<group>"; };
-		426CA330184A21C000212CF3 /* CORMFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMFactory.h; sourceTree = "<group>"; };
-		426CA331184A21C000212CF3 /* CORMKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMKey.h; sourceTree = "<group>"; };
-		428D033918440E6300303ED4 /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CORMEntityImpl+Private.h"; path = "Implementation/CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
+		426CA336184B4E6F00212CF3 /* CORMKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMKey.h; sourceTree = "<group>"; };
+		426CA337184B4E6F00212CF3 /* CORMKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMKey.m; sourceTree = "<group>"; };
+		426CA33A184B4E9900212CF3 /* CORMKeyArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMKeyArray.h; sourceTree = "<group>"; };
+		426CA33B184B4E9900212CF3 /* CORMKeyArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMKeyArray.m; sourceTree = "<group>"; };
+		426CA33E184B4ED300212CF3 /* CORMKeyDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMKeyDictionary.h; sourceTree = "<group>"; };
+		426CA33F184B4ED300212CF3 /* CORMKeyDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMKeyDictionary.m; sourceTree = "<group>"; };
+		426CA343184B4EFF00212CF3 /* CORMEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntity.h; sourceTree = "<group>"; };
+		426CA344184B4EFF00212CF3 /* CORMEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntity.m; sourceTree = "<group>"; };
+		426CA347184B4F1C00212CF3 /* CORMEntityAuto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntityAuto.h; sourceTree = "<group>"; };
+		426CA348184B4F1C00212CF3 /* CORMEntityAuto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntityAuto.m; sourceTree = "<group>"; };
+		426CA34B184B4F2F00212CF3 /* CORMEntityProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntityProxy.h; sourceTree = "<group>"; };
+		426CA34C184B4F2F00212CF3 /* CORMEntityProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntityProxy.m; sourceTree = "<group>"; };
+		426CA34F184B4F8D00212CF3 /* CORMEntitySynth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntitySynth.h; sourceTree = "<group>"; };
+		426CA350184B4F8D00212CF3 /* CORMEntitySynth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntitySynth.m; sourceTree = "<group>"; };
+		426CA353184B52E400212CF3 /* CORMEntityBase+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CORMEntityBase+Binding.m"; sourceTree = "<group>"; };
+		426CA354184B52E400212CF3 /* CORMEntity+Mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CORMEntity+Mapping.m"; sourceTree = "<group>"; };
+		426CA355184B52E400212CF3 /* CORMEntity+Relational.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CORMEntity+Relational.m"; sourceTree = "<group>"; };
+		426CA35B184B534B00212CF3 /* CORMEntity+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CORMEntity+Private.h"; sourceTree = "<group>"; };
+		426CA35D184B5B9E00212CF3 /* CORMEntityBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntityBase.h; sourceTree = "<group>"; };
+		426CA35E184B5B9E00212CF3 /* CORMEntityBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMEntityBase.m; sourceTree = "<group>"; };
 		42AF74001842A8950006FFF2 /* CORM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORM.h; sourceTree = "<group>"; };
 		42AF74061842A9690006FFF2 /* CORMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CORMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B00C1D17C6BC4E000B13E7 /* Album.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Album.h; sourceTree = "<group>"; };
@@ -98,19 +133,21 @@
 		42B00C2B17C6C543000B13E7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		42B00C3117C6C652000B13E7 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		42D190441849A489002EC23A /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		42D6787A184B606800F5AF06 /* CORMEntityBase+Mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CORMEntityBase+Mapping.m"; sourceTree = "<group>"; };
+		42D6787E184B62C800F5AF06 /* CORMEntity+Registration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CORMEntity+Registration.m"; sourceTree = "<group>"; };
+		42D67880184B632A00F5AF06 /* CORMEntity+Observation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CORMEntity+Observation.m"; sourceTree = "<group>"; };
+		42D67883184B688F00F5AF06 /* CORMEntityBase+Observation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CORMEntityBase+Observation.m"; sourceTree = "<group>"; };
+		42D67886184B6A7500F5AF06 /* CORMEntityBase+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CORMEntityBase+Private.h"; sourceTree = "<group>"; };
+		42D67888184B716A00F5AF06 /* CORMKeyRowid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMKeyRowid.h; sourceTree = "<group>"; };
+		42D67889184B716A00F5AF06 /* CORMKeyRowid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMKeyRowid.m; sourceTree = "<group>"; };
+		42D6788C184B78B700F5AF06 /* CORMKeyDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMKeyDescriptor.h; sourceTree = "<group>"; };
+		42D6788D184B78B700F5AF06 /* CORMKeyDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CORMKeyDescriptor.m; sourceTree = "<group>"; };
+		42D67890184B792500F5AF06 /* CORMKey+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CORMKey+Private.h"; sourceTree = "<group>"; };
 		42E0D0C21849B8A0007EDB27 /* CocoaSQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaSQLite.xcodeproj; path = Include/CocoaSQLite/CocoaSQLite.xcodeproj; sourceTree = "<group>"; };
 		42EC295A1840471E00AA5BDA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		42F326A717CEBA7300963954 /* CORMEntityDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityDict.h; path = Implementation/CORMEntityDict.h; sourceTree = "<group>"; };
-		42F326A817CEBA7300963954 /* CORMEntityDict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityDict.m; path = Implementation/CORMEntityDict.m; sourceTree = "<group>"; };
-		42F326A917CEBA7300963954 /* CORMEntityImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityImpl.h; path = Implementation/CORMEntityImpl.h; sourceTree = "<group>"; };
-		42F326AA17CEBA7300963954 /* CORMEntityImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityImpl.m; path = Implementation/CORMEntityImpl.m; sourceTree = "<group>"; };
-		42F326AC17CEBA7300963954 /* CORMEntityProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityProxy.h; path = Implementation/CORMEntityProxy.h; sourceTree = "<group>"; };
-		42F326AD17CEBA7300963954 /* CORMEntityProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityProxy.m; path = Implementation/CORMEntityProxy.m; sourceTree = "<group>"; };
-		42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMFactoryImpl.h; path = Implementation/CORMFactoryImpl.h; sourceTree = "<group>"; };
-		42F326AF17CEBA7300963954 /* CORMFactoryImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMFactoryImpl.m; path = Implementation/CORMFactoryImpl.m; sourceTree = "<group>"; };
-		42F326B017CEBA7300963954 /* CORMFactoryImpl+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CORMFactoryImpl+Private.h"; path = "Implementation/CORMFactoryImpl+Private.h"; sourceTree = "<group>"; };
-		42F326B117CEBA7300963954 /* CORMKeyImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMKeyImpl.h; path = Implementation/CORMKeyImpl.h; sourceTree = "<group>"; };
-		42F326B217CEBA7300963954 /* CORMKeyImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMKeyImpl.m; path = Implementation/CORMKeyImpl.m; sourceTree = "<group>"; };
+		42F326AE17CEBA7300963954 /* CORMFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMFactory.h; path = Implementation/CORMFactory.h; sourceTree = "<group>"; };
+		42F326AF17CEBA7300963954 /* CORMFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMFactory.m; path = Implementation/CORMFactory.m; sourceTree = "<group>"; };
+		42F326B017CEBA7300963954 /* CORMFactory+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CORMFactory+Private.h"; path = "Implementation/CORMFactory+Private.h"; sourceTree = "<group>"; };
 		42F326B317CEBA7300963954 /* CORMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMStore.h; path = Implementation/CORMStore.h; sourceTree = "<group>"; };
 		42F326B417CEBA7300963954 /* CORMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMStore.m; path = Implementation/CORMStore.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,7 +227,8 @@
 				423ABAF717A32238004F289D /* CORMDefaults.h */,
 				426CA32C184A1EC500212CF3 /* CORMDefaults+Private.h */,
 				423ABAF817A32238004F289D /* CORMDefaults.m */,
-				42F326A317CEB9F000963954 /* Specification */,
+				426CA335184B4E1000212CF3 /* Key */,
+				426CA342184B4EE500212CF3 /* Entity */,
 				42F326A417CEB9FB00963954 /* Implementation */,
 				423ABAF117A32238004F289D /* Supporting Files */,
 			);
@@ -229,6 +267,50 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		426CA335184B4E1000212CF3 /* Key */ = {
+			isa = PBXGroup;
+			children = (
+				426CA336184B4E6F00212CF3 /* CORMKey.h */,
+				42D67890184B792500F5AF06 /* CORMKey+Private.h */,
+				426CA337184B4E6F00212CF3 /* CORMKey.m */,
+				42D67888184B716A00F5AF06 /* CORMKeyRowid.h */,
+				42D67889184B716A00F5AF06 /* CORMKeyRowid.m */,
+				42D6788C184B78B700F5AF06 /* CORMKeyDescriptor.h */,
+				42D6788D184B78B700F5AF06 /* CORMKeyDescriptor.m */,
+				426CA33A184B4E9900212CF3 /* CORMKeyArray.h */,
+				426CA33B184B4E9900212CF3 /* CORMKeyArray.m */,
+				426CA33E184B4ED300212CF3 /* CORMKeyDictionary.h */,
+				426CA33F184B4ED300212CF3 /* CORMKeyDictionary.m */,
+			);
+			path = Key;
+			sourceTree = "<group>";
+		};
+		426CA342184B4EE500212CF3 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				426CA343184B4EFF00212CF3 /* CORMEntity.h */,
+				426CA35B184B534B00212CF3 /* CORMEntity+Private.h */,
+				426CA344184B4EFF00212CF3 /* CORMEntity.m */,
+				42D67880184B632A00F5AF06 /* CORMEntity+Observation.m */,
+				426CA355184B52E400212CF3 /* CORMEntity+Relational.m */,
+				426CA354184B52E400212CF3 /* CORMEntity+Mapping.m */,
+				42D6787E184B62C800F5AF06 /* CORMEntity+Registration.m */,
+				426CA35D184B5B9E00212CF3 /* CORMEntityBase.h */,
+				42D67886184B6A7500F5AF06 /* CORMEntityBase+Private.h */,
+				426CA35E184B5B9E00212CF3 /* CORMEntityBase.m */,
+				42D67883184B688F00F5AF06 /* CORMEntityBase+Observation.m */,
+				426CA353184B52E400212CF3 /* CORMEntityBase+Binding.m */,
+				42D6787A184B606800F5AF06 /* CORMEntityBase+Mapping.m */,
+				426CA347184B4F1C00212CF3 /* CORMEntityAuto.h */,
+				426CA348184B4F1C00212CF3 /* CORMEntityAuto.m */,
+				426CA34B184B4F2F00212CF3 /* CORMEntityProxy.h */,
+				426CA34C184B4F2F00212CF3 /* CORMEntityProxy.m */,
+				426CA34F184B4F8D00212CF3 /* CORMEntitySynth.h */,
+				426CA350184B4F8D00212CF3 /* CORMEntitySynth.m */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		42E0D0C11849B804007EDB27 /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,33 +332,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		42F326A317CEB9F000963954 /* Specification */ = {
-			isa = PBXGroup;
-			children = (
-				426CA32F184A21C000212CF3 /* CORMEntity.h */,
-				426CA330184A21C000212CF3 /* CORMFactory.h */,
-				426CA331184A21C000212CF3 /* CORMKey.h */,
-			);
-			path = Specification;
-			sourceTree = "<group>";
-		};
 		42F326A417CEB9FB00963954 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
 				42F326B317CEBA7300963954 /* CORMStore.h */,
 				42F326B417CEBA7300963954 /* CORMStore.m */,
-				42F326B117CEBA7300963954 /* CORMKeyImpl.h */,
-				42F326B217CEBA7300963954 /* CORMKeyImpl.m */,
-				42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */,
-				42F326B017CEBA7300963954 /* CORMFactoryImpl+Private.h */,
-				42F326AF17CEBA7300963954 /* CORMFactoryImpl.m */,
-				42F326A717CEBA7300963954 /* CORMEntityDict.h */,
-				42F326A817CEBA7300963954 /* CORMEntityDict.m */,
-				42F326A917CEBA7300963954 /* CORMEntityImpl.h */,
-				428D033918440E6300303ED4 /* CORMEntityImpl+Private.h */,
-				42F326AA17CEBA7300963954 /* CORMEntityImpl.m */,
-				42F326AC17CEBA7300963954 /* CORMEntityProxy.h */,
-				42F326AD17CEBA7300963954 /* CORMEntityProxy.m */,
+				42F326AE17CEBA7300963954 /* CORMFactory.h */,
+				42F326B017CEBA7300963954 /* CORMFactory+Private.h */,
+				42F326AF17CEBA7300963954 /* CORMFactory.m */,
 			);
 			name = Implementation;
 			sourceTree = "<group>";
@@ -288,18 +351,24 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42D6788E184B78B700F5AF06 /* CORMKeyDescriptor.h in Headers */,
+				426CA345184B4EFF00212CF3 /* CORMEntity.h in Headers */,
+				426CA338184B4E6F00212CF3 /* CORMKey.h in Headers */,
+				426CA351184B4F8D00212CF3 /* CORMEntitySynth.h in Headers */,
+				42F326BC17CEBA7300963954 /* CORMFactory.h in Headers */,
+				426CA349184B4F1C00212CF3 /* CORMEntityAuto.h in Headers */,
+				426CA35F184B5B9E00212CF3 /* CORMEntityBase.h in Headers */,
 				42AF74011842A8F10006FFF2 /* CORM.h in Headers */,
-				426CA332184A21C000212CF3 /* CORMEntity.h in Headers */,
-				426CA333184A21C000212CF3 /* CORMFactory.h in Headers */,
-				426CA334184A21C000212CF3 /* CORMKey.h in Headers */,
+				42D67891184B792500F5AF06 /* CORMKey+Private.h in Headers */,
+				426CA35C184B534B00212CF3 /* CORMEntity+Private.h in Headers */,
 				42B00B7517C6680F000B13E7 /* CORMDefaults.h in Headers */,
 				42F326C117CEBA7300963954 /* CORMStore.h in Headers */,
-				42F326BF17CEBA7300963954 /* CORMKeyImpl.h in Headers */,
-				42F326B717CEBA7300963954 /* CORMEntityImpl.h in Headers */,
-				42F326B517CEBA7300963954 /* CORMEntityDict.h in Headers */,
-				42F326BA17CEBA7300963954 /* CORMEntityProxy.h in Headers */,
-				42F326BC17CEBA7300963954 /* CORMFactoryImpl.h in Headers */,
-				42F326BE17CEBA7300963954 /* CORMFactoryImpl+Private.h in Headers */,
+				42D67887184B6A7500F5AF06 /* CORMEntityBase+Private.h in Headers */,
+				42D6788A184B716A00F5AF06 /* CORMKeyRowid.h in Headers */,
+				426CA33C184B4E9900212CF3 /* CORMKeyArray.h in Headers */,
+				426CA34D184B4F2F00212CF3 /* CORMEntityProxy.h in Headers */,
+				426CA340184B4ED300212CF3 /* CORMKeyDictionary.h in Headers */,
+				42F326BE17CEBA7300963954 /* CORMFactory+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,13 +492,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426CA360184B5B9E00212CF3 /* CORMEntityBase.m in Sources */,
+				426CA352184B4F8D00212CF3 /* CORMEntitySynth.m in Sources */,
+				426CA34E184B4F2F00212CF3 /* CORMEntityProxy.m in Sources */,
+				426CA359184B52E400212CF3 /* CORMEntity+Relational.m in Sources */,
+				42D6787F184B62C800F5AF06 /* CORMEntity+Registration.m in Sources */,
+				426CA357184B52E400212CF3 /* CORMEntityBase+Binding.m in Sources */,
 				423ABAF917A32238004F289D /* CORMDefaults.m in Sources */,
-				42F326B617CEBA7300963954 /* CORMEntityDict.m in Sources */,
-				42F326B817CEBA7300963954 /* CORMEntityImpl.m in Sources */,
-				42F326BB17CEBA7300963954 /* CORMEntityProxy.m in Sources */,
-				42F326BD17CEBA7300963954 /* CORMFactoryImpl.m in Sources */,
-				42F326C017CEBA7300963954 /* CORMKeyImpl.m in Sources */,
+				426CA358184B52E400212CF3 /* CORMEntity+Mapping.m in Sources */,
+				42D67885184B688F00F5AF06 /* CORMEntityBase+Observation.m in Sources */,
+				42D67881184B632A00F5AF06 /* CORMEntity+Observation.m in Sources */,
+				426CA33D184B4E9900212CF3 /* CORMKeyArray.m in Sources */,
+				42D6788B184B716A00F5AF06 /* CORMKeyRowid.m in Sources */,
+				426CA341184B4ED300212CF3 /* CORMKeyDictionary.m in Sources */,
+				426CA34A184B4F1C00212CF3 /* CORMEntityAuto.m in Sources */,
+				42F326BD17CEBA7300963954 /* CORMFactory.m in Sources */,
+				426CA339184B4E6F00212CF3 /* CORMKey.m in Sources */,
 				42F326C217CEBA7300963954 /* CORMStore.m in Sources */,
+				426CA346184B4EFF00212CF3 /* CORMEntity.m in Sources */,
+				42D6787B184B606800F5AF06 /* CORMEntityBase+Mapping.m in Sources */,
+				42D6788F184B78B700F5AF06 /* CORMKeyDescriptor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

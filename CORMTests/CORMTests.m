@@ -10,12 +10,12 @@
 #import <XCTest/XCTest.h>
 #import <TypeExtensions/TypeExtensions.h>
 #import <CORM/CORM.h>
+#import <CORM/CORMEntitySynth.h>
 #import <ORDA/ORDA.h>
 #import <CocoaSQLite/CocoaSQLite.h>
 
 // private CORM classes
 #import "CORMEntityProxy.h"
-#import "CORMEntityDict.h"
 
 // test classes
 #import "Track.h"
@@ -72,11 +72,11 @@ static NSAutoreleasePool * pool = nil;
 {
 	id data = @{@"GenreId" : @(1), @"Name" : @"Rock"}.mutableCopy;
 	
-	Class Genre = [store generateClassForName:@"Genre"];
+	Class Genre = [CORMEntitySynth synthesizeClassForName:@"Genre" withStore:store];
 	if (!Genre)
 		XCTFail(@"Failed to create class");
 	
-	id<CORMEntity> entity = [Genre unboundEntity];
+	CORMEntityAuto entity = [Genre entity];
 	if (!entity)
 		XCTFail(@"Failed to create entity");
 	

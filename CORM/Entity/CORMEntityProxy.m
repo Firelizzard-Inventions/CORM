@@ -2,34 +2,33 @@
 //  CORMEntityProxy.m
 //  CORM
 //
-//  Created by Ethan Reesor on 7/27/13.
-//  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
+//  Created by Ethan Reesor on 12/1/13.
+//  Copyright (c) 2013 Firelizzard Inventions. All rights reserved.
 //
 
 #import "CORMEntityProxy.h"
 
-#import "CORMKeyImpl.h"
+#import "CORMKey.h"
 #import "CORMFactory.h"
 
-#pragma clang diagnostic ignored "-Wprotocol"
 @implementation CORMEntityProxy {
-	id<CORMEntity> _entity;
+	CORMEntity * _entity;
 }
 
-+ (CORMEntityProxy *)entityProxyWithKey:(id)key forFactory:(id<CORMFactory>)factory
++ (instancetype)entityProxyWithKey:(id)key forFactory:(CORMFactory *)factory
 {
 	return [[[self alloc] initWithKey:key forFactory:factory] autorelease];
 }
 
-- (id)initWithKey:(id)key forFactory:(id<CORMFactory>)factory
+- (id)initWithKey:(id)key forFactory:(CORMFactory *)factory
 {
-//	if (!(self = [super init]))
-//		return nil;
+	//	if (!(self = [super init]))
+	//		return nil;
 	
 	if (!factory)
 		return nil;
 	
-	_key = [CORMKeyImpl keyWithObject:key].retain;
+	_key = [CORMKey keyWithObject:key].retain;
 	_factory = factory.retain;
 	_entity = nil;
 	

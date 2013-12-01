@@ -2,8 +2,8 @@
 //  CORMEntity.h
 //  CORM
 //
-//  Created by Ethan Reesor on 7/27/13.
-//  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
+//  Created by Ethan Reesor on 12/1/13.
+//  Copyright (c) 2013 Firelizzard Inventions. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,37 +13,42 @@ typedef enum {
 	kCORMEntityBindingOptionSetObjectFromReceiver = 0x02
 } CORMEntityBindingOption;
 
-@protocol CORMKey;
+@class CORMKey, CORMStore, CORMFactory;
 
-@protocol CORMEntity <NSObject>
+@interface CORMEntity : NSObject
 
-/** ----------------------------------------------------------------------------
- * @name Properties
- */
+- (CORMKey *)key;
 
-- (id<CORMKey>)key;
+@end
 
-/** ----------------------------------------------------------------------------
- * @name Retreiving Entities
- */
-
-+ (id<CORMEntity>)unboundEntity;
-+ (id<CORMEntity>)entityForKey:(id)key;
-+ (id<CORMEntity>)createEntityWithData:(id)data;
-+ (NSArray *)findEntitiesForData:(id)data;
-+ (NSArray *)findEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
-
-/** ----------------------------------------------------------------------------
- * @name Entity Tasks
- */
+@interface CORMEntity (Binding)
 
 - (void)bindTo:(id)object withOptions:(CORMEntityBindingOption)options;
 
+@end
+
+@interface CORMEntity (Relational)
+
 - (void)delete;
+
++ (instancetype)entity;
++ (instancetype)entityForKey:(id)key;
++ (instancetype)entityProxyForKey:(id)key;
++ (instancetype)entitySynthForName:(NSString *)className andKey:(id)key;
+
++ (instancetype)createEntityWithData:(id)data;
+
++ (NSArray *)findEntitiesForData:(id)data;
++ (NSArray *)findEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
+
 + (void)deleteEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
+@end
+
+@protocol CORMMapping <NSObject>
+
 /** ----------------------------------------------------------------------------
- * @name Relational Mapping
+ * @name Mapped Data Accesors
  */
 
 + (NSString *)mappedClassName;
@@ -54,18 +59,24 @@ typedef enum {
 
 + (NSArray *)referencingClassNames;
 
+/** ----------------------------------------------------------------------------
+ * @name Object/Relational Data Mapping
+ */
+
 + (NSString *)mappedNameForPropertyName:(NSString *)propName;
 + (NSString *)propertyNameForMappedName:(NSString *)mappedName;
 
 + (NSString *)classNameForForeignKeyPropertyNames:(NSArray *)propNames;
 + (NSArray *)propertyNamesForForeignKeyClassName:(NSString *)className;
+
++ (NSString *)classNameForForeignKeyPropertyName:(NSString *)propName;
 + (NSString *)propertyNameForForeignKeyClassName:(NSString *)className;
 
 + (NSString *)referencingClassNameForCollectionName:(NSString *)collectionName;
 + (NSString *)collectionNameForReferencingClassName:(NSString *)className;
 
 /** ----------------------------------------------------------------------------
- * @name Relational Mapping
+ * @name Tests
  */
 
 + (BOOL)stringIsMappedKey:(NSString *)string;
@@ -77,5 +88,17 @@ typedef enum {
 + (BOOL)stringIsMappedProperty:(NSString *)string;
 + (BOOL)stringIsForeignKeyProperty:(NSString *)string;
 + (BOOL)stringIsCollectionProperty:(NSString *)string;
+
+@end
+
+@interface CORMEntity (Mapping) <CORMMapping>
+
+@end
+
+@interface CORMEntity (Registration)
+
++ (void)registerWithDefaultStore;
++ (void)registerWithStore:(CORMStore *)store;
++ (CORMFactory *)registeredFactory;
 
 @end

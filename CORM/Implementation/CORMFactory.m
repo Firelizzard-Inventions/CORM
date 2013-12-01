@@ -6,27 +6,24 @@
 //  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
 //
 
-#import "CORMFactoryImpl.h"
-#import "CORMFactoryImpl+Private.h"
+#import "CORMFactory+Private.h"
+
+#import <TypeExtensions/TypeExtensions.h>
+#import <ORDA/ORDA.h>
 
 #import "CORM.h"
 #import "CORMDefaults+Private.h"
-#import "CORMEntityImpl.h"
+#import "CORMEntity.h"
+#import "CORMEntityAuto.h"
 #import "CORMEntityProxy.h"
 
-#import <ORDA/ORDAGovernor.h>
-#import <ORDA/ORDAStatement.h>
-#import <ORDA/ORDAStatementResult.h>
-
-#import <TypeExtensions/TypeExtensions.h>
-
-@implementation CORMFactoryImpl {
+@implementation CORMFactory {
 	NSMutableDictionary * _data;
 }
 
 - (id)valueForKey:(NSString *)key
 {
-	return _data[[CORMKeyImpl keyWithObject:key]];
+	return _data[[CORMKey keyWithObject:key]];
 }
 
 - (id)valueForKeyPath:(NSString *)keyPath
@@ -36,22 +33,22 @@
 
 @end
 
-@implementation CORMFactoryImpl (Genesis)
+@implementation CORMFactory (Genesis)
 
-+ (id)factoryForEntity:(Class)type fromStore:(CORMStore *)store
++ (id)factoryForEntity:(Class<CORMMapping>)type fromStore:(CORMStore *)store
 {
-	return [[[CORMFactoryImpl alloc] initWithEntity:type fromStore:store] autorelease];
+	return [[[CORMFactory alloc] initWithEntity:type fromStore:store] autorelease];
 }
 
-- (id)initWithEntity:(Class<CORMEntity>)type fromStore:(CORMStore *)store
+- (id)initWithEntity:(Class<CORMMapping>)type fromStore:(CORMStore *)store
 {
 	if (!(self = [super init]))
 		return nil;
 	
-	if (![((Class)type) conformsToProtocol:@protocol(CORMEntity)])
+	if (![(Class)type isSubclassOfClass:CORMEntity.class])
 		return nil;
 	
-	id<CORMFactory> existing = [store factoryRegisteredForType:type];
+	CORMFactory * existing = [store factoryRegisteredForType:type];
 	if (existing)
 		return existing;
 	
@@ -78,13 +75,13 @@
 
 @end
 
-@implementation CORMFactoryImpl (ConcreteFactory)
+@implementation CORMFactory (EntityGeneration)
 
 #pragma mark Retreive
 
-- (id<CORMEntity>)entityForKey:(id)key
+- (CORMEntity *)entityForKey:(id)key
 {
-	key = [CORMKeyImpl keyWithObject:key];
+	key = [CORMKey keyWithObject:key];
 	
 	if (_data[key])
 		return _data[key];
@@ -95,45 +92,29 @@
 	if (result.count < 1)
 		return nil;
 	
-	NSObject<CORMEntity> * entity = [self.type unboundEntity];
+	CORMEntityAuto * entity = [(Class)self.type entity];
 	[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
 	
-	if ([entity isKindOfClass:CORMEntityImpl.class])
-		[(CORMEntityImpl *)entity buildCollections];
+	if ([entity isKindOfClass:CORMEntity.class])
+		[entity buildCollections];
 	
 	_data[key] = entity;
 	return entity;
 }
 
-- (id<CORMEntity>)entityOrProxyForKey:(id)key
+- (CORMEntity *)entityOrProxyForKey:(id)key
 {
 	if (_data[key])
 		return _data[key];
 	
-	return [CORMEntityProxy entityProxyWithKey:key forFactory:self];
+	return (CORMEntity *)[CORMEntityProxy entityProxyWithKey:key forFactory:self];
 }
 
 #pragma mark Search
 
-- (NSArray *)findEntitiesForData:(id)data
+- (NSArray *)findEntitiesForData:(CORMKey *)key
 {
-	NSMutableArray * clauses = [NSMutableArray array];
-	
-	if ([data respondsToSelector:@selector(allKeys)]) {
-		for (NSString * name in [_data allKeys])
-			[clauses addObject:[NSString stringWithFormat:@"[%@] = '%@'", [self.type mappedNameForPropertyName:name], [_data valueForKey:name]]];
-	} else {
-		for (NSString * name in [self.type mappedNames])
-			[clauses addObject:[NSString stringWithFormat:@"[%@] = '%@'", name, [_data valueForKey:[self.type propertyNameForMappedName:name]]]];
-	}
-	
-	BOOL ignoreCase = NO;
-	SUPPRESS(-Wobjc-method-access)
-	if ([self.type respondsToSelector:@selector(propertyNamesAreCaseSensitive)])
-		ignoreCase = ![self.type propertyNamesAreCaseSensitive];
-	UNSUPPRESS()
-	
-	return [self findEntitiesWhere:[clauses componentsJoinedByString:@" AND "]];
+	return [self findEntitiesWhere:[key whereClauseForEntityType:self.type]];
 }
 
 - (NSArray *)findEntitiesWhere:(NSString *)clause
@@ -147,7 +128,7 @@
 	NSMutableArray * entities = [NSMutableArray array];
 	
 	for (id result in results) {
-		id<CORMEntity> entity = [self.type unboundEntity];
+		CORMEntityAuto * entity = [(Class)self.type entity];
 		[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
 		_data[entity.key] = entity;
 		[entities addObject:entity];
@@ -158,7 +139,7 @@
 
 #pragma mark Create
 
-- (id<CORMEntity>)createEntityWithData:(id)data
+- (CORMEntity *)createEntityWithData:(id)data
 {
 	BOOL ignoreCase = NO;
 	SUPPRESS(-Wobjc-method-access)
@@ -172,7 +153,7 @@
 	if (result.count < 1)
 		return nil;
 	
-	id<CORMEntity> entity = [self.type unboundEntity];
+	CORMEntity * entity = [(Class)self.type entity];
 	[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
 	
 	_data[entity.key] = entity;
@@ -181,7 +162,7 @@
 
 #pragma mark Delete
 
-- (void)deleteEntityForKey:(CORMKeyImpl *)key
+- (void)deleteEntityForKey:(CORMKey *)key
 {
 	[self deleteEntitiesWhere:[key whereClauseForEntityType:self.type]];
 }
@@ -193,13 +174,7 @@
 
 #pragma mark View
 
-- (id<ORDATableView>)createViewWithEntitiesForData:(id)data
-{
-	NSMutableArray * clauses = [NSMutableArray array];
-	for (
-}
-
-- (id<ORDATableView>)createViewForKey:(CORMKeyImpl *)key
+- (id<ORDATableView>)createViewForKey:(CORMKey *)key
 {
 	id<ORDATableView> view = [self.table viewWhere:@"%@", [key whereClauseForEntityType:self.type]];
 	if (view.isError)

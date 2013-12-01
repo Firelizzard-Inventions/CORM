@@ -13,3 +13,13 @@
 	_PRAGMA(clang diagnostic ignored #name)
 
 #define UNSUPPRESS() _PRAGMA(clang diagnostic pop)
+
+#define VARGS_STRING(format, strvar)	\
+	if (!format)						\
+		strvar = @"1";					\
+	else {								\
+		va_list ap;						\
+		va_start(ap, format);			\
+		strvar = [[[NSString alloc] initWithFormat:format arguments:ap] autorelease]; \
+		va_end(ap);						\
+	}
