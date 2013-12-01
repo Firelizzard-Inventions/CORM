@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol CORMEntity;
-@class CORMStore, CORMKey;
+@protocol CORMEntity, ORDATableView;
+@class CORMStore, CORMKeyImpl;
 
 @protocol CORMFactory <NSObject>
 
@@ -24,7 +24,9 @@
 
 - (id<CORMEntity>)createEntityWithData:(id)data;
 
-- (void)deleteEntityForKey:(CORMKey *)key;
+- (void)deleteEntityForKey:(CORMKeyImpl *)key;
 - (void)deleteEntitiesWhere:(NSString *)clause;
+
+- (id<ORDATableView>)createViewWithEntitiesForData:(id)data;
 
 @end

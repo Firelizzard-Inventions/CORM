@@ -12,12 +12,12 @@
 
 #import "CORMEntity.h"
 
-@protocol CORMFactory;
-@class CORMKey, CORMEntityImpl;
+@protocol CORMFactory, CORMKey;
+@class CORMEntityImpl;
 
 @interface CORMEntityProxy : NSProxy <CORMEntity>
 
-@property (readonly) CORMKey * key;
+@property (readonly) id<CORMKey> key;
 @property (readonly) id<CORMFactory> factory;
 @property (readonly) CORMEntityImpl * entity;
 

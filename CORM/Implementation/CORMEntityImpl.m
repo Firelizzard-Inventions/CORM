@@ -1,4 +1,4 @@
-//
+
 //  CORMEntity.m
 //  CORM
 //
@@ -10,14 +10,12 @@
 #import "CORMEntityImpl+Private.h"
 
 #import "CORM.h"
-#import "CORMFactory.h"
-#import "CORMStore.h"
-#import "CORMKey.h"
 #import "CORMEntityDict.h"
 #import "CORMEntityProxy.h"
 
 #import <TypeExtensions/TypeExtensions.h>
 #import <TypeExtensions/String.h>
+#import <ORDA/ORDA.h>
 
 #import <objc/runtime.h>
 
@@ -69,9 +67,10 @@
 #pragma mark -
 
 @implementation CORMEntityImpl {
-	CORMKey * _key;
+	CORMKeyImpl * _key;
 	BOOL _valid;
 	NSMutableArray * _boundObjects;
+	NSDictionary * _views;
 }
 
 + (void)initialize
@@ -91,11 +90,77 @@
 		return;
 	
 	[self registerWithDefaultStore];
+	[self synthesize];
 }
+
+ /*
+NSString * getPropertyName(SEL selector, NSUInteger first, NSUInteger last) {
+	static NSMutableDictionary * cache = nil;
+
+	if (!cache)
+		cache = [NSMutableDictionary dictionary];
+
+	const char * selName = sel_getName(selector);
+	NSValue * value = [NSValue valueWithPointer:selName];
+	NSString * name = cache[value];
+
+	if (name)
+		return name;
+
+	last += strlen(selName);
+	name = [[NSString alloc] initWithBytes:(selName + first) length:(last - first) encoding:NSASCIIStringEncoding];
+	name = name.firstLetterLowercaseString;
+
+	cache[value] = name;
+	return name;
+}
+
+NSUInteger countOfKey(id self, SEL _cmd) {
+	NSArray * array = [self valueForKey:getPropertyName(_cmd, 7, 0)];
+
+	return array.count;
+}
+
+NSArray * keyAtIndexes(id self, SEL _cmd, NSIndexSet * indexes) {
+	NSArray * array = [self valueForKey:getPropertyName(_cmd, 0, -7)];
+
+	return [array objectsAtIndexes:indexes];
+}
+
+void insertKey_atIndexes(id self, SEL _cmd, NSArray * objects, NSIndexSet * indexes) {
+	NSMutableArray * array = [self valueForKey:getPropertyName(_cmd, 6, -10)];
+
+	[array insertObjects:objects atIndexes:indexes];
+}
+
+void removeKeyAtIndexes(id self, SEL _cmd, NSArray * objects, NSIndexSet * indexes) {
+	NSMutableArray * array = [self valueForKey:getPropertyName(_cmd, 6, -9)];
+
+	[array removeObjectsAtIndexes:indexes];
+}
+ */
+
++ (void)synthesize
+{/*
+	for (NSString * referencingClassName in self.referencingClassNames) {
+		NSString * collectionName = [self collectionNameForReferencingClassName:referencingClassName];
+		NSString * CollectionName = collectionName.firstLetterUppercaseString;
+
+		class_addMethod(self, NSSelectorFromString([NSString stringWithFormat:@"countOf%@", CollectionName]),          (IMP)&countOfKey, "Q@:");
+		class_addMethod(self, NSSelectorFromString([NSString stringWithFormat:@"%@AtIndexes", collectionName]),        (IMP)&keyAtIndexes, "@@:@");
+		class_addMethod(self, NSSelectorFromString([NSString stringWithFormat:@"insert%@:atIndexes", CollectionName]), (IMP)&insertKey_atIndexes, "v@:@@");
+		class_addMethod(self, NSSelectorFromString([NSString stringWithFormat:@"remove%@AtIndexes", CollectionName]),  (IMP)&removeKeyAtIndexes, "v@:@");
+	}
+*/}
 
 + (BOOL)propertyNamesAreCaseSensitive
 {
 	return YES;
+}
+
++ (NSString *)instanceVariableNameForCollectionName:(NSString *)collectionName
+{
+	return [@"_" stringByAppendingString:collectionName];
 }
 
 + (NSArray *)keyNamesForClassName:(NSString *)className
@@ -123,13 +188,13 @@
 	_key = nil;
 	_boundObjects = @[].mutableCopy;
 	_valid = YES;
+	_views = nil;
 	
 	[self startDeallocationNofitication];
-	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
-		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
-		for (NSString * propName in propNames)
+	
+	for (NSString * className in self.class.mappedForeignKeyClassNames)
+		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className])
 			[self addObserver:self forKeyPath:propName options:0 context:nil];
-	}
 	
 	return self;
 }
@@ -158,12 +223,71 @@
 {
 	CORMEntityImpl * copy = [[self.class alloc] init];
 	
-	for (NSString * mappedName in [self.class mappedNames]) {
+	for (NSString * mappedName in self.class.mappedNames) {
 		NSString * prop = [self.class propertyNameForMappedName:mappedName];
 		[copy setValue:[self valueForKey:prop] forKey:prop];
 	}
 	
+//	for (NSString * className in [self.class mappedForeignKeyClassNames])
+//		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className])
+//			[copy setValue:[self valueForKey:propName] forKey:propName];
+//	
+//	for (NSString * className in self.class.referencingClassNames) {
+//		NSString * collName = [self.class collectionNameForReferencingClassName:className];
+//		NSString * ivarName = [self.class instanceVariableNameForCollectionName:collName];
+//		const char * ivarCName = [ivarName cStringUsingEncoding:NSASCIIStringEncoding];
+//		
+//		id array;
+//		object_getInstanceVariable(self, ivarCName, (void **)&array);
+//		object_setInstanceVariable(copy, ivarCName, array);
+//	}
+	
 	return copy;
+}
+
+- (void)buildCollections
+{
+	NSMutableDictionary * views = [NSMutableDictionary dictionary];
+	for (NSString * className in self.class.referencingClassNames) {
+		Class theClass = NSClassFromString(className);
+		if (!theClass)
+			return;
+		if (![theClass conformsToProtocol:@protocol(CORMEntity)])
+		  return;
+		
+		NSString * collName = [self.class collectionNameForReferencingClassName:className];
+		NSObject<ORDATableView> * view = [[theClass registeredFactory] createViewForKey:self.key];
+		[view addObserver:self forKeyPath:@"self" options:0 context:nil];
+		views[collName] = view;
+		[self rebuildCollectionForKey:collName andView:view];
+	}
+	_views = [[NSDictionary alloc] initWithDictionary:views];
+}
+
+- (void)rebuildCollectionForKey:(NSString *)collectionName andView:(id<ORDATableView>)view
+{
+	if (!view)
+		view = _views[collectionName];
+	
+	if (!view)
+		return;
+	
+	NSString * ivarName = [self.class instanceVariableNameForCollectionName:collectionName];
+	const char * ivarCName = [ivarName cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	id old;
+	object_getInstanceVariable(self, ivarCName, (void **)&old);
+	
+	id entities = [NSMutableArray array];
+	for (id key in view.keys)
+		[entities addObject:[self.class.registeredFactory entityOrProxyForKey:[CORMKeyImpl keyWithRowid:key]]];
+	entities = [[NSArray alloc] initWithArray:entities];
+	
+	[self willChangeValueForKey:collectionName];
+	object_setInstanceVariable(self, ivarCName, entities);
+	[self didChangeValueForKey:collectionName];
+	
+	[old release];
 }
 
 - (void)setNilValueForKey:(NSString *)key
@@ -193,13 +317,30 @@
 	[_boundObjects release];
 	_boundObjects = nil;
 	
-	for (NSString * mappedName in [self.class mappedNames])
+	for (id view in _views)
+		[view removeObserver:self forKeyPath:@"self" context:nil];
+	[_views release];
+	_views = nil;
+	
+	for (NSString * mappedName in self.class.mappedNames)
 		[self setValue:nil forKey:[self.class propertyNameForMappedName:mappedName]];
 	
-	for (NSString * className in [self.class mappedForeignKeyClassNames]) {
-		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
-		for (NSString * propName in propNames)
+	for (NSString * className in self.class.mappedForeignKeyClassNames)
+		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className])
 			[self removeObserver:self forKeyPath:propName context:nil];
+	
+	for (NSString * className in self.class.referencingClassNames) {
+		NSString * collName = [self.class collectionNameForReferencingClassName:className];
+		NSString * ivarName = [self.class instanceVariableNameForCollectionName:collName];
+		const char * ivarCName = [ivarName cStringUsingEncoding:NSASCIIStringEncoding];
+		
+		id array;
+		object_getInstanceVariable(self, ivarCName, (void **)&array);
+		[array release];
+		
+		[self willChangeValueForKey:collName];
+		object_setInstanceVariable(self, ivarCName, nil);
+		[self didChangeValueForKey:collName];
 	}
 	
 	_valid = NO;
@@ -275,7 +416,7 @@
 		if (!(theClass = [store generateClassForName:className]))
 			return;
 	
-	id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithArray:props]];
+	id obj = [[theClass registeredFactory] entityOrProxyForKey:[CORMKeyImpl keyWithArray:props]];
 //	if ([[obj class] isSubclassOfClass:CORMEntityProxy.class])
 //		obj = ((CORMEntityProxy *)obj).entity;
 	
@@ -291,6 +432,11 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofBoundObject:(id)object
 {
 	[self setValue:[object valueForKey:keyPath] forKey:[self.class propertyNameForMappedName:keyPath]];
+}
+
+- (void)observeValueOfView:(id<ORDATableView>)view forCollection:(NSString *)collectionName
+{
+	[self rebuildCollectionForKey:collectionName andView:view];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -319,6 +465,10 @@
 			[lock unlock];
 			return;
 		}
+	} else if ([@"self" isEqualToString:keyPath]) {
+		for (NSString * collectionName in [_views allKeysForObject:object])
+			[self observeValueOfView:object forCollection:collectionName];
+		return;
 	} else {
 		_BoundObjectData * comp = [[[_BoundObjectData alloc] initWithProxy:nil andObject:object names:nil] autorelease];
 		if ([_boundObjects containsObject:comp]) {
@@ -337,14 +487,9 @@
 
 @implementation CORMEntityImpl (ConcreteEntity)
 
-+ (void)synthesize
-{
-	
-}
-
 #pragma mark Properties
 
-- (CORMKey *)key
+- (CORMKeyImpl *)key
 {
 	if (_key)
 		goto _return;
@@ -354,7 +499,7 @@
 	for (NSString * mappedKey in [self.class mappedKeys])
 		[elems addObject:[self valueForKey:[self.class propertyNameForMappedName:mappedKey]]];
 	
-	_key = [[CORMKey alloc] initWithArray:elems];
+	_key = [[CORMKeyImpl alloc] initWithArray:elems];
 	
 _return:
 	return _key;
@@ -369,7 +514,7 @@ _return:
 
 + (id<CORMEntity>)entityForKey:(id)key
 {
-	return [self.registeredFactory entityForKey:[CORMKey keyWithObject:key]];
+	return [self.registeredFactory entityForKey:[CORMKeyImpl keyWithObject:key]];
 }
 
 + (id<CORMEntity>)createEntityWithData:(id)data
@@ -497,6 +642,9 @@ throw:
 		
 		for (NSString * className in self.mappedForeignKeyClassNames)
 			[_names removeObject:[self propertyNameForForeignKeyClassName:className]];
+		
+		for (NSString * className in self.referencingClassNames)
+			[_names removeObject:[self collectionNameForReferencingClassName:className]];
 		
 		names = [NSArray arrayWithArray:_names];
 		[(NSObject *)self setAssociatedObject:names forSelector:_cmd];

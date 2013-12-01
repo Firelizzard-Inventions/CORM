@@ -14,6 +14,10 @@
 		423ABAF517A32238004F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 423ABAF317A32238004F289D /* InfoPlist.strings */; };
 		423ABAF917A32238004F289D /* CORMDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABAF817A32238004F289D /* CORMDefaults.m */; };
 		426CA2DD1849C24400212CF3 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426CA2DC1849C24400212CF3 /* ORDA.framework */; };
+		426CA32D184A1FDB00212CF3 /* ORDA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426CA2DC1849C24400212CF3 /* ORDA.framework */; };
+		426CA332184A21C000212CF3 /* CORMEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA32F184A21C000212CF3 /* CORMEntity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA333184A21C000212CF3 /* CORMFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA330184A21C000212CF3 /* CORMFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426CA334184A21C000212CF3 /* CORMKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 426CA331184A21C000212CF3 /* CORMKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		428D034F184836AC00303ED4 /* CORMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 423ABB0D17A32238004F289D /* CORMTests.m */; };
 		42AF74011842A8F10006FFF2 /* CORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AF74001842A8950006FFF2 /* CORM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42AF74071842A9690006FFF2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EC295A1840471E00AA5BDA /* XCTest.framework */; };
@@ -24,7 +28,6 @@
 		42B00C3017C6C649000B13E7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C2B17C6C543000B13E7 /* README.md */; };
 		42B00C3217C6C652000B13E7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 42B00C3117C6C652000B13E7 /* LICENSE */; };
 		42D190451849A489002EC23A /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 42D190441849A489002EC23A /* .travis.yml */; };
-		42F326A617CEBA6A00963954 /* CORMEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326A517CEBA6A00963954 /* CORMEntity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42F326B517CEBA7300963954 /* CORMEntityDict.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326A717CEBA7300963954 /* CORMEntityDict.h */; };
 		42F326B617CEBA7300963954 /* CORMEntityDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326A817CEBA7300963954 /* CORMEntityDict.m */; };
 		42F326B717CEBA7300963954 /* CORMEntityImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326A917CEBA7300963954 /* CORMEntityImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,11 +37,10 @@
 		42F326BC17CEBA7300963954 /* CORMFactoryImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */; };
 		42F326BD17CEBA7300963954 /* CORMFactoryImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326AF17CEBA7300963954 /* CORMFactoryImpl.m */; };
 		42F326BE17CEBA7300963954 /* CORMFactoryImpl+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B017CEBA7300963954 /* CORMFactoryImpl+Private.h */; };
-		42F326BF17CEBA7300963954 /* CORMKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B117CEBA7300963954 /* CORMKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42F326C017CEBA7300963954 /* CORMKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326B217CEBA7300963954 /* CORMKey.m */; };
+		42F326BF17CEBA7300963954 /* CORMKeyImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B117CEBA7300963954 /* CORMKeyImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42F326C017CEBA7300963954 /* CORMKeyImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326B217CEBA7300963954 /* CORMKeyImpl.m */; };
 		42F326C117CEBA7300963954 /* CORMStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326B317CEBA7300963954 /* CORMStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42F326C217CEBA7300963954 /* CORMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F326B417CEBA7300963954 /* CORMStore.m */; };
-		42F326C417CEBB7200963954 /* CORMFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F326C317CEBA9F00963954 /* CORMFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,10 @@
 		423ABB0D17A32238004F289D /* CORMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CORMTests.m; sourceTree = "<group>"; };
 		426CA2DC1849C24400212CF3 /* ORDA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORDA.framework; path = DerivedData/Build/Products/Debug/ORDA.framework; sourceTree = "<group>"; };
 		426CA3021849EFA100212CF3 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		426CA32C184A1EC500212CF3 /* CORMDefaults+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CORMDefaults+Private.h"; sourceTree = "<group>"; };
+		426CA32F184A21C000212CF3 /* CORMEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMEntity.h; sourceTree = "<group>"; };
+		426CA330184A21C000212CF3 /* CORMFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMFactory.h; sourceTree = "<group>"; };
+		426CA331184A21C000212CF3 /* CORMKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CORMKey.h; sourceTree = "<group>"; };
 		428D033918440E6300303ED4 /* CORMEntityImpl+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CORMEntityImpl+Private.h"; path = "Implementation/CORMEntityImpl+Private.h"; sourceTree = "<group>"; };
 		42AF74001842A8950006FFF2 /* CORM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CORM.h; sourceTree = "<group>"; };
 		42AF74061842A9690006FFF2 /* CORMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CORMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +100,6 @@
 		42D190441849A489002EC23A /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		42E0D0C21849B8A0007EDB27 /* CocoaSQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaSQLite.xcodeproj; path = Include/CocoaSQLite/CocoaSQLite.xcodeproj; sourceTree = "<group>"; };
 		42EC295A1840471E00AA5BDA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		42F326A517CEBA6A00963954 /* CORMEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntity.h; path = Specification/CORMEntity.h; sourceTree = "<group>"; };
 		42F326A717CEBA7300963954 /* CORMEntityDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityDict.h; path = Implementation/CORMEntityDict.h; sourceTree = "<group>"; };
 		42F326A817CEBA7300963954 /* CORMEntityDict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMEntityDict.m; path = Implementation/CORMEntityDict.m; sourceTree = "<group>"; };
 		42F326A917CEBA7300963954 /* CORMEntityImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMEntityImpl.h; path = Implementation/CORMEntityImpl.h; sourceTree = "<group>"; };
@@ -104,11 +109,10 @@
 		42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMFactoryImpl.h; path = Implementation/CORMFactoryImpl.h; sourceTree = "<group>"; };
 		42F326AF17CEBA7300963954 /* CORMFactoryImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMFactoryImpl.m; path = Implementation/CORMFactoryImpl.m; sourceTree = "<group>"; };
 		42F326B017CEBA7300963954 /* CORMFactoryImpl+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CORMFactoryImpl+Private.h"; path = "Implementation/CORMFactoryImpl+Private.h"; sourceTree = "<group>"; };
-		42F326B117CEBA7300963954 /* CORMKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMKey.h; path = Implementation/CORMKey.h; sourceTree = "<group>"; };
-		42F326B217CEBA7300963954 /* CORMKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMKey.m; path = Implementation/CORMKey.m; sourceTree = "<group>"; };
+		42F326B117CEBA7300963954 /* CORMKeyImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMKeyImpl.h; path = Implementation/CORMKeyImpl.h; sourceTree = "<group>"; };
+		42F326B217CEBA7300963954 /* CORMKeyImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMKeyImpl.m; path = Implementation/CORMKeyImpl.m; sourceTree = "<group>"; };
 		42F326B317CEBA7300963954 /* CORMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CORMStore.h; path = Implementation/CORMStore.h; sourceTree = "<group>"; };
 		42F326B417CEBA7300963954 /* CORMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CORMStore.m; path = Implementation/CORMStore.m; sourceTree = "<group>"; };
-		42F326C317CEBA9F00963954 /* CORMFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CORMFactory.h; path = Specification/CORMFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,7 @@
 				423ABAEB17A32238004F289D /* Cocoa.framework in Frameworks */,
 				422B20961849B8C2008F8BF5 /* CocoaSQLite.framework in Frameworks */,
 				422B20A81849B947008F8BF5 /* TypeExtensions.framework in Frameworks */,
+				426CA32D184A1FDB00212CF3 /* ORDA.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,6 +188,7 @@
 			children = (
 				42AF74001842A8950006FFF2 /* CORM.h */,
 				423ABAF717A32238004F289D /* CORMDefaults.h */,
+				426CA32C184A1EC500212CF3 /* CORMDefaults+Private.h */,
 				423ABAF817A32238004F289D /* CORMDefaults.m */,
 				42F326A317CEB9F000963954 /* Specification */,
 				42F326A417CEB9FB00963954 /* Implementation */,
@@ -247,10 +253,11 @@
 		42F326A317CEB9F000963954 /* Specification */ = {
 			isa = PBXGroup;
 			children = (
-				42F326A517CEBA6A00963954 /* CORMEntity.h */,
-				42F326C317CEBA9F00963954 /* CORMFactory.h */,
+				426CA32F184A21C000212CF3 /* CORMEntity.h */,
+				426CA330184A21C000212CF3 /* CORMFactory.h */,
+				426CA331184A21C000212CF3 /* CORMKey.h */,
 			);
-			name = Specification;
+			path = Specification;
 			sourceTree = "<group>";
 		};
 		42F326A417CEB9FB00963954 /* Implementation */ = {
@@ -258,8 +265,8 @@
 			children = (
 				42F326B317CEBA7300963954 /* CORMStore.h */,
 				42F326B417CEBA7300963954 /* CORMStore.m */,
-				42F326B117CEBA7300963954 /* CORMKey.h */,
-				42F326B217CEBA7300963954 /* CORMKey.m */,
+				42F326B117CEBA7300963954 /* CORMKeyImpl.h */,
+				42F326B217CEBA7300963954 /* CORMKeyImpl.m */,
 				42F326AE17CEBA7300963954 /* CORMFactoryImpl.h */,
 				42F326B017CEBA7300963954 /* CORMFactoryImpl+Private.h */,
 				42F326AF17CEBA7300963954 /* CORMFactoryImpl.m */,
@@ -282,11 +289,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				42AF74011842A8F10006FFF2 /* CORM.h in Headers */,
+				426CA332184A21C000212CF3 /* CORMEntity.h in Headers */,
+				426CA333184A21C000212CF3 /* CORMFactory.h in Headers */,
+				426CA334184A21C000212CF3 /* CORMKey.h in Headers */,
 				42B00B7517C6680F000B13E7 /* CORMDefaults.h in Headers */,
 				42F326C117CEBA7300963954 /* CORMStore.h in Headers */,
-				42F326C417CEBB7200963954 /* CORMFactory.h in Headers */,
-				42F326BF17CEBA7300963954 /* CORMKey.h in Headers */,
-				42F326A617CEBA6A00963954 /* CORMEntity.h in Headers */,
+				42F326BF17CEBA7300963954 /* CORMKeyImpl.h in Headers */,
 				42F326B717CEBA7300963954 /* CORMEntityImpl.h in Headers */,
 				42F326B517CEBA7300963954 /* CORMEntityDict.h in Headers */,
 				42F326BA17CEBA7300963954 /* CORMEntityProxy.h in Headers */,
@@ -420,7 +428,7 @@
 				42F326B817CEBA7300963954 /* CORMEntityImpl.m in Sources */,
 				42F326BB17CEBA7300963954 /* CORMEntityProxy.m in Sources */,
 				42F326BD17CEBA7300963954 /* CORMFactoryImpl.m in Sources */,
-				42F326C017CEBA7300963954 /* CORMKey.m in Sources */,
+				42F326C017CEBA7300963954 /* CORMKeyImpl.m in Sources */,
 				42F326C217CEBA7300963954 /* CORMStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

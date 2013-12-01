@@ -10,7 +10,7 @@
 
 #import "CORMEntity.h"
 
-@class CORMKey, CORMFactory, CORMEntityImpl;
+@class CORMKeyImpl, CORMFactory, CORMEntityImpl;
 
 @interface CORMFactoryImpl (Genesis)
 

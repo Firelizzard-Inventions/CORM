@@ -9,5 +9,5 @@
 #import "CORMDefaults.h"
 #import "CORMEntity.h"
 #import "CORMFactory.h"
-#import "CORMKey.h"
+#import "CORMKeyImpl.h"
 #import "CORMStore.h"

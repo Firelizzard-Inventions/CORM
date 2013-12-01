@@ -13,9 +13,19 @@ typedef enum {
 	kCORMEntityBindingOptionSetObjectFromReceiver = 0x02
 } CORMEntityBindingOption;
 
-@class CORMKey;
+@protocol CORMKey;
 
 @protocol CORMEntity <NSObject>
+
+/** ----------------------------------------------------------------------------
+ * @name Properties
+ */
+
+- (id<CORMKey>)key;
+
+/** ----------------------------------------------------------------------------
+ * @name Retreiving Entities
+ */
 
 + (id<CORMEntity>)unboundEntity;
 + (id<CORMEntity>)entityForKey:(id)key;
@@ -23,19 +33,26 @@ typedef enum {
 + (NSArray *)findEntitiesForData:(id)data;
 + (NSArray *)findEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
-- (CORMKey *)key;
+/** ----------------------------------------------------------------------------
+ * @name Entity Tasks
+ */
+
 - (void)bindTo:(id)object withOptions:(CORMEntityBindingOption)options;
 
 - (void)delete;
 + (void)deleteEntitiesWhere:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
-+ (void)synthesize;
+/** ----------------------------------------------------------------------------
+ * @name Relational Mapping
+ */
 
 + (NSString *)mappedClassName;
 
 + (NSArray *)mappedKeys;
 + (NSArray *)mappedNames;
 + (NSArray *)mappedForeignKeyClassNames;
+
++ (NSArray *)referencingClassNames;
 
 + (NSString *)mappedNameForPropertyName:(NSString *)propName;
 + (NSString *)propertyNameForMappedName:(NSString *)mappedName;
@@ -44,9 +61,12 @@ typedef enum {
 + (NSArray *)propertyNamesForForeignKeyClassName:(NSString *)className;
 + (NSString *)propertyNameForForeignKeyClassName:(NSString *)className;
 
-+ (NSArray *)referencingClassNames;
 + (NSString *)referencingClassNameForCollectionName:(NSString *)collectionName;
 + (NSString *)collectionNameForReferencingClassName:(NSString *)className;
+
+/** ----------------------------------------------------------------------------
+ * @name Relational Mapping
+ */
 
 + (BOOL)stringIsMappedKey:(NSString *)string;
 + (BOOL)stringIsMappedName:(NSString *)string;

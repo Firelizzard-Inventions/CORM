@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Firelizzard Inventions. Some rights reserved, see license.
 //
 
-#import "CORMKey.h"
+#import "CORMKeyImpl.h"
 
 #import "CORMEntity.h"
 
-@interface CORMKey (Private)
+@interface CORMKeyImpl (Private)
 
 + (NSString *)_description:(id)obj;
 
@@ -18,7 +18,7 @@
 
 #pragma mark -
 
-@implementation CORMKey {
+@implementation CORMKeyImpl {
 	NSArray * _backing;
 }
 
@@ -28,17 +28,17 @@
 		return @"";
 	
 	if (self.count == 1)
-		return [CORMKey _description:self[0]];
+		return [self.class _description:self[0]];
 	
 	return [NSString stringWithFormat:@"{%@}", [self componentsJoinedByString:@","]];
 }
 
 - (BOOL)isEqual:(id)object
 {
-	if (object && ![object isKindOfClass:[CORMKey class]])
+	if (object && ![object isKindOfClass:self.class])
 		return NO;
 	
-	return [self.description isEqualToString:[CORMKey _description:object]];
+	return [self.description isEqualToString:[self.class _description:object]];
 }
 
 - (NSString *)whereClauseForEntityType:(Class<CORMEntity>)type
@@ -65,16 +65,17 @@
 	return [_backing objectAtIndex:index];
 }
 
-@end
-
-@implementation CORMKey (Genesis)
-
-+ (CORMKey *)key
++ (CORMKeyImpl *)key
 {
-	return [CORMKey keyWithArray:@[]];
+	return [self keyWithArray:@[]];
 }
 
-+ (CORMKey *)keyWithDescriptor:(NSString *)string
++ (CORMRowidKey *)keyWithRowid:(NSNumber *)rowid
+{
+	return [CORMRowidKey keyWithObject:rowid];
+}
+
++ (CORMKeyImpl *)keyWithDescriptor:(NSString *)string
 {
 	BOOL prefix = [string hasPrefix:@"{"];
 	BOOL suffix = [string hasSuffix:@"}"];
@@ -83,12 +84,12 @@
 		return nil;
 	
 	if (!prefix && !suffix)
-		return [CORMKey keyWithArray:@[string]];
+		return [self keyWithArray:@[string]];
 	
-	return [CORMKey keyWithArray:[[string substringWithRange:NSMakeRange(1, string.length - 1)] componentsSeparatedByString:@","]];
+	return [self keyWithArray:[[string substringWithRange:NSMakeRange(1, string.length - 1)] componentsSeparatedByString:@","]];
 }
 
-+ (CORMKey *)keyWithObject:(id)obj
++ (CORMKeyImpl *)keyWithObject:(id)obj
 {
 	if (!obj)
 		return nil;
@@ -97,15 +98,15 @@
 		return obj;
 	
 	if ([obj isKindOfClass:[NSString class]])
-		return [CORMKey keyWithDescriptor:obj];
+		return [self keyWithDescriptor:obj];
 	
 	if ([obj isKindOfClass:[NSArray class]])
-		return [CORMKey keyWithArray:obj];
+		return [self keyWithArray:obj];
 	
-	return [CORMKey keyWithArray:@[obj]];
+	return [self keyWithArray:@[obj]];
 }
 
-+ (CORMKey *)keyWithArray:(NSArray *)arr
++ (CORMKeyImpl *)keyWithArray:(NSArray *)arr
 {
 	if (!arr)
 		return nil;
@@ -116,10 +117,10 @@
 	if (!arr.count)
 		return nil;
 	
-	return [[[CORMKey alloc] initWithArray:arr] autorelease];
+	return [[[self alloc] initWithArray:arr] autorelease];
 }
 
-+ (CORMKey *)keyWithObjects:(id)obj, ...
++ (CORMKeyImpl *)keyWithObjects:(id)obj, ...
 {
 	NSMutableArray * arr = @[].mutableCopy;
 	
@@ -129,14 +130,14 @@
 		[arr addObject:obj];
 	va_end(vargs);
 	
-	id key = [CORMKey keyWithArray:arr];
+	id key = [self keyWithArray:arr];
 	[arr release];
 	return key;
 }
 
-+ (CORMKey *)keyWithObjects:(const void *)objs count:(NSUInteger)count
++ (CORMKeyImpl *)keyWithObjects:(const void *)objs count:(NSUInteger)count
 {
-	return [CORMKey keyWithArray:[NSArray arrayWithObjects:objs count:count]];
+	return [self keyWithArray:[NSArray arrayWithObjects:objs count:count]];
 }
 
 - (id)initWithObjects:(const id [])objects count:(NSUInteger)cnt
@@ -158,7 +159,7 @@
 
 @end
 
-@implementation CORMKey (Private)
+@implementation CORMKeyImpl (Private)
 
 + (NSString *)_description:(id)obj;
 {
@@ -166,6 +167,18 @@
 		return [obj description];
 	else
 		return @"(?)";
+}
+
+@end
+
+#pragma mark -
+#pragma mark -
+
+@implementation CORMRowidKey
+
+- (NSString *)whereClauseForEntityType:(Class)type
+{
+	return [NSString stringWithFormat:@"[rowid] = %@", self[0]];
 }
 
 @end

@@ -121,16 +121,16 @@ static NSAutoreleasePool * pool = nil;
 	if (!track)
 		XCTFail(@"Failed to create entities");
 	
-	if (!track.album)
+	if (!track.album.description)
 		XCTFail(@"Failed to retreive track -> album");
 	
-	if (!track.album.artist)
+	if (!track.album.artist.description)
 		XCTFail(@"Failed to retreive track -> album -> artist");
 	
-	if (!track.genre)
+	if (!track.genre.description)
 		XCTFail(@"Failed to retreive track -> genre");
 	
-	if (!track.mediaType)
+	if (!track.mediaType.description)
 		XCTFail(@"Failed to retreive track -> mediaType");
 }
 
@@ -174,6 +174,14 @@ static NSAutoreleasePool * pool = nil;
 	
 	if (rows[@(10)])
 		XCTFail(@"Row value has not been released");
+}
+
+- (void)testReferencingCollections
+{
+	Album * album = [Album entityForKey:@(1)];
+	
+	if (![album valueForKeyPath:@"tracks.@count"])
+		XCTFail(@"Album tracks not retreived");
 }
 
 @end

@@ -9,17 +9,16 @@
 #import "CORMFactoryImpl.h"
 #import "CORMFactoryImpl+Private.h"
 
+#import "CORM.h"
+#import "CORMDefaults+Private.h"
+#import "CORMEntityImpl.h"
+#import "CORMEntityProxy.h"
+
 #import <ORDA/ORDAGovernor.h>
 #import <ORDA/ORDAStatement.h>
 #import <ORDA/ORDAStatementResult.h>
 
-#import <TypeExtensions/NSMutableDictionary_NonRetaining_Zeroing.h>
-
-#import "CORMStore.h"
-#import "CORMFactory.h"
-#import "CORMKey.h"
-#import "CORMEntity.h"
-#import "CORMEntityProxy.h"
+#import <TypeExtensions/TypeExtensions.h>
 
 @implementation CORMFactoryImpl {
 	NSMutableDictionary * _data;
@@ -27,7 +26,7 @@
 
 - (id)valueForKey:(NSString *)key
 {
-	return _data[[CORMKey keyWithObject:key]];
+	return _data[[CORMKeyImpl keyWithObject:key]];
 }
 
 - (id)valueForKeyPath:(NSString *)keyPath
@@ -85,19 +84,22 @@
 
 - (id<CORMEntity>)entityForKey:(id)key
 {
-	key = [CORMKey keyWithObject:key];
+	key = [CORMKeyImpl keyWithObject:key];
 	
 	if (_data[key])
 		return _data[key];
 	
 	id<ORDATableResult> result = [self.table selectWhere:@"%@", [key whereClauseForEntityType:self.type]];
 	if (result.isError)
-		return nil;
+		return [CORM handleError:result];
 	if (result.count < 1)
 		return nil;
 	
 	NSObject<CORMEntity> * entity = [self.type unboundEntity];
 	[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
+	
+	if ([entity isKindOfClass:CORMEntityImpl.class])
+		[(CORMEntityImpl *)entity buildCollections];
 	
 	_data[key] = entity;
 	return entity;
@@ -138,7 +140,7 @@
 {
 	id<ORDATableResult> results = [self.table selectWhere:@"%@", clause];
 	if (results.isError)
-		return nil;
+		return [CORM handleError:results];
 	if (results.count < 1)
 		return nil;
 	
@@ -166,7 +168,7 @@
 	
 	id<ORDATableResult> result = [self.table insertValues:data ignoreCase:ignoreCase];
 	if (result.isError)
-		return nil;
+		return [CORM handleError:result];
 	if (result.count < 1)
 		return nil;
 	
@@ -179,7 +181,7 @@
 
 #pragma mark Delete
 
-- (void)deleteEntityForKey:(CORMKey *)key
+- (void)deleteEntityForKey:(CORMKeyImpl *)key
 {
 	[self deleteEntitiesWhere:[key whereClauseForEntityType:self.type]];
 }
@@ -187,6 +189,22 @@
 - (void)deleteEntitiesWhere:(NSString *)clause
 {
 	[self.table deleteWhere:@"%@", clause];
+}
+
+#pragma mark View
+
+- (id<ORDATableView>)createViewWithEntitiesForData:(id)data
+{
+	NSMutableArray * clauses = [NSMutableArray array];
+	for (
+}
+
+- (id<ORDATableView>)createViewForKey:(CORMKeyImpl *)key
+{
+	id<ORDATableView> view = [self.table viewWhere:@"%@", [key whereClauseForEntityType:self.type]];
+	if (view.isError)
+		return [CORM handleError:view];
+	return view;
 }
 
 @end

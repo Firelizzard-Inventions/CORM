@@ -18,7 +18,11 @@
 
 @interface CORMEntityImpl : NSObject
 
++ (void)synthesize;
 + (BOOL)propertyNamesAreCaseSensitive;
++ (NSString *)instanceVariableNameForCollectionName:(NSString *)collectionName;
+
+- (void)buildCollections;
 
 @end
 

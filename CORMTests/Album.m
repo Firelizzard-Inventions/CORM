@@ -20,4 +20,19 @@
 	return @[@"Artist"];
 }
 
++ (NSArray *)referencingClassNames
+{
+	return @[@"Track"];
+}
+
+- (id)init
+{
+	if (!(self = [super init]))
+		return nil;
+	
+	_tracks = [NSArray array];
+	
+	return self;
+}
+
 @end

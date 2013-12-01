@@ -8,7 +8,7 @@
 
 #import "CORMEntityProxy.h"
 
-#import "CORMKey.h"
+#import "CORMKeyImpl.h"
 #import "CORMFactory.h"
 
 #pragma clang diagnostic ignored "-Wprotocol"
@@ -29,7 +29,7 @@
 	if (!factory)
 		return nil;
 	
-	_key = [CORMKey keyWithObject:key].retain;
+	_key = [CORMKeyImpl keyWithObject:key].retain;
 	_factory = factory.retain;
 	_entity = nil;
 	

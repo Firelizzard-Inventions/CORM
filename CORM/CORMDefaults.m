@@ -7,8 +7,11 @@
 //
 
 #import "CORMDefaults.h"
+#import "CORMDefaults+Private.h"
 
-#import "CORMStore.h"
+#import <ORDA/ORDA.h>
+
+#import "CORM.h"
 
 @implementation CORM
 
@@ -23,6 +26,12 @@ static CORMStore * _defaultStore = nil;
 {
 	[_defaultStore release];
 	_defaultStore = store.retain;
+}
+
++ (id)handleError:(id<ORDAResult>)errorResult
+{
+	[NSException raise:@"ORDA Exception" format:@"%@", [ORDA descriptionForCode:errorResult.code]];
+	return nil;
 }
 
 @end

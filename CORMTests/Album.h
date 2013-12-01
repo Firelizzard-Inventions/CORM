@@ -15,4 +15,6 @@
 
 @property (retain) id<CORMEntity> artist;
 
+@property (readonly) NSArray * tracks;
+
 @end
