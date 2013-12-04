@@ -22,7 +22,7 @@
 	else
 		mappedNames = [self.class mappedNames];
 	
-	[self.bound addObject:[[_BoundObjectData alloc] initWithProxy:proxy andObject:object names:mappedNames]];
+	[self.bound addObject:[[[_BoundObjectData alloc] initWithProxy:proxy andObject:object names:mappedNames] autorelease]];
 	
 	for (NSString * mappedName in mappedNames) {
 		NSString * propertyName = [self.class propertyNameForMappedName:mappedName];
@@ -32,8 +32,8 @@
 		else if (options & kCORMEntityBindingOptionSetObjectFromReceiver)
 			[object setValue:[self valueForKey:propertyName] forKey:mappedName];
 		
-		[object addObserver:proxy forKeyPath:mappedName options:0 context:nil];
-		[self addObserver:self forKeyPath:propertyName options:0 context:nil];
+		[object addObserver:proxy forKeyPath:mappedName options:0 context:self.class.bindObjectObservationContext];
+		[self addObserver:self forKeyPath:propertyName options:0 context:self.class.bindSelfObservationContext];
 	}
 }
 

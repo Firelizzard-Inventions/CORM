@@ -25,37 +25,36 @@
 
 @end
 
-@implementation CORMTests
+@implementation CORMTests {
+	NSAutoreleasePool * _pool;
+}
 
 static CORMStore * store = nil;
-static NSAutoreleasePool * pool = nil;
 
 + (void)setUp
 {
     [super setUp];
 	
-	pool = [[NSAutoreleasePool alloc] init];
-	
-	[CocoaSQLite register];
-    
-	NSString * path = [[NSBundle bundleForClass:[ORDA class]] pathForResource:@"Chinook_Sqlite" ofType:@"sqlite"];
-	NSString * str = [NSString stringWithFormat:@"%@:%@", [CocoaSQLite scheme], [NSURL fileURLWithPath:path]];
-	NSURL * URL = [NSURL URLWithString:str];
-	
-	id<ORDAGovernor> governor = [[ORDA sharedInstance] governorForURL:URL];
-	if (governor.isError)
-		return;
-	
-	store = [[CORMStore alloc] initWithGovernor:governor];
-	store.generateClasses = YES;
-	[CORM setDefaultStore:store];
+	@autoreleasepool {
+		[CocoaSQLite register];
+		
+		NSString * path = [[NSBundle bundleForClass:[ORDA class]] pathForResource:@"Chinook_Sqlite" ofType:@"sqlite"];
+		NSString * str = [NSString stringWithFormat:@"%@:%@", [CocoaSQLite scheme], [NSURL fileURLWithPath:path]];
+		NSURL * URL = [NSURL URLWithString:str];
+		
+		id<ORDAGovernor> governor = [[ORDA sharedInstance] governorForURL:URL];
+		if (governor.isError)
+			return;
+		
+		store = [[CORMStore alloc] initWithGovernor:governor];
+		store.generateClasses = YES;
+		[CORM setDefaultStore:store];
+	}
 }
 
 + (void)tearDown
 {
 	[store release];
-	
-	[pool drain];
     
     [super tearDown];
 }
@@ -64,8 +63,17 @@ static NSAutoreleasePool * pool = nil;
 {
 	[super setUp];
 	
+	_pool = [[NSAutoreleasePool alloc] init];
+	
 	if (![CORM defaultStore])
 		XCTFail(@"The default store is nil, cannot continue");
+}
+
+- (void)tearDown
+{
+	[_pool drain];
+	
+	[super tearDown];
 }
 
 - (void)testBinding
@@ -76,7 +84,7 @@ static NSAutoreleasePool * pool = nil;
 	if (!Genre)
 		XCTFail(@"Failed to create class");
 	
-	CORMEntityAuto entity = [Genre entity];
+	CORMEntitySynth * entity = [Genre entity];
 	if (!entity)
 		XCTFail(@"Failed to create entity");
 	
@@ -95,11 +103,11 @@ static NSAutoreleasePool * pool = nil;
 
 - (void)testEntityDict
 {
-	Class Genre = [store generateClassForName:@"Genre"];
+	Class Genre = [CORMEntitySynth synthesizeClassForName:@"Genre" withStore:store];
 	if (!Genre)
 		XCTFail(@"Failed to create Genre subclass of CORMEntityDict");
 	
-	id<CORMEntity> genre = [Genre entityForKey:@(1)];
+	CORMEntity * genre = [Genre entityForKey:@(1)];
 	if (!genre)
 		XCTFail(@"Failed to create Genre (Dict) entity for key 1");
 	

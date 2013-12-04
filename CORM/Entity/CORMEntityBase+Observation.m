@@ -36,31 +36,39 @@
 	if (!lock)
 		lock = [[NSLock alloc] init];
 	
-	if ([self.class stringIsForeignKeyProperty:keyPath]) {
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-		return;
-	}
+	if ([self.class.bindObjectObservationContext isEqual:context])
+		goto _other;
+	else if ([self.class.bindSelfObservationContext isEqual:context])
+		goto _self;
 	
-	if (object == self) {
-		for (NSString * mappedKey in self.class.mappedKeys)
-			if ([[self.class propertyNameForMappedName:mappedKey] isEqualToString:keyPath])
-				[self observeValueForKeyName:keyPath];
-		
-		if ([lock tryLock]) {
-			[self observeValueForKeyPathAndUpdateBoundObjects:keyPath];
-			[lock unlock];
-			return;
-		}
-	} else {
-		_BoundObjectData * comp = [[[_BoundObjectData alloc] initWithProxy:nil andObject:object names:nil] autorelease];
-		if ([self.bound containsObject:comp]) {
-			if ([lock tryLock]) {
-				[self observeValueForKeyPath:keyPath ofBoundObject:object];
-				[lock unlock];
-			}
-			return;
-		}
-	}
+_super:
+	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	return;
+	
+_other:
+	if (![self.bound containsObject:[[[_BoundObjectData alloc] initWithProxy:nil andObject:object names:nil] autorelease]])
+		return;
+	
+	if (![lock tryLock])
+		return;
+	
+	[self observeValueForKeyPath:keyPath ofBoundObject:object];
+	[lock unlock];
+	
+	return;
+	
+_self:
+	for (NSString * mappedKey in self.class.mappedKeys)
+		if ([[self.class propertyNameForMappedName:mappedKey] isEqualToString:keyPath])
+			[self observeValueForKeyName:keyPath];
+	
+	if (![lock tryLock])
+		return;
+	
+	[self observeValueForKeyPathAndUpdateBoundObjects:keyPath];
+	[lock unlock];
+	
+	return;
 }
 
 @end

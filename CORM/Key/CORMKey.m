@@ -164,14 +164,25 @@
 	return [NSString stringWithFormat:@"{%@}", [values componentsJoinedByString:@","]];
 }
 
+- (BOOL)isEqual:(id)object
+{
+	if (!object)
+		return NO;
+	
+	if (object == self)
+		return YES;
+	
+	if (![object isKindOfClass:CORMKey.class])
+		return NO;
+	
+	CORMKey * other = (CORMKey *)object;
+	
+	return [self.description isEqual:other.description];
+}
+
 + (NSArray *)propertiesForEntityType:(Class<CORMMapping>)type
 {
-	NSMutableArray * props = [NSMutableArray array];
-	
-	for (NSString * mappedKey in [type mappedKeys])
-		[props addObject:[type propertyNameForMappedName:mappedKey]];
-	
-	return props;
+	return [type mappedKeys];
 }
 
 - (NSArray *)propertiesForEntityType:(Class<CORMMapping>)type

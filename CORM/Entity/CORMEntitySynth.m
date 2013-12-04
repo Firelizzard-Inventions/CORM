@@ -102,9 +102,10 @@ id associatedObjectForSelector(id self, SEL _cmd) {
 	
 	aClass = objc_allocateClassPair(self, [className cStringUsingEncoding:NSASCIIStringEncoding], 0);
 	
-	class_addMethod(aClass, @selector(mappedKeys),                 (IMP)&associatedObjectForSelector, "@@:");
-	class_addMethod(aClass, @selector(mappedNames),                (IMP)&associatedObjectForSelector, "@@:");
-	class_addMethod(aClass, @selector(mappedForeignKeyClassNames), (IMP)&associatedObjectForSelector, "@@:");
+	Class aClassClass = object_getClass(aClass);
+	class_addMethod(aClassClass, @selector(mappedKeys),                 (IMP)&associatedObjectForSelector, "@@:");
+	class_addMethod(aClassClass, @selector(mappedNames),                (IMP)&associatedObjectForSelector, "@@:");
+	class_addMethod(aClassClass, @selector(mappedForeignKeyClassNames), (IMP)&associatedObjectForSelector, "@@:");
 	
 	objc_registerClassPair(aClass);
 	

@@ -10,9 +10,31 @@
 
 #import <objc/runtime.h>
 
+#import "CORMKey.h"
+
 @implementation CORMEntityBase {
 	CORMKey * _key;
 	NSMutableArray * _bound;
+}
+
++ (id)bindSelfObservationContext
+{
+	static id _ctxt = nil;
+	
+	if (!_ctxt)
+		_ctxt = [[_ObservationContext contextWithIdentifier:@"com.firelizzard.CORM.observe.entity.bindSelf" forContext:CORMEntityBase.class] retain];
+	
+	return _ctxt;
+}
+
++ (id)bindObjectObservationContext
+{
+	static id _ctxt = nil;
+	
+	if (!_ctxt)
+		_ctxt = [[_ObservationContext contextWithIdentifier:@"com.firelizzard.CORM.observe.entity.bindObject" forContext:CORMEntityBase.class] retain];
+	
+	return _ctxt;
 }
 
 + (BOOL)propertyNamesAreCaseSensitive
@@ -41,12 +63,14 @@
 	
 	for (_BoundObjectData * obj in _bound) {
 		for (NSString * name in obj.names)
-			[obj.object removeObserver:obj.proxy forKeyPath:name context:nil];
+			[obj.object removeObserver:obj.proxy forKeyPath:name context:self.class.bindObjectObservationContext];
 		for (NSString * mappedName in [self.class mappedNames])
-			[self removeObserver:self forKeyPath:[self.class propertyNameForMappedName:mappedName] context:nil];
+			[self removeObserver:self forKeyPath:[self.class propertyNameForMappedName:mappedName] context:self.class.bindSelfObservationContext];
 	}
 	[_bound release];
 	_bound = nil;
+	
+	[self clearKey];
 	
 	[super invalidate];
 }
@@ -61,7 +85,7 @@
 	for (NSString * mappedKey in [self.class mappedKeys])
 		[elems addObject:[self valueForKey:[self.class propertyNameForMappedName:mappedKey]]];
 	
-	//	_key = [[CORMKeyImpl alloc] initWithArray:elems];
+	_key = [CORMKey keyWithArray:elems].retain;
 	
 _return:
 	return _key;
@@ -71,6 +95,11 @@ _return:
 {
 	[_key release];
 	_key = nil;
+}
+
+- (NSMutableArray *)bound
+{
+	return _bound;
 }
 
 @end

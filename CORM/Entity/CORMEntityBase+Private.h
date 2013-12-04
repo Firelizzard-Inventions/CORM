@@ -12,6 +12,9 @@
 
 @interface CORMEntityBase (Private)
 
++ (id)bindSelfObservationContext;
++ (id)bindObjectObservationContext;
+
 - (NSMutableArray *)bound;
 
 - (void)clearKey;

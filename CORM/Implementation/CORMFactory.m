@@ -83,8 +83,9 @@
 {
 	key = [CORMKey keyWithObject:key];
 	
-	if (_data[key])
-		return _data[key];
+	CORMEntity * entity = _data[key];
+	if (entity)
+		return entity;
 	
 	id<ORDATableResult> result = [self.table selectWhere:@"%@", [key whereClauseForEntityType:self.type]];
 	if (result.isError)
@@ -92,11 +93,15 @@
 	if (result.count < 1)
 		return nil;
 	
-	CORMEntityAuto * entity = [(Class)self.type entity];
+	entity = [(Class)self.type entity];
+	
+	if (![entity respondsToSelector:@selector(bindTo:withOptions:)])
+		return nil;
+	
 	[entity bindTo:result[0] withOptions:kCORMEntityBindingOptionSetReceiverFromObject];
 	
-	if ([entity isKindOfClass:CORMEntity.class])
-		[entity buildCollections];
+	if ([entity respondsToSelector:@selector(buildCollections)])
+		[(CORMEntityAuto *)entity buildCollections];
 	
 	_data[key] = entity;
 	return entity;

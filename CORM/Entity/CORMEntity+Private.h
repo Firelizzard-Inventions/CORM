@@ -10,10 +10,21 @@
 
 @interface CORMEntity ()
 
++ (id)foreignKeyObservationContext;
+
 + (NSArray *)keyNamesForClassName:(NSString *)className;
 + (NSString *)instanceVariableNameForCollectionName:(NSString *)collectionName;
 
 - (BOOL)valid;
 - (void)invalidate;
+
+@end
+
+@interface _ObservationContext : NSObject
+
+@property (readonly) id context;
+@property (readonly) id identifier;
+
++ (instancetype)contextWithIdentifier:(id)identifier forContext:(id)context;
 
 @end

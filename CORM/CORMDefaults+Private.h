@@ -8,6 +8,8 @@
 
 #import <CORM/CORM.h>
 
+#define kCORMExceptionInternalInconsistency	@"com.firelizzard.CORM.exceptions.internalInconsistency"
+
 @protocol ORDAResult;
 
 @interface CORM (Private)

@@ -8,10 +8,21 @@
 
 #import "CORMEntity+Private.h"
 
+#import <TypeExtensions/TypeExtensions.h>
 #import <TypeExtensions/String.h>
 
 @implementation CORMEntity {
 	BOOL _valid;
+}
+
++ (id)foreignKeyObservationContext
+{
+	static id _ctxt = nil;
+	
+	if (!_ctxt)
+		_ctxt = [[_ObservationContext contextWithIdentifier:@"com.firelizzard.CORM.observe.entity.foreignKey" forContext:CORMEntity.class] retain];
+	
+	return _ctxt;
 }
 
 #pragma mark Lifecycle
@@ -27,8 +38,10 @@
 	_valid = YES;
 	
 	for (NSString * className in self.class.mappedForeignKeyClassNames)
-		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className])
-			[self addObserver:self forKeyPath:propName options:0 context:nil];
+		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className]) {
+			NSLog(@"%@: %@", className, propName);
+			[self addObserver:self forKeyPath:propName options:0 context:self.class.foreignKeyObservationContext];
+		}
 	
 	return self;
 }
@@ -43,7 +56,7 @@
 	
 	for (NSString * className in self.class.mappedForeignKeyClassNames)
 		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className])
-			[self removeObserver:self forKeyPath:propName context:nil];
+			[self removeObserver:self forKeyPath:propName context:self.class.foreignKeyObservationContext];
 	
 	_valid = NO;
 }

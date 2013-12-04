@@ -11,6 +11,7 @@
 #import <TypeExtensions/TypeExtensions.h>
 #import <TypeExtensions/String.h>
 
+#import "CORMDefaults+Private.h"
 #import "CORMKey.h"
 #import "CORMEntityBase+Private.h"
 #import "CORMFactory.h"
@@ -39,14 +40,22 @@
 	[self synthesize];
 }
 
++ (id)viewObservationContext
+{
+	static id _ctxt = nil;
+	
+	if (!_ctxt)
+		_ctxt = [[_ObservationContext contextWithIdentifier:@"com.firelizzard.CORM.observe.entity.view" forContext:CORMEntityAuto.class] retain];
+	
+	return _ctxt;
+}
+
 - (id)init
 {
 	if (!(self = [super init]))
 		return nil;
 	
 	_views = nil;
-	
-	[self startDeallocationNofitication];
 	
 	return self;
 }
@@ -57,7 +66,7 @@
 		return;
 	
 	for (id view in _views)
-		[view removeObserver:self forKeyPath:@"self" context:nil];
+		[_views[view] removeObserver:self forKeyPath:@"self" context:self.class.viewObservationContext];
 	[_views release];
 	_views = nil;
 	
@@ -80,11 +89,22 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([@"self" isEqualToString:keyPath] && [object conformsToProtocol:@protocol(ORDATableView)]) {
-		for (NSString * collectionName in [_views allKeysForObject:object])
-			[self rebuildCollectionForKey:collectionName andView:object];
-	} else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	if (![self.class.viewObservationContext isEqual:context])
+		goto _super;
+	
+	if (![@"self" isEqualToString:keyPath])
+		return;
+	
+	if (![object conformsToProtocol:@protocol(ORDATableView)])
+		return;
+	
+	for (NSString * collectionName in [_views allKeysForObject:object])
+		[self rebuildCollectionForKey:collectionName andView:object];
+	
+	return;
+	
+_super:
+	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 - (void)setNilValueForKey:(NSString *)key
@@ -112,7 +132,7 @@
 		
 		NSString * collName = [self.class collectionNameForReferencingClassName:className];
 		NSObject<ORDATableView> * view = [[theClass registeredFactory] createViewForKey:[CORMKey keyWithKey:self.key forEntityType:self.class]];
-		[view addObserver:self forKeyPath:@"self" options:0 context:nil];
+		[view addObserver:self forKeyPath:@"self" options:0 context:self.class.viewObservationContext];
 		views[collName] = view;
 		[self rebuildCollectionForKey:collName andView:view];
 	}
@@ -126,6 +146,9 @@
 	
 	if (!view)
 		return;
+	
+	if (![view conformsToProtocol:@protocol(ORDATableView)])
+		@throw [NSException exceptionWithName:kCORMExceptionInternalInconsistency reason:@"Stored view does not conform to protocol" userInfo:0];
 	
 	NSString * ivarName = [self.class instanceVariableNameForCollectionName:collectionName];
 	const char * ivarCName = [ivarName cStringUsingEncoding:NSASCIIStringEncoding];
@@ -148,11 +171,6 @@
 @end
 
 @implementation CORMEntityAuto (Mapping)
-
-+ (NSString *)mappedClassName
-{
-	return [self className];
-}
 
 + (NSArray *)mappedKeys
 {

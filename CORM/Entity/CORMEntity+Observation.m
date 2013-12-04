@@ -53,13 +53,83 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (object == self)
-		for (NSString * className in self.class.mappedForeignKeyClassNames) {
-			NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
-			for (NSString * propertyName in propNames)
-				if ([propertyName isEqualToStringIgnoreCase:keyPath])
-					[self observeValueForForeignClassName:className propertyNames:propNames];
-		}
+	if (![self.class.foreignKeyObservationContext isEqual:context])
+		return;
+	
+	for (NSString * className in self.class.mappedForeignKeyClassNames) {
+		NSArray * propNames = [self.class propertyNamesForForeignKeyClassName:className];
+		for (NSString * propertyName in propNames)
+			if ([propertyName isEqualToStringIgnoreCase:keyPath])
+				[self observeValueForForeignClassName:className propertyNames:propNames];
+	}
 }
 
 @end
+
+@implementation _ObservationContext
+
++ (instancetype)contextWithIdentifier:(id)identifier forContext:(id)context
+{
+	return [[[self alloc] initWithIdentifier:identifier forContext:context] autorelease];
+}
+
+- (id)initWithIdentifier:(id)identifier forContext:(id)context
+{
+	if (!(self = [super init]))
+		return nil;
+	
+	_identifier = [identifier retain];
+	_context = [context retain];
+	
+	return self;
+}
+
+- (BOOL)isEqual:(id)object
+{
+	if (!object)
+		return NO;
+	
+	if (object == self)
+		return YES;
+	
+	if (![object isKindOfClass:_ObservationContext.class])
+		return NO;
+	
+	_ObservationContext * other = (_ObservationContext *)object;
+	
+	if (!self.identifier)
+		if (other.identifier)
+			return NO;
+	if (![self.identifier isEqual:other.identifier])
+		return NO;
+	
+	if (!self.context)
+		if (other.context)
+			return NO;
+	if (![self.context isEqual:other.context])
+		return NO;
+	
+	return YES;
+}
+
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"<%@ - %@>", self.identifier, self.context];
+}
+
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

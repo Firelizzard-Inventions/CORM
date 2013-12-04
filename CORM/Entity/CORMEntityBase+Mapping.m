@@ -12,6 +12,11 @@
 
 @implementation CORMEntityBase (Mapping)
 
++ (NSString *)mappedClassName
+{
+	return [self className];
+}
+
 + (NSString *)propertyNameForMappedName:(NSString *)mappedName
 {
 	if (self.propertyNamesAreCaseSensitive)
