@@ -60,17 +60,12 @@
 	return self;
 }
 
-- (void)invalidate
+- (void)dealloc
 {
-	if (!self.valid)
-		return;
-	
 	for (id view in _views)
 		[_views[view] removeObserver:self forKeyPath:@"self" context:self.class.viewObservationContext];
 	[_views release];
 	_views = nil;
-	
-	[super invalidate];
 	
 	for (NSString * className in self.class.referencingClassNames) {
 		NSString * collName = [self.class collectionNameForReferencingClassName:className];
@@ -79,12 +74,15 @@
 		
 		id array;
 		object_getInstanceVariable(self, ivarCName, (void **)&array);
-		[array release];
 		
 		[self willChangeValueForKey:collName];
 		object_setInstanceVariable(self, ivarCName, nil);
 		[self didChangeValueForKey:collName];
+		
+		[array release];
 	}
+	
+	[super dealloc];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -132,6 +130,9 @@ _super:
 		
 		NSString * collName = [self.class collectionNameForReferencingClassName:className];
 		NSObject<ORDATableView> * view = [[theClass registeredFactory] createViewForKey:[CORMKey keyWithKey:self.key forEntityType:self.class]];
+		if (view.isError)
+			return;
+		
 		[view addObserver:self forKeyPath:@"self" options:0 context:self.class.viewObservationContext];
 		views[collName] = view;
 		[self rebuildCollectionForKey:collName andView:view];
@@ -150,6 +151,13 @@ _super:
 	if (![view conformsToProtocol:@protocol(ORDATableView)])
 		@throw [NSException exceptionWithName:kCORMExceptionInternalInconsistency reason:@"Stored view does not conform to protocol" userInfo:0];
 	
+	NSString * className = [self.class referencingClassNameForCollectionName:collectionName];
+	Class theClass = NSClassFromString(className);
+	if (!theClass)
+		return;
+	if (![theClass isSubclassOfClass:CORMEntity.class])
+		return;
+	
 	NSString * ivarName = [self.class instanceVariableNameForCollectionName:collectionName];
 	const char * ivarCName = [ivarName cStringUsingEncoding:NSASCIIStringEncoding];
 	
@@ -158,7 +166,7 @@ _super:
 	
 	id entities = [NSMutableArray array];
 	for (id key in view.keys)
-		[entities addObject:[self.class.registeredFactory entityOrProxyForKey:[CORMKey keyWithRowid:key]]];
+		[entities addObject:[[theClass registeredFactory] entityOrProxyForKey:[CORMKey keyWithRowid:key]]];
 	entities = [[NSArray alloc] initWithArray:entities];
 	
 	[self willChangeValueForKey:collectionName];

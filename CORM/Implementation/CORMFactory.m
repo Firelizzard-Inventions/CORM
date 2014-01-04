@@ -18,7 +18,7 @@
 #import "CORMEntityProxy.h"
 
 @implementation CORMFactory {
-	NSMutableDictionary * _data;
+	NSMapTable * _data;
 }
 
 - (id)valueForKey:(NSString *)key
@@ -59,7 +59,7 @@
 	if (!self.table)
 		return nil;
 	
-	_data = [[NSMutableDictionary_NonRetaining_Zeroing dictionary] retain];
+	_data = [[NSMapTable strongToWeakObjectsMapTable] retain];
 	
 	return self;
 }

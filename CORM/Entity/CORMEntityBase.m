@@ -56,11 +56,8 @@
 	return self;
 }
 
-- (void)invalidate
+- (void)dealloc
 {
-	if (!self.valid)
-		return;
-	
 	for (_BoundObjectData * obj in _bound) {
 		for (NSString * name in obj.names)
 			[obj.object removeObserver:obj.proxy forKeyPath:name context:self.class.bindObjectObservationContext];
@@ -72,7 +69,7 @@
 	
 	[self clearKey];
 	
-	[super invalidate];
+	[super dealloc];
 }
 
 - (CORMKey *)key

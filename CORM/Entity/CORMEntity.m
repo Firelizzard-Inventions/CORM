@@ -11,9 +11,7 @@
 #import <TypeExtensions/TypeExtensions.h>
 #import <TypeExtensions/String.h>
 
-@implementation CORMEntity {
-	BOOL _valid;
-}
+@implementation CORMEntity
 
 + (id)foreignKeyObservationContext
 {
@@ -35,8 +33,6 @@
 	if (self.class == CORMEntity.class)
 		@throw [NSException exceptionWithName:@"Abstract class instantiation" reason:@"CORMEntity cannot be directly instantiated - it is the abstract class base of a class cluster" userInfo:nil];
 	
-	_valid = YES;
-	
 	for (NSString * className in self.class.mappedForeignKeyClassNames)
 		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className]) {
 			NSLog(@"%@: %@", className, propName);
@@ -46,24 +42,14 @@
 	return self;
 }
 
-- (void)invalidate
+- (void)dealloc
 {
-	if (!self.valid)
-		return;
-	
 	for (NSString * mappedName in self.class.mappedNames)
 		[self setValue:nil forKey:[self.class propertyNameForMappedName:mappedName]];
 	
 	for (NSString * className in self.class.mappedForeignKeyClassNames)
 		for (NSString * propName in [self.class propertyNamesForForeignKeyClassName:className])
 			[self removeObserver:self forKeyPath:propName context:self.class.foreignKeyObservationContext];
-	
-	_valid = NO;
-}
-
-- (void)dealloc
-{
-	[self invalidate];
 	
 	[super dealloc];
 }
@@ -73,11 +59,6 @@
 - (CORMKey *)key
 {
 	return nil;
-}
-
-- (BOOL)valid
-{
-	return _valid;
 }
 
 - (NSString *)description

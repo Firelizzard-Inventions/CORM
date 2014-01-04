@@ -14,6 +14,7 @@
 
 @interface CORMEntitySynth (Synthesis)
 
++ (Class)synthesizeClassForNameWithDefaultStore:(NSString *)className;
 + (Class)synthesizeClassForName:(NSString *)className withStore:(CORMStore *)store;
 
 @end

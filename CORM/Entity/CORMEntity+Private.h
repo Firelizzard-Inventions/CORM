@@ -15,9 +15,6 @@
 + (NSArray *)keyNamesForClassName:(NSString *)className;
 + (NSString *)instanceVariableNameForCollectionName:(NSString *)collectionName;
 
-- (BOOL)valid;
-- (void)invalidate;
-
 @end
 
 @interface _ObservationContext : NSObject

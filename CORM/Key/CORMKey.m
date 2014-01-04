@@ -164,6 +164,11 @@
 	return [NSString stringWithFormat:@"{%@}", [values componentsJoinedByString:@","]];
 }
 
+- (NSUInteger)hash
+{
+	return self.description.hash;
+}
+
 - (BOOL)isEqual:(id)object
 {
 	if (!object)

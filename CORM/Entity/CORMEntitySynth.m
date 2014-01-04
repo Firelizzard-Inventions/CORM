@@ -11,6 +11,7 @@
 #import <TypeExtensions/TypeExtensions.h>
 #import <ORDA/ORDA.h>
 
+#import "CORMDefaults.h"
 #import "CORMEntityBase+Private.h"
 #import "CORMFactory.h"
 #import "CORMStore.h"
@@ -31,9 +32,7 @@
 
 - (void)dealloc
 {
-	[self invalidate];
-	
-	[_data release];
+	[_data autorelease];
 	
 	[super dealloc];
 }
@@ -77,6 +76,11 @@
 
 id associatedObjectForSelector(id self, SEL _cmd) {
 	return [(NSObject *)self associatedObjectForSelector:_cmd];
+}
+
++ (Class)synthesizeClassForNameWithDefaultStore:(NSString *)className
+{
+	return [self synthesizeClassForName:className withStore:[CORM defaultStore]];
 }
 
 + (Class)synthesizeClassForName:(NSString *)className withStore:(CORMStore *)store
