@@ -1,0 +1,6 @@
+language: objective-c
+
+xcode_project: CocoaSQLite.xcodeproj
+xcode_scheme: CocoaSQLite
+
+install: make prebuild
