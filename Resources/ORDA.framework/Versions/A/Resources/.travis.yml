@@ -1,0 +1,6 @@
+language: objective-c
+
+xcode_project: ORDA.xcodeproj
+xcode_scheme: ORDA
+
+install: make prebuild
